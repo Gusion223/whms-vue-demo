@@ -1,9 +1,9 @@
 <template>
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <HelloWorld/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from "@/components/vue3-reactive.vue"
 
 export default {
   name: 'App',
