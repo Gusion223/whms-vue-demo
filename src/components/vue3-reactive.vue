@@ -15,7 +15,7 @@ import { reactive } from 'vue'
         setup(){
             const btn = ()=>{
                 console.log("btn clicked!!!")
-                name.value = "另一个马某"
+                obj.taobao = "Timi"
             }
             var name = "马某"
             var age = 50

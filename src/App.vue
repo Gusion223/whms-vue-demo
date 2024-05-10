@@ -1,15 +1,11 @@
 <template>
-  <HelloWorld/>
+   <router-view></router-view>
 </template>
 
 <script>
-import HelloWorld from "@/components/vue3-reactive.vue"
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  name: 'App'
 }
 </script>
 
