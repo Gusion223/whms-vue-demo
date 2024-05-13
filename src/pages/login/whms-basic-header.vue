@@ -1,7 +1,8 @@
 <template>
     <div class="toolbar">
-      <el-icon style="margin-right: 5px; margin-top:1px" :size="20">
-        <expand></expand>
+      <el-icon @click="changeFold" style="margin-right: 5px; margin-top:1px" :size="20">
+        <component :is="Expand" v-if="isCollapse"></component>
+        <component :is="Fold" v-else></component>
       </el-icon>
       <span style="flex:1; text-align: center; font-size:28px;">欢迎来到商城管理系统</span>
       <span>王小虎</span>
@@ -22,9 +23,17 @@
 </template>
 
 <script setup>
-import { ArrowDown, Expand} from '@element-plus/icons-vue'
+import { ArrowDown, Expand, Fold} from '@element-plus/icons-vue'
+import { defineEmits, defineProps, toRefs } from 'vue';
 
+const emit = defineEmits(['foldHandle'])
+const props = defineProps(['isCollapse'])
+const {isCollapse} = toRefs(props)
 
+const changeFold = ()=>{
+  emit("foldHandle")
+  console.log("clicked icon")
+}
 
 // @click
 // const view = ()=>{
