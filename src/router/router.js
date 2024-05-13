@@ -6,7 +6,7 @@ const routes = [
     {
         path:'/',
         name:'login',
-        component: ()=>import(/*webpackChunkName:'login'*/"@/pages/login/whms-login.vue")
+        component: ()=>import(/*webpackChunkName:'login'*/"@/pages/login/whms-basic.vue")
     }
 ]
 

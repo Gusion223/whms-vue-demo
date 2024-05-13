@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-container class="layout-container-demo" style="height: 500px">
+    <el-container class="layout-container-demo" style="height: 800px">      
       <el-aside width="200px">
         <el-scrollbar>
           <el-menu :default-openeds="['1']">
@@ -19,12 +19,20 @@
           </el-menu>
         </el-scrollbar>
       </el-aside>
+
+    <el-container>
+      <el-header style="text-align: right; font-size: 12px">
+        <WHMSasicHeader></WHMSasicHeader>
+      </el-header>
+    </el-container>
+
+
     </el-container>
   </div>
 </template>
 
-<script lang="ts" setup>
-
+<script setup>
+import WHMSasicHeader from './whms-basic-header.vue';
 </script>
 
 <style scoped>
