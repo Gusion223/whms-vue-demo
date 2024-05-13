@@ -2,22 +2,7 @@
   <div>
     <el-container class="layout-container-demo" style="height: 800px">      
       <el-aside width="200px">
-        <el-scrollbar>
-          <el-menu :default-openeds="['1']">
-            <el-sub-menu index="1">
-              <template #title>
-                <el-icon><message /></el-icon>Navigator One
-              </template>
-              <el-menu-item-group title="Group 1">
-                <el-menu-item index="1-1">Option 1</el-menu-item>
-                <el-menu-item index="1-2">Option 2</el-menu-item>
-              </el-menu-item-group>
-              <el-menu-item-group title="Group 2">
-                <el-menu-item index="1-3">Option 3</el-menu-item>
-              </el-menu-item-group>
-            </el-sub-menu>
-          </el-menu>
-        </el-scrollbar>
+        <whmsBasicAside></whmsBasicAside>
       </el-aside>
 
     <el-container>
@@ -33,6 +18,7 @@
 
 <script setup>
 import WHMSasicHeader from './whms-basic-header.vue';
+import whmsBasicAside from './whms-basic-aside.vue';
 </script>
 
 <style scoped>
