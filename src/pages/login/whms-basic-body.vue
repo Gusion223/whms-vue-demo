@@ -6,9 +6,21 @@
         <el-table-column prop="no" label="账号" />
         <el-table-column prop="password" label="密码" />
         <el-table-column prop="age" label="年龄" />
-        <el-table-column prop="sex" label="性别" />
+        <el-table-column prop="sex" label="性别">
+          <template #default="scope">
+              <el-tag :type="scope.row.sex === 0 ? 'success':'primary'" :disable-transitions="true">
+                {{scope.row.sex === 0 ? '女':'男'}}
+              </el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="phone" label="电话"/>       
-        <el-table-column prop="roldId" label="角色" />
+        <el-table-column prop="roldId" label="角色">
+          <template #default="scope">
+              <el-tag :type="scope.row.roleId === 0 ? 'warning':'primary'" :disable-transitions="true">
+                {{scope.row.roleId === 0 ? '超级管理员':'管理员'}}
+              </el-tag>
+          </template>
+        </el-table-column>
       </el-table>
   </el-scrollbar>
 </template>
