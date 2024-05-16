@@ -2,15 +2,17 @@
   <div>
     <el-container class="layout-container-demo" style="height: 800px">      
       <el-aside :width="aside_width">
-        <whmsBasicAside :isCollapse="isCollapse"></whmsBasicAside>
+        <WHMSBasicAside :isCollapse="isCollapse"></WHMSBasicAside>
       </el-aside>
 
-    <el-container>
-      <el-header style="text-align: right; font-size: 12px">
-        <WHMSasicHeader :isCollapse="isCollapse" @foldHandle="foldHandle"></WHMSasicHeader>
-      </el-header>
-    </el-container>
-
+      <el-container>
+        <el-header style="text-align: right; font-size: 12px">
+          <WHMSasicHeader :isCollapse="isCollapse" @foldHandle="foldHandle"></WHMSasicHeader>
+        </el-header>
+        <el-main>
+          <WHMSBasicBody  v-if="hasLoadTableData"  :tableData="tableData"></WHMSBasicBody>
+        </el-main>
+      </el-container>
 
     </el-container>
   </div>
@@ -19,10 +21,16 @@
 <script setup>
 
 import WHMSasicHeader from './whms-basic-header.vue';
-import whmsBasicAside from './whms-basic-aside.vue';
-import { ref } from 'vue';
+import WHMSBasicAside from './whms-basic-aside.vue';
+import WHMSBasicBody  from './whms-basic-body.vue'
+import { ref, inject,onMounted, reactive} from 'vue';
 const isCollapse = ref(false)
 const aside_width = ref("200px")
+
+const $axios = inject("$axios");
+
+let tableData = reactive([])
+let hasLoadTableData = ref(false)
 
 const foldHandle = ()=>{
     isCollapse.value = !isCollapse.value
@@ -35,6 +43,27 @@ const foldHandle = ()=>{
     console.log(isCollapse.value)
 }
 
+const loadDataByGet = async()=>{
+    hasLoadTableData.value = false
+    $axios.get('http://localhost:8090/user/list').then(res=>{
+    console.log("Get User List From localhost:8090/user/list")
+    console.log(res.data)
+    tableData = res.data
+    var i = 0
+    for(i=0;i<tableData.length;i++)
+      console.log(tableData[i])    
+    hasLoadTableData.value = true
+  })
+}
+
+console.log("message from basic setup")
+
+
+onMounted(()=>{
+  console.log("message from basic OnMounted")
+  loadDataByGet()
+  // loadDataByPost()
+})
 
 
 
