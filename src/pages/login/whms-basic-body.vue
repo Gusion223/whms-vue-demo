@@ -1,6 +1,6 @@
 <template>
     <el-scrollbar>
-      <el-table :data="tableData">
+      <el-table :data="tableData" border style="width=100%">
         <el-table-column prop="id" label="ID" />
         <el-table-column prop="name" label="姓名" />
         <el-table-column prop="no" label="账号" />
@@ -21,6 +21,12 @@
               </el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="operate" label="操作">
+          <div style="display: flex;">
+            <el-button size='small' type="success">修改</el-button>
+            <el-button size='small' type="danger">删除</el-button>
+          </div>
+        </el-table-column>
       </el-table>
   </el-scrollbar>
 </template>
@@ -32,6 +38,11 @@
   console.log("Message From Body SetUp")
   tableData = toRefs(props).tableData
   console.log(tableData.value)
-
-
 </script>
+
+<style scoped>
+.el-button
+{
+  margin:0px
+}
+</style>

@@ -46,13 +46,16 @@ const foldHandle = ()=>{
 const loadDataByGet = async()=>{
     hasLoadTableData.value = false
     $axios.get('http://localhost:8090/user/list').then(res=>{
-    console.log("Get User List From localhost:8090/user/list")
-    console.log(res.data)
-    tableData = res.data
-    var i = 0
-    for(i=0;i<tableData.length;i++)
-      console.log(tableData[i])    
-    hasLoadTableData.value = true
+      console.log("Get User List From localhost:8090/user/list")
+      console.log(res.data)
+      var res_obj = res.data
+      tableData = res_obj.data
+      if(res_obj.code!="200")
+        alert("拉取用户信息失败")
+      hasLoadTableData.value = true
+  }).catch(error=>{
+      console.log(error.message)
+      alert(error)
   })
 }
 
