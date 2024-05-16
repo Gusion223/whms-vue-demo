@@ -28,6 +28,24 @@ window.ResizeObserver = class ResizeObserver extends _ResizeObserver{
    }
 }
 ///////////////////////
+
+// 配置动态网页名称
+// 全局前置守卫：任何页面的访问都要经过这里
+// to：要去哪里的路由信息
+// from：从哪里来的路由信息
+// next：通行的标志
+router.beforeEach((to, from, next)=>{
+  document.title = to.meta.title ? to.meta.title : '管理平台';  //是否设置了meta.title
+  // to.meta 是一个数组（匹配到是路由记录）
+  if(to.meta.requireAuth){  //是否需要认证,暂时还没弄到这一步
+  
+  }else{
+    next()
+  }
+})
+///////////////////////////////
+
+
 const app = createApp(App)
 app.use(ElementPlus, {locale:zhCn})
 app.provide("$axios", axios)
