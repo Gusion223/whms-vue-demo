@@ -6,7 +6,7 @@
       </el-aside>
 
       <el-container>
-        <el-header style="text-align: right; font-size: 12px">
+        <el-header style="font-size: 12px">
           <WHMSasicHeader :isCollapse="isCollapse" @foldHandle="foldHandle"></WHMSasicHeader>
         </el-header>
         <el-main>

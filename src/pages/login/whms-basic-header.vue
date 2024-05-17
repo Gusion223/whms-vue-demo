@@ -49,7 +49,7 @@ const changeFold = ()=>{
   align-items: center;
   justify-content: flex-start;
   height: 100%;
-  right: 20px;
+
   border-bottom: darkgray 2px solid;
 }
 </style>

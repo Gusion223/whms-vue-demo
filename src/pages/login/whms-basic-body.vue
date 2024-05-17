@@ -1,5 +1,9 @@
 <template>
-    <el-scrollbar>
+    <el-scrollbar style="padding-left: 20px; padding-right: 20px;">
+      <div style="margin-top: 10px; margin-bottom: 10px;">
+        <el-input v-model="input" placeholder="请输入要查询的人员名称" style="width: 20%;"/>
+      </div>
+      
       <el-table  :data="tableData" border style="width=100%">
         <el-table-column prop="id" label="ID" />
         <el-table-column prop="name" label="姓名" />
