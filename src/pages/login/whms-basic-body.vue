@@ -1,6 +1,6 @@
 <template>
     <el-scrollbar>
-      <el-table :data="tableData" border style="width=100%">
+      <el-table  :data="tableData" border style="width=100%">
         <el-table-column prop="id" label="ID" />
         <el-table-column prop="name" label="姓名" />
         <el-table-column prop="no" label="账号" />
@@ -28,16 +28,42 @@
           </div>
         </el-table-column>
       </el-table>
+      <div style="display: flex; justify-content: center; margin-top: 10px;">
+        <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :page-sizes="[2, 5, 10, 20]"
+        :small="false"
+        :disabled="false"
+        :background="false"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalSize"
+        @size-change="loadNewData"
+        @current-change="loadNewData"
+        />
+      </div>
   </el-scrollbar>
+
 </template>
 
 <script setup>
-  import { ref, toRefs, defineProps} from 'vue';
-  const props = defineProps(["tableData"])
-  let tableData = ref([])
+  import { ref, toRefs, defineProps, defineEmits} from 'vue';
+  const props = defineProps(["tableData", "totalSize"])
+  const emit = defineEmits(["loadNewData"])
+  const currentPage = ref(1)
+  const pageSize = ref(2)
+
+  const {tableData, totalSize} = toRefs(props)
   console.log("Message From Body SetUp")
-  tableData = toRefs(props).tableData
-  console.log(tableData.value)
+
+  // 向父组件发送信息
+  const loadNewData = ()=>{
+    console.log("emit loadNewData")
+    if(currentPage.value * (pageSize.value-1) > totalSize.value)
+      emit("loadNewData", 1, pageSize)
+    else
+      emit("loadNewData", currentPage, pageSize)
+  }
 </script>
 
 <style scoped>
