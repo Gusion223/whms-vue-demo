@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-  import { ref, toRefs, defineProps, defineEmits} from 'vue';
+  import { ref, toRefs, defineProps, defineEmits, watch} from 'vue';
   const props = defineProps(["tableData", "totalSize"])
   const emit = defineEmits(["loadNewData"])
   const currentPage = ref(1)
@@ -60,10 +60,15 @@
   const loadNewData = ()=>{
     console.log("emit loadNewData")
     if(currentPage.value * (pageSize.value-1) > totalSize.value)
-      emit("loadNewData", 1, pageSize)
+      emit("loadNewData", 1, pageSize.value)
     else
-      emit("loadNewData", currentPage, pageSize)
+      emit("loadNewData", currentPage.value, pageSize.value)
   }
+
+  watch(()=>props.tableData,()=>{
+    console.log("message from body watch", props.tableData, props.totalSize)
+  })
+
 </script>
 
 <style scoped>

@@ -11,7 +11,6 @@
         </el-header>
         <el-main>
           <WHMSBasicBody
-          :hasLoadData="hasLoadTableData"
           :tableData="tableData" 
           :totalSize="totalSize"
           
@@ -28,13 +27,13 @@
 import WHMSasicHeader from './whms-basic-header.vue';
 import WHMSBasicAside from './whms-basic-aside.vue';
 import WHMSBasicBody  from './whms-basic-body.vue'
-import { ref, inject, onMounted, reactive} from 'vue';
+import { ref, inject, onMounted} from 'vue';
 const isCollapse = ref(false)
 const aside_width = ref("200px")
 
 const $axios = inject("$axios");
 
-let tableData = reactive([])
+let tableData = ref([])
 let hasLoadTableData = ref(false)
 let totalSize = ref(0)
 
@@ -65,19 +64,17 @@ const foldHandle = ()=>{
 //   })
 // }
 
-const loadDataByPost = async(currentPage=ref(1), pageSize=ref(2))=>{
+const loadDataByPost = async(currentPage=1, pageSize=2)=>{
   hasLoadTableData.value = false
   $axios.post('http://localhost:8090/user/pageC', {
-    "pageSize":pageSize.value,
-    "pageIndex":currentPage.value
+    "pageSize":pageSize,
+    "pageIndex":currentPage
   }).then((res)=>{
     let res_obj = res.data
-    let listData = res_obj.data
     if(res_obj.code=="200"){
-      console.log("Get Data From PageC Interface") 
-      console.log(listData)
-      tableData = listData
-      totalSize = res_obj.total
+      console.log("Get Data From PageC Interface", res_obj.data) 
+      tableData.value = res_obj.data
+      totalSize.value = res_obj.total
     }else{
       alert("访问数据库信息失败")
     }
