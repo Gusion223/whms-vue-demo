@@ -49,6 +49,7 @@ router.beforeEach((to, from, next)=>{
 const app = createApp(App)
 app.use(ElementPlus, {locale:zhCn})
 app.provide("$axios", axios)
+axios.defaults.baseURL = "http://192.168.1.107:8090"
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
   }

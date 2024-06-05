@@ -13,11 +13,9 @@
           <WHMSBasicBody
           :tableData="tableData" 
           :totalSize="totalSize"
-          
           @loadNewData="loadDataByPost"></WHMSBasicBody>
         </el-main>
       </el-container>
-
     </el-container>
   </div>
 </template>
@@ -48,25 +46,9 @@ const foldHandle = ()=>{
     console.log(isCollapse.value)
 }
 
-// const loadDataByGet = async()=>{
-//     hasLoadTableData.value = false
-//     $axios.get('http://localhost:8090/user/list').then(res=>{
-//       console.log("Get User List From localhost:8090/user/list")
-//       console.log(res.data)
-//       var res_obj = res.data
-//       tableData = res_obj.data
-//       if(res_obj.code!="200")
-//         alert("拉取用户信息失败")
-//       hasLoadTableData.value = true
-//   }).catch(error=>{
-//       console.log(error.message)
-//       alert(error)
-//   })
-// }
-
 const loadDataByPost = async(currentPage=1, pageSize=2)=>{
   hasLoadTableData.value = false
-  $axios.post('http://localhost:8090/user/pageC', {
+  $axios.post('/user/pageC', {
     "pageSize":pageSize,
     "pageIndex":currentPage
   }).then((res)=>{

@@ -1,7 +1,7 @@
 <template>
     <el-scrollbar style="padding-left: 20px; padding-right: 20px;">
       <div style="margin-top: 10px; margin-bottom: 10px;">
-        <el-input v-model="input" placeholder="请输入要查询的人员名称" style="width: 20%;"/>
+        <el-input v-model="input_text" placeholder="请输入要查询的人员名称" style="width: 20%;"/>
       </div>
       
       <el-table  :data="tableData" border style="width=100%">
@@ -56,6 +56,7 @@
   const emit = defineEmits(["loadNewData"])
   const currentPage = ref(1)
   const pageSize = ref(2)
+  const input_text = ref("")
 
   const {tableData, totalSize} = toRefs(props)
   console.log("Message From Body SetUp")
