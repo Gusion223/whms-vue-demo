@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/router'
-import ElementPlus from 'element-plus'
+import ElementPlus, {ElMessage} from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -37,10 +37,12 @@ window.ResizeObserver = class ResizeObserver extends _ResizeObserver{
 router.beforeEach((to, from, next)=>{
   document.title = to.meta.title ? to.meta.title : '管理平台';  //是否设置了meta.title
   // to.meta 是一个数组（匹配到是路由记录）
-  if(to.meta.requireAuth){  //是否需要认证,暂时还没弄到这一步
-  
+  if(to.meta.requireAuth && sessionStorage.getItem("CurrentUser")==null){  //是否需要认证,暂时还没弄到这一步
+      // 进入登录界面
+      ElMessage({message:"您当前尚未登录,请前往主界面进行登录", type:"info"})
+      next("/")
   }else{
-    next()
+      next()
   }
 })
 ///////////////////////////////
@@ -49,6 +51,7 @@ router.beforeEach((to, from, next)=>{
 const app = createApp(App)
 app.use(ElementPlus, {locale:zhCn})
 app.provide("$axios", axios)
+axios.defaults.baseURL = "http://192.168.1.107:8090"
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
   }
