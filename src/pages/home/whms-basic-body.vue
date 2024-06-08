@@ -6,8 +6,8 @@
       
       <el-table  :data="tableData" border style="width=100%">
         <el-table-column prop="id" label="ID" />
-        <el-table-column prop="name" label="姓名" />
-        <el-table-column prop="no" label="账号" />
+        <el-table-column prop="nickName" label="姓名" />
+        <el-table-column prop="userName" label="账号" />
         <el-table-column prop="password" label="密码" />
         <el-table-column prop="age" label="年龄" />
         <el-table-column prop="sex" label="性别">
@@ -18,10 +18,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="phone" label="电话"/>       
-        <el-table-column prop="roldId" label="角色">
+        <el-table-column prop="userType" label="角色">
           <template #default="scope">
-              <el-tag :type="scope.row.roleId === 0 ? 'warning':'primary'" :disable-transitions="true">
-                {{scope.row.roleId === 0 ? '超级管理员':'管理员'}}
+              <el-tag :type="scope.row.userType === 0 ? 'warning':'primary'" :disable-transitions="true">
+                {{scope.row.userType === 0 ? '超级管理员':'管理员'}}
               </el-tag>
           </template>
         </el-table-column>

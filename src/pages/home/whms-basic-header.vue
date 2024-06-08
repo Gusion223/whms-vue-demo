@@ -4,8 +4,8 @@
         <component :is="Expand" v-if="isCollapse"></component>
         <component :is="Fold" v-else></component>
       </el-icon>
-      <span style="flex:1; text-align: center; font-size:28px;">欢迎来到商城管理系统</span>
-      <span>王小虎</span>
+      <span style="flex:1; text-align: center; font-size:28px;">欢迎来到商店进销管理系统</span>
+      <span>{{currentUser ? currentUser.nickName : '小明'}}</span>
       <el-dropdown>
         <el-icon style="margin-right: 8px; margin-top: 1px; margin-left: 4px;">
           <arrow-down></arrow-down>
@@ -25,7 +25,8 @@
 <script setup>
 import { ArrowDown, Expand, Fold} from '@element-plus/icons-vue'
 import { defineEmits, defineProps, toRefs } from 'vue';
-
+const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
+console.log("currentUser", currentUser)
 const emit = defineEmits(['foldHandle'])
 const props = defineProps(['isCollapse'])
 const {isCollapse} = toRefs(props)

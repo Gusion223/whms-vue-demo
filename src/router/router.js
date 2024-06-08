@@ -3,9 +3,15 @@ import {createRouter, createWebHistory} from "vue-router"
 const routes = [
     {
         path:'/',
-        name:'login',
-        meta:{title:'用户管理界面'},
-        component: ()=>import(/*webpackChunkName:'login'*/"@/pages/login/whms-basic.vue")
+        name:"login",
+        meta:{title:'登录界面'},
+        component: ()=> import("@/pages/Login.vue")
+    },
+    {
+        path:'/home',
+        name:'home',
+        meta:{title:'主界面'},
+        component: ()=>import("@/pages/home/whms-basic.vue")
     }
 ]
 

@@ -25,11 +25,13 @@
 import WHMSasicHeader from './whms-basic-header.vue';
 import WHMSBasicAside from './whms-basic-aside.vue';
 import WHMSBasicBody  from './whms-basic-body.vue'
-import { ref, inject, onMounted} from 'vue';
+import { ref, onMounted} from 'vue';
+import { ApiGetUsers } from '@/api/serviceApi';
+
 const isCollapse = ref(false)
 const aside_width = ref("200px")
 
-const $axios = inject("$axios");
+// const $axios = inject("$axios");
 
 let tableData = ref([])
 let hasLoadTableData = ref(false)
@@ -47,13 +49,10 @@ const foldHandle = ()=>{
 }
 
 const loadDataByPost = async(currentPage=1, pageSize=2)=>{
-  hasLoadTableData.value = false
-  $axios.post('/user/pageC', {
-    "pageSize":pageSize,
-    "pageIndex":currentPage
-  }).then((res)=>{
+    ApiGetUsers(currentPage, pageSize).then(
+    (res)=>{
     let res_obj = res.data
-    if(res_obj.code=="200"){
+    if(res_obj.status=="200"){
       console.log("Get Data From PageC Interface", res_obj.data) 
       tableData.value = res_obj.data
       totalSize.value = res_obj.total
