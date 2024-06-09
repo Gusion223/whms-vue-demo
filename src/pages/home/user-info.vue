@@ -8,7 +8,7 @@
         <el-table-column prop="id" label="ID" />
         <el-table-column prop="nickName" label="姓名" />
         <el-table-column prop="userName" label="账号" />
-        <el-table-column prop="password" label="密码" />
+<!--        <el-table-column prop="password" label="密码" />-->
         <el-table-column prop="age" label="年龄" />
         <el-table-column prop="sex" label="性别">
           <template #default="scope">
