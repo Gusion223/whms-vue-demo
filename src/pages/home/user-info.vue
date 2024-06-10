@@ -1,7 +1,16 @@
 <template>
     <el-scrollbar style="padding-left: 20px; padding-right: 20px;">
       <div style="display: flex">
-        <el-input v-model="input_text" placeholder="请输入要查询的人员名称" style="width: 20%;"/>
+        <el-input v-model="nameInput" placeholder="请输入要查询的人员名称"
+                  style="width: 20%;" suffix-icon="search" @keyup.enter="loadData"/>
+        <el-select v-model="userTypeInput" placeholder="请选择用户类型"
+                   @keyup.enter="loadData" style="width: 20%;">
+          <el-option :key="-1" :label="'请选择用户类型'" :value="-1"></el-option>
+          <el-option v-for="(value, key) in userTypeDisplay" :key="key" :label="value.text" :value="key">
+          </el-option>
+        </el-select>
+        <el-button type="primary" style="margin-left: 5px" @click="loadData">查询</el-button>
+        <el-button type="success" style="margin-left: 5px" @click="resetTableData">重置</el-button>
       </div>
       
       <el-table  :data="tableData" border style="width:100%">
@@ -20,16 +29,19 @@
         <el-table-column prop="phone" label="电话"/>       
         <el-table-column prop="userType" label="角色">
           <template #default="scope">
-              <el-tag :type="scope.row.userType === 0 ? 'warning':'primary'" :disable-transitions="true">
-                {{scope.row.userType === 0 ? '超级管理员':'管理员'}}
+              <el-tag :type="userTypeDisplay[scope.row.userType].type" :disable-transitions="true">
+                {{userTypeDisplay[scope.row.userType].text}}
               </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="operate" label="操作">
-          <div style="display: flex;">
-            <el-button size='small' type="success">修改</el-button>
-            <el-button size='small' type="danger">删除</el-button>
-          </div>
+          <template #default="scope">
+            <div style="display: flex;">
+              <el-button size='small' type="success">修改</el-button>
+              <el-button size='small' type="danger"
+                         :disabled="disableDelBtn(scope.row.id, scope.row.userType)">删除</el-button>
+            </div>
+          </template>
         </el-table-column>
       </el-table>
       <div style="display: flex; justify-content: center; margin-top: 10px;">
@@ -51,37 +63,43 @@
 </template>
 
 <script setup>
-  // import { ref, toRefs, defineProps, defineEmits, watch} from 'vue';
-  // const props = defineProps(["tableData", "totalSize"])
-  // const emit = defineEmits(["loadNewData"])
-  // const currentPage = ref(1)
-  // const pageSize = ref(2)
-  // const input_text = ref("")
-  //
-  // const {tableData, totalSize} = toRefs(props)
-  // console.log("Message From Body SetUp")
-  //
-  // // 向父组件发送信息
-  // const loadNewData = ()=>{
-  //   console.log("emit loadNewData")
-  //   if(currentPage.value * (pageSize.value-1) > totalSize.value)
-  //     emit("loadNewData", 1, pageSize.value)
-  //   else
-  //     emit("loadNewData", currentPage.value, pageSize.value)
-  // }
-  //
-  // watch(()=>props.tableData,()=>{
-  //   console.log("message from body watch", props.tableData, props.totalSize)
-  // })
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers} from "@/api/serviceApi";
+  import {ApiGetUsers, ApiGetUserWith} from "@/api/serviceApi";
 
   const tableData = ref([])
   const totalSize = ref(1)
   const currentPage = ref(1)
   const pageSize = ref(2)
-  const input_text = ref("")
+  const nameInput = ref("")
+  const userTypeInput = ref(-1)
 
+  const userTypeDisplay=[
+    {
+      text:"系统管理员",
+      type:"warning",
+      value:0
+    },
+    {
+      text:"仓管员",
+      type:"primary",
+      value:1
+    },
+    {
+      text:"销售员",
+      type:"success",
+      value:2
+    }
+  ]
+
+  const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
+
+  const disableDelBtn = (id, userType)=>{
+    if(currentUser && currentUser.id===id)
+        return true
+    if(userType===0)
+        return true
+    return false
+  }
 
   const loadData = async ()=>{
     console.log("Start Loading UserData")
@@ -93,14 +111,31 @@
       index = currentPage.value
       size = pageSize.value
     }
-    ApiGetUsers(index, size).then((res)=>{
+
+    try{
+      let res;
+      console.log(userTypeInput.value, typeof(userTypeInput.value))
+      if(nameInput.value!=="" || userTypeInput.value!==-1)
+      {
+        // console.log("UserType:", userTypeInput.value)
+        res = await ApiGetUserWith(index, size, nameInput.value, userTypeInput.value)
+      }else {
+        res = await ApiGetUsers(index, size)
+      }
+      console.log(res)
       tableData.value = res.data.data
       totalSize.value = res.data.total
-      console.log("Load Data UserData")
-    }).catch((error)=>{
-      console.log(error)
-    })
+    }catch (e){
+      console.log(e)
+    }
   }
+
+  const resetTableData = async ()=>{
+    nameInput.value = ""
+    userTypeInput.value=-1
+    await loadData()
+  }
+
 
   onMounted(()=>{
     loadData()

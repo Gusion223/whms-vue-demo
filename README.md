@@ -1,6 +1,6 @@
 # elements-plus
 
-## Project setup
+## Project setup(下载依赖项)
 
 ```
 npm install

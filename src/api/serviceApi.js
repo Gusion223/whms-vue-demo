@@ -3,11 +3,28 @@ import http from "../utils/http"
 export const ApiGetUsers = (index, size)=>{
   return http.post(
     '/user/pageC',{
-      "pageIndex":index,
-      "pageSize":size
+      pageIndex:index,
+      pageSize:size
     }
   )
 }
+
+export const ApiGetUserWith = (index, size, nickName, userType)=>{
+    console.log("API USER PAGEWITH", index, size, nickName, userType)
+    return http.post(
+        '/user/pageWith',
+        {
+            pageIndex:index,
+            pageSize:size,
+            params:{
+                nickName:nickName,
+                userType:userType
+            }
+        }
+    )
+}
+
+
 
 export const ApiLogin = (userName, password, userType) => {
     return http.post(

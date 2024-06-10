@@ -10,15 +10,29 @@ const routes = [
     {
         path:'/home',
         name:'home',
-        meta:{title:'主界面', requireAuth:true},
+        meta:
+            {
+                title:'主界面',
+                // requireAuth:true
+            },
         component: ()=>import("@/pages/home.vue"),
         children:[
             {
+                path:"dashboard",
+                name:"dashboard",
+                meta:{title: "主控面板"},
+                component: ()=>import("@/pages/home/dashboard.vue")
+            },
+            {
                 // 此处路径不用加 '/',运行时会自动加的
-                path: ':userInfo',
+                path: 'userInfo',
                 name: 'userInfo',
                 meta:{title:"用户界面"},
                 component: ()=>import("@/pages/home/user-info.vue")
+            },
+            {
+                path: ":pathMatch(.*)*",
+                redirect:"/404"
             }
         ]
     },
