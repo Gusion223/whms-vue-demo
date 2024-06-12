@@ -40,7 +40,7 @@ const foldHandle = ()=>{
 
 <style scoped>
 .layout-container-demo{
-  height: 100vh;
+  height: 90vh;
   position: relative;
 }
 

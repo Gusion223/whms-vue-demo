@@ -24,8 +24,6 @@ export const ApiGetUserWith = (index, size, nickName, userType)=>{
     )
 }
 
-
-
 export const ApiLogin = (userName, password, userType) => {
     return http.post(
         "/user/login",
@@ -35,6 +33,35 @@ export const ApiLogin = (userName, password, userType) => {
                 password:password,
                 userType:userType
             }
+        }
+    )
+}
+
+export const ApiAddUser = (userName, nickName, password, sex, age, phone, userType) =>{
+    return http.post(
+        '/user/add',
+        {
+            userName:userName,
+            nickName:nickName,
+            password:password,
+            sex:sex,
+            age:age,
+            phone:phone,
+            userType:userType
+        }
+    )
+}
+
+export const ApiUpdateUser = (id, nickName, sex, age, phone, userType) =>{
+    return http.post(
+        '/user/update',
+        {
+            id:id,
+            nickName:nickName,
+            sex:sex,
+            age:age,
+            phone:phone,
+            userType:userType
         }
     )
 }
