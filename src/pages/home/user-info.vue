@@ -143,7 +143,7 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers, ApiGetUserWith, ApiAddUser} from "@/api/serviceApi";
+  import {ApiGetUsers, ApiGetUserWith, ApiAddUser, ApiUpdateUser} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
 
   // 表格信息
@@ -276,6 +276,29 @@
       let passValidate = await updateFormRef.value.validate()
       if(!passValidate){
         // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
+        return
+      }
+      console.log(
+          updateForm.value.id,
+          updateForm.value.nickName,
+          updateForm.value.sex,
+          updateForm.value.age,
+          updateForm.value.phone,
+          updateForm.value.userType
+      )
+
+      let res = await ApiUpdateUser(
+          updateForm.value.id,
+          updateForm.value.nickName,
+          updateForm.value.sex,
+          updateForm.value.age,
+          updateForm.value.phone,
+          updateForm.value.userType
+      )
+
+      if(res.data.status!==200)
+      {
+        ElMessage({message:res.data.msg, type:"warning"})
         return
       }
       console.log("修改成功")
