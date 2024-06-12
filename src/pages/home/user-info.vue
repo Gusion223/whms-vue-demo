@@ -116,7 +116,8 @@
             <div style="display: flex;">
               <el-button size='small' type="success" @click="openUpdateForm(scope.row)">修改</el-button>
               <el-button size='small' type="danger"
-                         :disabled="disableDelBtn(scope.row.id, scope.row.userType)">删除</el-button>
+                         :disabled="disableDelBtn(scope.row.id, scope.row.userType)"
+                         @click="tryDelete(scope.row)">删除</el-button>
             </div>
           </template>
         </el-table-column>
@@ -143,7 +144,7 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers, ApiGetUserWith, ApiAddUser, ApiUpdateUser} from "@/api/serviceApi";
+  import {ApiGetUsers, ApiGetUserWith, ApiAddUser, ApiUpdateUser, ApiDeleteUser} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
 
   // 表格信息
@@ -226,6 +227,8 @@
     phone:{lock:false},
     userType:{lock:false}
   })
+  const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
+
 
   const updateFormLabelWidth=ref("6em")
 
@@ -235,6 +238,20 @@
     addFormVisible.value=true
   }
 
+
+
+  const openUpdateForm = (rowData)=>{
+    updateForm.value = JSON.parse(JSON.stringify(rowData))
+    updateFormVisible.value = true
+
+  }
+  const disableDelBtn = (id, userType)=>{
+    if(currentUser && currentUser.id===id)
+      return true
+    if(userType===0)
+      return true
+    return false
+  }
   const tryAdd = async ()=>{
     console.log("尝试提交添加表单")
     try{
@@ -264,13 +281,6 @@
       console.log(e)
     }
   }
-
-  const openUpdateForm = (rowData)=>{
-    updateForm.value = JSON.parse(JSON.stringify(rowData))
-    updateFormVisible.value = true
-
-  }
-
   const tryUpdate = async ()=>{
     try{
       let passValidate = await updateFormRef.value.validate()
@@ -311,15 +321,24 @@
     }
   }
 
-  const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
+  const tryDelete = async (old_data) => {
+    try {
+      let res = await ApiDeleteUser(old_data.id)
+      if (res.data.status !== 200)
+        ElMessage({message: res.data.msg, type: "warning"})
+      else{
+        ElMessage({message: `成功删除用户${old_data.userName}}`, type: "success"})
+        await loadData()
+      }
+    } catch (e) {
+      ElMessage({message: e.message, type: "warning"})
 
-  const disableDelBtn = (id, userType)=>{
-    if(currentUser && currentUser.id===id)
-        return true
-    if(userType===0)
-        return true
-    return false
+    }
   }
+
+
+
+
 
   const loadData = async ()=>{
     console.log("Start Loading UserData")

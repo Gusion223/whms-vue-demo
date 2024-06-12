@@ -65,3 +65,10 @@ export const ApiUpdateUser = (id, nickName, sex, age, phone, userType) =>{
         }
     )
 }
+
+export const ApiDeleteUser = (id) =>{
+    return  http.post(
+    '/user/delete',
+    {id:id}
+    )
+}
