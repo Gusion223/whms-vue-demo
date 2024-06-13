@@ -37,11 +37,26 @@ const routes = [
         ]
     },
     {
+        path: "/debug",
+        name: "测试",
+        meta:{title: "测试Debug"},
+        component: ()=>import("@/pages/debug.vue"),
+        children: [
+            {
+                path:"dForm",
+                name:"动态表单",
+                meta:{title: "测试动态表单", showFather:false},
+                component: ()=>import("@/components/dynamic-form-base.vue")
+            }
+        ]
+    },
+    {
         path: "/:pathMatch(.*)*",
         name: "no found",
         meta: {title: 404},
         component: ()=>import("@/pages/404.vue")
     }
+
 ]
 
 const router = createRouter({
