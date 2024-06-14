@@ -53,7 +53,14 @@ const routes = [
                 name:"tableInDialog",
                 meta:{title:"对话框中的表格",  showFather:false},
                 component: ()=>import("@/components/table-in-dialog-base.vue")
+            },
+            {
+                path:"lineChart",
+                name:"lineChart",
+                meta: {title: "折线图", showFather:false},
+                component: ()=> import("@/components/line-chart.vue")
             }
+
         ]
     },
     {
