@@ -47,6 +47,12 @@ const routes = [
                 name:"动态表单",
                 meta:{title: "测试动态表单", showFather:false},
                 component: ()=>import("@/components/dynamic-form-base.vue")
+            },
+            {
+                path:"tableInDialog",
+                name:"tableInDialog",
+                meta:{title:"对话框中的表格",  showFather:false},
+                component: ()=>import("@/components/table-in-dialog-base.vue")
             }
         ]
     },
