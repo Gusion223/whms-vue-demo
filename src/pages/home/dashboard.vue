@@ -4,24 +4,63 @@
       <el-col :span="6" >
         <el-card>
           <template #header>
-            <div style="display: flex">
-              <span class="text-[var(--el-text-color-secondary)]">当前顾客数量</span>
-              <span style="flex: 1;"></span>
-              <el-icon color="blue"> <avatar></avatar></el-icon>
+            <div class="flex-parent">
+              <span style="color: #a2a2a2;">当前顾客数量</span>
             </div>
           </template>
+          <div class="flex-parent">
+            <span>2000</span>
+            <span style="flex: 1"></span>
+            <el-icon color="blue"> <avatar></avatar></el-icon>
+          </div>
+
         </el-card>
       </el-col>
       <el-col :span="6">
-        <el-statistic title="当前商品种类" :value="12"></el-statistic>
-      </el-col>
-      <el-col :span="6">
-        <el-statistic title="当前总计进货额" :value="12"></el-statistic>
-      </el-col>
-      <el-col :span="6">
-        <el-statistic title="当前总计销售额" :value="12"></el-statistic>
-      </el-col>
+        <el-card>
+          <template #header>
+            <div class="flex-parent">
+              <span style="color: #a2a2a2;">当前商品种类</span>
+            </div>
+          </template>
+          <div class="flex-parent">
+            <span>2000</span>
+            <span style="flex: 1"></span>
+            <el-icon color="#e1bf14"><GoodsFilled /></el-icon>
+          </div>
 
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card>
+          <template #header>
+            <div class="flex-parent">
+              <span style="color: #a2a2a2;">当前总进货额</span>
+            </div>
+          </template>
+          <div class="flex-parent">
+            <span>2000</span>
+            <span style="flex: 1"></span>
+            <el-icon color="#df942a"><HomeFilled /></el-icon>
+          </div>
+
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card>
+          <template #header>
+            <div class="flex-parent">
+              <span style="color: #a2a2a2;">当前总销售额</span>
+            </div>
+          </template>
+          <div class="flex-parent">
+            <span>2000</span>
+            <span style="flex: 1"></span>
+            <el-icon color="#e26060"><WalletFilled /></el-icon>
+          </div>
+
+        </el-card>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -31,14 +70,11 @@
   padding:16px 16px 0;
   margin-bottom:32px;
 }
-
-.dashboard-header :deep(.el-statistic){
-  background-color: white;
-
+.flex-parent{
+  display: flex;
 }
 
 </style>
 <script setup>
-import {Icon} from "@iconify/vue";
 import {Avatar} from "@element-plus/icons-vue";
 </script>
