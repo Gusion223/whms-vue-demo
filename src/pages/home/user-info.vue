@@ -237,9 +237,6 @@
     addForm.value = JSON.parse(JSON.stringify(formDefaultValue))
     addFormVisible.value=true
   }
-
-
-
   const openUpdateForm = (rowData)=>{
     updateForm.value = JSON.parse(JSON.stringify(rowData))
     updateFormVisible.value = true

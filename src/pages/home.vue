@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container class="layout-container-demo">
-      <el-aside :width="aside_width" >
+      <el-aside width="collapse">
         <HomeAside :isCollapse="isCollapse"></HomeAside>
       </el-aside>
 
@@ -9,7 +9,7 @@
         <el-header style="font-size: 12px">
           <HomeBody :isCollapse="isCollapse" @foldHandle="foldHandle"></HomeBody>
         </el-header>
-        <el-main>
+        <el-main class="home-main">
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -38,9 +38,9 @@ const foldHandle = ()=>{
 
 </script>
 
-<style scoped>
+<style >
 .layout-container-demo{
-  height: 90vh;
+  height: 97vh;
   position: relative;
 }
 
@@ -56,8 +56,11 @@ const foldHandle = ()=>{
   text-align: left;
 }
 
-.layout-container-demo el-main {
-  padding: 0;
+.home-main {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+  background-color: rgb(248, 248, 248);
 }
 
 </style>

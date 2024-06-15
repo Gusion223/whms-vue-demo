@@ -4,7 +4,8 @@
         <component :is="Expand" v-if="isCollapse"></component>
         <component :is="Fold" v-else></component>
       </el-icon>
-      <span style="flex:1; text-align: center; font-size:28px;">欢迎来到商店进销管理系统</span>
+      <span style="font-size:16px">{{router.currentRoute.value.meta.title}}</span>
+      <span style="flex:1; text-align: center; font-size:28px;"></span>
       <span>{{currentUser ? currentUser.nickName : '小明'}}</span>
       <el-dropdown @command="commandHandle">
         <el-icon style="margin-right: 8px; margin-top: 1px; margin-left: 4px;">
