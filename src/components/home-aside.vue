@@ -66,7 +66,7 @@
         <el-icon><Monitor /></el-icon>
         <template #title>数据库备份管理</template>
       </el-menu-item>
-      <el-menu-item>
+      <el-menu-item @click="logout">
         <el-icon><CloseBold /></el-icon>
         <template #title>
           退出系统
@@ -81,7 +81,11 @@
 import {defineProps, toRefs } from 'vue';
 const props = defineProps(['isCollapse'])
 const {isCollapse} = toRefs(props)
-
+import router from "@/router/router";
+const logout = ()=>{
+  sessionStorage.removeItem("CurrentUser");
+  router.push("/");
+}
 
 </script>
 
