@@ -323,7 +323,7 @@
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
-        ElMessage({message: `成功删除用户${old_data.userName}}`, type: "success"})
+        ElMessage({message: `成功删除用户${old_data.userName}`, type: "success"})
         await loadData()
       }
     } catch (e) {
@@ -384,4 +384,6 @@
 :deep(.el-dialog){
   width: 400px;
 }
+
+
 </style>

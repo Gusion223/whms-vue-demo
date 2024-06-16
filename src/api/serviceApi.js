@@ -93,3 +93,7 @@ export const ApiDeleteBackup = (bid, bfilePath)=>{
 export const ApiRollbackBackup = (bid, bfilepath)=>{
     return http.post("/backup/rollback", {bid:bid, bfilepath:bfilepath})
 }
+
+export const ApiGetGood = (index, size, gname, gtype)=>{
+    return http.post("/good/user")
+}
