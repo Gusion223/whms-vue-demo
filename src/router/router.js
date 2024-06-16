@@ -37,6 +37,13 @@ const routes = [
                 component: ()=>import("@/pages/home/backup-info.vue")
             },
             {
+                path:"goodInfo",
+                name:"goodInfo",
+                meta:{title: "商品信息界面"},
+                component:()=>import("@/pages/home/good-info.vue")
+            },
+
+            {
                 path: ":pathMatch(.*)*",
                 redirect:"/404"
             }
