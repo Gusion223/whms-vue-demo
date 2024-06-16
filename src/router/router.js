@@ -42,7 +42,12 @@ const routes = [
                 meta:{title: "商品信息界面"},
                 component:()=>import("@/pages/home/good-info.vue")
             },
-
+            {
+                path:"customerInfo",
+                name:"customerInfo",
+                meta:{title: "顾客信息管理"},
+                component: ()=>import("@/pages/home/customer-info.vue")
+            },
             {
                 path: ":pathMatch(.*)*",
                 redirect:"/404"

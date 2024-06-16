@@ -25,9 +25,9 @@
               <el-input v-model="addForm.userName"></el-input>
             </el-form-item>
 
-            <el-form-item prop="gooid" :label-width="addFormLabelWidth" label="商品id">
-              <el-input v-model="addForm.gid" ></el-input>
-            </el-form-item>
+<!--            <el-form-item prop="gid" :label-width="addFormLabelWidth" label="商品id">-->
+<!--              <el-input v-model="addForm.gid" ></el-input>-->
+<!--            </el-form-item>-->
 
             <el-form-item prop="gunitPrice" :label-width="addFormLabelWidth" label="商品价格">
               <el-input v-model="addForm.gunitPrice"></el-input>
@@ -62,7 +62,7 @@
       <div>
         <el-dialog title="修改商品信息" v-model="updateFormVisible">
           <el-form :model="updateForm" :rules="formRules" ref="updateFormRef">
-            <el-form-item prop="gname" :label-width="updateFormLabelWidth" label="用户名">
+            <el-form-item prop="gname" :label-width="updateFormLabelWidth" label="商品名">
               <el-input v-model="updateForm.gname" :disabled="updateExtraCfg.gname.lock"></el-input>
             </el-form-item>
 
@@ -78,12 +78,9 @@
             </el-form-item>
 
             <el-form-item prop="gunit" :label-width="updateFormLabelWidth" label="单位">
-              <el-input-number v-model="updateForm.gunit" controls-position="right" style="width: 100%"></el-input-number>
+              <el-input v-model="updateForm.gunit" controls-position="right" style="width: 100%"></el-input>
             </el-form-item>
 
-            <el-form-item prop="gid" :label-width="updateFormLabelWidth" label="商品id">
-              <el-input v-model="updateForm.gid" placeholder="商品id"></el-input>
-            </el-form-item>
 
 <!--            <el-form-item prop="userType" :label-width="updateFormLabelWidth" label="角色">-->
 <!--              <el-select v-model="updateForm.userType">-->
@@ -101,16 +98,13 @@
 
 <!--      // 表格数据-->
       <el-table  :data="tableData" border style="width:100%">
-<!--        <el-table-column prop="id" label="ID" />-->
+        <el-table-column prop="gid" label="商品id" min-width="65px"/>
         <el-table-column prop="gname" label="商品名" />
         <el-table-column prop="gunitPrice" label="商品价格" />
-        <el-table-column prop="gooid" label="商品id" />
         <el-table-column prop="gunit" label="商品单位" />
-        <el-table-column prop="gtype" label="类别">
+        <el-table-column prop="gtype" label="类别" >
           <template #default="scope">
-              <el-tag :type="typeDisplay[scope.row.sex].type" :disable-transitions="true">
-                {{typeDisplay[scope.row.gtype].text}}
-              </el-tag>
+                {{scope.row.gtype}}
           </template>
         </el-table-column>
         <el-table-column prop="operate" label="操作">
@@ -146,7 +140,7 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers, ApiGetUserWith, ApiAddUser, ApiUpdateUser, ApiDeleteUser} from "@/api/serviceApi";
+  import {ApiUpdateUser, ApiDeleteUser, ApiGetGood} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
 
   // 表格信息
@@ -202,7 +196,7 @@
     gname:[{required: true,  message:"请输入商品名", trigger:"blur"},{min:1, max:20,  message: "请输入商品名", trigger:'blur'}],
     gunitPrice:[{required: true,  message:"请输入商品类型", trigger:"blur"}],
     gid:[{required: true,  message:"请输入商品id", trigger:"blur"}],
-    gtype:[{min:'1', required: true,  message:"请选择商品种类", trigger:"change"}],
+    gtype:[{min:1, required: true,  message:"请选择商品种类", trigger:"change"}],
     gunit:[{required: true,  message:"请输入商品单位", trigger:"blur"}],
 
   })
@@ -351,12 +345,7 @@
     try{
       let res;
       console.log(gtypeSearch.value, typeof(gtypeSearch.value))
-      if(nameSearch.value!=="" || gtypeSearch.value!==-1)
-      {
-        res = await ApiGetUserWith(index, size, nameSearch.value, gtypeSearch.value)
-      }else {
-        res = await ApiGetUsers(index, size)
-      }
+      res = await ApiGetGood(index, size, nameSearch.value, gtypeSearch.value)
       // console.log(res)
       // console.log(res.data)
       // console.log(res.data.data)
@@ -370,7 +359,7 @@
 
   const resetTableData = async ()=>{
     nameSearch.value = ""
-    gtypeSearch.value=-1
+    gtypeSearch.value=null
     await loadData()
   }
 

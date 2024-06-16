@@ -5,18 +5,13 @@
       <div class="top-search">
         <el-input v-model="nameSearch" placeholder="请输入要查询的顾客名称"
                   style="width: 20%;" suffix-icon="search" @keyup.enter="loadData"/>
-<!--        <el-select v-model="userTypeSearch" placeholder="请选择用户类型"-->
-<!--                   @keyup.enter="loadData" style="width: 20%;">-->
-<!--          <el-option :key="-1" :label="'请选择用户类型'" :value="-1"></el-option>-->
-<!--          <el-option v-for="item in userTypeDisplay" :key="item.value" :label="item.text" :value="item.value">-->
-<!--          </el-option>-->
-<!--        </el-select>-->
+
         <el-button type="primary" style="margin-left: 5px" @click="loadData">查询</el-button>
         <el-button type="warning" style="margin-left: 5px" @click="resetTableData">重置</el-button>
         <el-button type="success" style="margin-left: 5px" @click="openAddForm">顾客信息注册</el-button>
       </div>
 
-      // 添加信息的表单
+<!--      // 添加信息的表单-->
       <div>
         <el-dialog title="添加新用户" v-model="addFormVisible">
           <el-form :model="addForm" :rules="formRules" ref="addFormRef">
@@ -24,18 +19,14 @@
               <el-input v-model="addForm.cname"></el-input>
             </el-form-item>
 
-            <el-form-item prop="cid" :label-width="addFormLabelWidth" label="顾客id">
-              <el-input v-model="addForm.cid"></el-input>
-            </el-form-item>
+<!--            <el-form-item prop="cid" :label-width="addFormLabelWidth" label="顾客id">-->
+<!--              <el-input v-model="addForm.cid"></el-input>-->
+<!--            </el-form-item>-->
 
 
             <el-form-item prop="caddr" :label-width="addFormLabelWidth" label="顾客收货地址">
               <el-input v-model="addForm.caddr"></el-input>
             </el-form-item>
-
-<!--            <el-form-item prop="nickName" :label-width="addFormLabelWidth" label="用户昵称">-->
-<!--              <el-input v-model="addForm.nickName"></el-input>-->
-<!--            </el-form-item>-->
 
             <el-form-item prop="password" :label-width="addFormLabelWidth" label="密码">
               <el-input v-model="addForm.password" ></el-input>
@@ -53,19 +44,13 @@
               <el-input v-model="addForm.cphone" placeholder="电话号码"></el-input>
             </el-form-item>
 
-<!--            <el-form-item prop="userType" :label-width="addFormLabelWidth" label="角色">-->
-<!--              <el-select v-model="addForm.userType">-->
-<!--                <el-option :key="-1" label="请选择用户类型" :value="-1"></el-option>-->
-<!--                <el-option v-for="item in userTypeDisplay" :key="item.value" :label="item.text" :value="item.value" />-->
-<!--              </el-select>-->
-<!--            </el-form-item>-->
             <el-button type="info" @click="addFormVisible=false">取消</el-button>
             <el-button type="primary" @click="tryAdd">添加新的用户</el-button>
           </el-form>
         </el-dialog>
       </div>
 
-      // 修改信息的表单
+<!--      // 修改信息的表单-->
       <div>
         <el-dialog title="修改用户信息" v-model="updateFormVisible">
           <el-form :model="updateForm" :rules="formRules" ref="updateFormRef">
@@ -87,12 +72,7 @@
             <el-form-item prop="cphone" :label-width="updateFormLabelWidth" label="电话号码">
               <el-input v-model="updateForm.cphone" placeholder="电话号码"></el-input>
             </el-form-item>
-<!--            <el-form-item prop="userType" :label-width="updateFormLabelWidth" label="角色">-->
-<!--              <el-select v-model="updateForm.userType">-->
-<!--                <el-option :key="-1" label="请选择用户类型" :value="-1"></el-option>-->
-<!--                <el-option v-for="item in userTypeDisplay" :key="item.value" :label="item.text" :value="item.value" />-->
-<!--              </el-select>-->
-<!--            </el-form-item>-->
+
             <el-button type="info" @click="updateFormVisible=false">取消</el-button>
             <el-button type="primary" @click="tryUpdate">修改当前用户信息</el-button>
           </el-form>
@@ -108,11 +88,11 @@
 <!--        <el-table-column prop="password" label="密码" />-->
         <el-table-column prop="cage" label="年龄" />
         <el-table-column prop="csex" label="性别">
-          <template #default="scope">
-              <el-tag :type="csexDisplay[scope.row.csex].type" :disable-transitions="true">
-                {{csexDisplay[scope.row.csex].text}}
-              </el-tag>
-          </template>
+<!--          <template #default="scope">-->
+<!--              <el-tag :type="csexDisplay[scope.row.csex].type" :disable-transitions="true">-->
+<!--                {{csexDisplay[scope.row.csex].text}}-->
+<!--              </el-tag>-->
+<!--          </template>-->
         </el-table-column>
         <el-table-column prop="cphone" label="电话"/>
 <!--        <el-table-column prop="userType" label="角色">-->
@@ -127,7 +107,6 @@
             <div style="display: flex;">
               <el-button size='small' type="success" @click="openUpdateForm(scope.row)">修改</el-button>
               <el-button size='small' type="danger"
-                         :disabled="disableDelBtn(scope.row.cid, scope.row.userType)"
                          @click="tryDelete(scope.row)">删除</el-button>
             </div>
           </template>

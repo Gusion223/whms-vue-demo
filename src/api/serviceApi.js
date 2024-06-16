@@ -95,5 +95,15 @@ export const ApiRollbackBackup = (bid, bfilepath)=>{
 }
 
 export const ApiGetGood = (index, size, gname, gtype)=>{
-    return http.post("/good/user")
+    return http.post(
+        "/good/page",
+        {
+            pageIndex:index,
+            pageSize:size,
+            params:{
+                gname:gname,
+                gtype:gtype
+            }
+        }
+    )
 }

@@ -19,11 +19,11 @@
         <el-menu-item>基本信息管理</el-menu-item>
         <el-menu-item>供货信息管理</el-menu-item>
       </el-sub-menu>
-      <el-menu-item>
+      <el-menu-item index="/home/goodInfo">
         <el-icon> <Box /></el-icon>
         <template #title>商品信息管理</template>
       </el-menu-item>
-      <el-menu-item>
+      <el-menu-item index="/home/customerInfo">
         <el-icon><UserFilled /></el-icon>
         <template #title>
           顾客信息管理
