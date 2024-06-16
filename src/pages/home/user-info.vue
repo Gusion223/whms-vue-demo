@@ -84,7 +84,6 @@
             <el-button type="info" @click="updateFormVisible=false">取消</el-button>
             <el-button type="primary" @click="tryUpdate">修改当前用户信息</el-button>
           </el-form>
-
         </el-dialog>
       </div>
 
