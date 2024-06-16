@@ -328,7 +328,6 @@
       }
     } catch (e) {
       ElMessage({message: e.message, type: "warning"})
-
     }
   }
 
@@ -357,9 +356,6 @@
       }else {
         res = await ApiGetUsers(index, size)
       }
-      // console.log(res)
-      // console.log(res.data)
-      // console.log(res.data.data)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total

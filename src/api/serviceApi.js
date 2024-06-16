@@ -72,3 +72,24 @@ export const ApiDeleteUser = (id) =>{
     {id:id}
     )
 }
+
+export const ApiGetBackupInfo = (index, size, date)=>{
+    return http.post(
+        "/backup/page",{
+            pageIndex:index,
+            pageSize:size,
+            params:{date:date}
+        }
+    )
+}
+
+export const ApiCreateBackup = (user_id, bdesc)=>{
+    return http.post("/backup/create", {id:user_id, bdesc:bdesc, autoCreate:"N"})
+}
+export const ApiDeleteBackup = (bid, bfilePath)=>{
+    return http.post("/backup/delete", {bid:bid, bfilepath:bfilePath})
+}
+
+export const ApiRollbackBackup = (bid, bfilepath)=>{
+    return http.post("/backup/rollback", {bid:bid, bfilepath:bfilepath})
+}

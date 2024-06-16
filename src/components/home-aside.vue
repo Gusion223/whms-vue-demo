@@ -10,6 +10,11 @@
         <template #title>用户管理</template>
       </el-menu-item>
 
+      <el-menu-item index-="99" @click="router.push('/home/backupInfo')">
+        <el-icon><Monitor /></el-icon>
+        <template #title>数据库备份管理</template>
+      </el-menu-item>
+
     </el-menu>
   </el-scrollbar>
 </template>

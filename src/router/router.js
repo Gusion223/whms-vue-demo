@@ -31,6 +31,12 @@ const routes = [
                 component: ()=>import("@/pages/home/user-info.vue")
             },
             {
+                path:"backupInfo",
+                name:"backupInfo",
+                meta:{title: "数据库系统备份"},
+                component: ()=>import("@/pages/home/backup-info.vue")
+            },
+            {
                 path: ":pathMatch(.*)*",
                 redirect:"/404"
             }
