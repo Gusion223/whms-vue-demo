@@ -1,5 +1,6 @@
 import http from "../utils/http"
 
+// User的相关接口
 export const ApiGetUsers = (index, size)=>{
   return http.post(
     '/user/pageC',{
@@ -8,7 +9,6 @@ export const ApiGetUsers = (index, size)=>{
     }
   )
 }
-
 export const ApiGetUserWith = (index, size, nickName, userType)=>{
     console.log("API USER PAGEWITH", index, size, nickName, userType)
     return http.post(
@@ -23,7 +23,6 @@ export const ApiGetUserWith = (index, size, nickName, userType)=>{
         }
     )
 }
-
 export const ApiLogin = (userName, password, userType) => {
     return http.post(
         "/user/login",
@@ -36,7 +35,6 @@ export const ApiLogin = (userName, password, userType) => {
         }
     )
 }
-
 export const ApiAddUser = (userName, nickName, password, sex, age, phone, userType) =>{
     return http.post(
         '/user/add',
@@ -51,7 +49,6 @@ export const ApiAddUser = (userName, nickName, password, sex, age, phone, userTy
         }
     )
 }
-
 export const ApiUpdateUser = (id, nickName, sex, age, phone, userType) =>{
     return http.post(
         '/user/update',
@@ -65,7 +62,6 @@ export const ApiUpdateUser = (id, nickName, sex, age, phone, userType) =>{
         }
     )
 }
-
 export const ApiDeleteUser = (id) =>{
     return  http.post(
     '/user/delete',
@@ -73,6 +69,7 @@ export const ApiDeleteUser = (id) =>{
     )
 }
 
+// Backup 相关接口
 export const ApiGetBackupInfo = (index, size, date)=>{
     return http.post(
         "/backup/page",{
@@ -94,6 +91,29 @@ export const ApiRollbackBackup = (bid, bfilepath)=>{
     return http.post("/backup/rollback", {bid:bid, bfilepath:bfilepath})
 }
 
+// Good的相关接口
 export const ApiGetGood = (index, size, gname, gtype)=>{
     return http.post("/good/user")
+}
+// Supplier的相关接口
+export const ApiListSupplier = ()=>{
+    return http.get("/supplier/list");
+}
+// Warehouse的相关接口
+export const ApiListWarehouse=()=>{
+    return http.get("/warehouse/list")
+}
+// SG相关接口
+export const ApiListSGGOOD = (sid)=>{
+    return http.post("/s-g/list-goodInfo", {params:{sid:sid}})
+}
+// PurchaseOrder相关的接口
+export const ApiAddPurchaseOrderWithDetail = (id, wid, sid, potime, details)=>{
+    return http.post(
+        "/purchase-order/addOrderWithDetail",
+        {
+            order:{id:id, wid:wid, sid:sid, potime},
+            list:details
+        }
+    )
 }

@@ -34,7 +34,7 @@
           <el-icon><House /></el-icon>
           <span>进货管理</span>
         </template>
-        <el-menu-item>填写进货表单</el-menu-item>
+        <el-menu-item index="/home/addPurchaseOrder">填写进货表单</el-menu-item>
         <el-menu-item>管理进货记录</el-menu-item>
         <el-menu-item>管理进货细则</el-menu-item>
       </el-sub-menu>

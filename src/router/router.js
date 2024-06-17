@@ -37,6 +37,12 @@ const routes = [
                 component: ()=>import("@/pages/home/backup-info.vue")
             },
             {
+                path:"addPurchaseOrder",
+                name:"addPurchaseOrder",
+                meta:{title:"填写订货信息"},
+                component: ()=>import("@/pages/home/add-purchase-order.vue")
+            },
+            {
                 path: ":pathMatch(.*)*",
                 redirect:"/404"
             }

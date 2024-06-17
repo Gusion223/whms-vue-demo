@@ -147,7 +147,6 @@
 
 .table-form-item{
   margin-bottom: 0px;
-
 }
 
 </style>
