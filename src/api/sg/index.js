@@ -5,7 +5,7 @@ import {ApiCommonQuery} from "@/api/serviceApi";
 export const ApiListSGGood = (sid) => {
     return http.post("/s-g/list-goodInfo", {params: {sid: sid}})
 }
-export const ApiGetSGGoodSupplier = (index, size, sname) => {
+export const ApiGetSG = (index, size, sname) => {
     let params = {sname: sname}
     return ApiCommonQuery("/s-g/page-good-supplierInfo", index, size, params)
 }

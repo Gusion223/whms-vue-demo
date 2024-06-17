@@ -12,8 +12,8 @@ export const ApiAddPurchaseOrderWithDetail = (id, wid, sid, potime, details) => 
     )
 }
 
-export const ApiGetPurchaseOrder=(index, size, podate)=>{
-    return ApiCommonQuery("/purchase-order/page", index, size, {podate:podate})
+export const ApiGetPurchaseOrder=(index, size, podate, wid, sid, id)=>{
+    return ApiCommonQuery("/purchase-order/page-fullInfo", index, size, {podate:podate,wid:wid, sid:sid, id:id})
 }
 
 export const ApiAddPurchaseOrder=(id, wid, sid, potime)=>{
