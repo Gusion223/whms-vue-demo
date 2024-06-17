@@ -137,8 +137,9 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers, ApiGetUserWith, ApiAddUser, ApiUpdateUser, ApiDeleteUser} from "@/api/serviceApi";
+  import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
+  import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
 
   // 表格信息
   const tableData = ref([])

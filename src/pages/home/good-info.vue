@@ -140,8 +140,9 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiUpdateUser, ApiDeleteUser, ApiGetGood} from "@/api/serviceApi";
+  import {ApiGetGood} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
+  import {ApiDeleteUser, ApiUpdateUser} from "@/api/user";
 
   // 表格信息
   const tableData = ref([])

@@ -87,12 +87,16 @@
 </template>
 
 <script setup>
+import {ApiListSupplier} from "@/api/supplier";
+
 const enableDebug=ref(false)
 
 
 import {onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
-import {ApiAddPurchaseOrderWithDetail, ApiListSGGOOD, ApiListSupplier, ApiListWarehouse} from "@/api/serviceApi";
+import {ApiListWarehouse} from "@/api/warehouse";
+import {ApiListSGGood} from "@/api/sg";
+import {ApiAddPurchaseOrderWithDetail} from "@/api/purchaseOrder";
 
 // 获取当前时间的字符串格式
 const getCurrentTime =()=>{
@@ -161,7 +165,7 @@ const loadWareHouse = async ()=>{
 
 const loadGoods = async ()=>{
   try{
-    let res = await ApiListSGGOOD(dynamicForm.value.sid)
+    let res = await ApiListSGGood(dynamicForm.value.sid)
     console.log(res)
     goods.value = res.data.data
   }catch (e){

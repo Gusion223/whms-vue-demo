@@ -27,8 +27,8 @@
 <script setup>
   import {ref} from "vue";
   import {ElMessage} from "element-plus";
-  import {ApiLogin} from "@/api/serviceApi";
   import router from "@/router/router";
+  import {ApiLogin} from "@/api/user";
 
   const param = ref({
     username:'Admin',

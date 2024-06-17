@@ -60,8 +60,8 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {ApiCreateBackup, ApiDeleteBackup, ApiGetBackupInfo, ApiRollbackBackup} from "@/api/serviceApi";
-  import {ElMessage} from "element-plus";
+import {ElMessage} from "element-plus";
+import {ApiCreateBackup, ApiDeleteBackup, ApiGetBackupInfo, ApiRollbackBackup} from "@/api/backup";
   // top-search
   const dateSearch = ref("")
   const resetTableData = async ()=>{
