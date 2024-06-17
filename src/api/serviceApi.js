@@ -93,7 +93,17 @@ export const ApiRollbackBackup = (bid, bfilepath)=>{
 
 // Good的相关接口
 export const ApiGetGood = (index, size, gname, gtype)=>{
-    return http.post("/good/user")
+    return http.post(
+        "/good/page",
+        {
+            pageIndex:index,
+            pageSize:size,
+            params:{
+                gname:gname,
+                gtype:gtype
+            }
+        }
+    )
 }
 // Supplier的相关接口
 export const ApiListSupplier = ()=>{

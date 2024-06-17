@@ -16,14 +16,14 @@
           <el-icon><Suitcase /></el-icon>
           <span>供货商管理</span>
         </template>
-        <el-menu-item>基本信息管理</el-menu-item>
-        <el-menu-item>供货信息管理</el-menu-item>
+        <el-menu-item index="/home/supplierInfo">基本信息管理</el-menu-item>
+        <el-menu-item index="/home/s_gInfo">供货信息管理</el-menu-item>
       </el-sub-menu>
-      <el-menu-item>
+      <el-menu-item index="/home/goodInfo">
         <el-icon> <Box /></el-icon>
         <template #title>商品信息管理</template>
       </el-menu-item>
-      <el-menu-item>
+      <el-menu-item index="/home/customerInfo">
         <el-icon><UserFilled /></el-icon>
         <template #title>
           顾客信息管理
@@ -35,8 +35,8 @@
           <span>进货管理</span>
         </template>
         <el-menu-item index="/home/addPurchaseOrder">填写进货表单</el-menu-item>
-        <el-menu-item>管理进货记录</el-menu-item>
-        <el-menu-item>管理进货细则</el-menu-item>
+        <el-menu-item index="/home/purchaseOrder">管理进货记录</el-menu-item>
+        <el-menu-item index="/home/purchaseDetail">管理进货细则</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index=4>
         <template #title>
@@ -44,8 +44,8 @@
           <span>转储管理</span>
         </template>
         <el-menu-item>填写转储表单</el-menu-item>
-        <el-menu-item>查看转储记录</el-menu-item>
-        <el-menu-item>查看转储细则</el-menu-item>
+        <el-menu-item index="/home/transferOrder">查看转储记录</el-menu-item>
+        <el-menu-item index="/home/transferDetail">查看转储细则</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index=5>
         <template #title>
@@ -53,8 +53,8 @@
           <span>销售管理</span>
         </template>
         <el-menu-item>填写销售表单</el-menu-item>
-        <el-menu-item>查看销售记录</el-menu-item>
-        <el-menu-item>查看销售细则</el-menu-item>
+        <el-menu-item index="/home/saleOrder">查看销售记录</el-menu-item>
+        <el-menu-item index="/home/saleDetail">查看销售细则</el-menu-item>
       </el-sub-menu>
       <el-menu-item>
         <el-icon><Document /></el-icon>
@@ -66,7 +66,7 @@
         <el-icon><Monitor /></el-icon>
         <template #title>数据库备份管理</template>
       </el-menu-item>
-      <el-menu-item>
+      <el-menu-item @click="logout">
         <el-icon><CloseBold /></el-icon>
         <template #title>
           退出系统
@@ -81,7 +81,11 @@
 import {defineProps, toRefs } from 'vue';
 const props = defineProps(['isCollapse'])
 const {isCollapse} = toRefs(props)
-
+import router from "@/router/router";
+const logout = ()=>{
+  sessionStorage.removeItem("CurrentUser");
+  router.push("/");
+}
 
 </script>
 

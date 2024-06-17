@@ -43,6 +43,67 @@ const routes = [
                 component: ()=>import("@/pages/home/add-purchase-order.vue")
             },
             {
+                path:"goodInfo",
+                name:"goodInfo",
+                meta:{title: "商品信息界面"},
+                component:()=>import("@/pages/home/good-info.vue")
+            },
+            {
+                path:"s_gInfo",
+                name:"s_gInfo",
+                meta: {title: "供货条目界面"},
+                component:()=>import("@/pages/home/s_g-info.vue")
+            },
+            {
+                path:"supplierInfo",
+                name:"supplierInfo",
+                meta:{title: "供货商信息界面"},
+                component:()=>import("@/pages/home/supplier-info.vue")
+            },
+            {
+                path: "purchaseOrder",
+                name: "purchaseOrder",
+                meta:{title: "入库记录总则"},
+                component:()=>import("@/pages/home/purchase_order.vue")
+            },
+            {
+                path: "purchaseDetail",
+                name:"purchaseDetail",
+                meta: {title: "入库记录细则"},
+                component:()=>import("@/pages/home/purchase_detail.vue")
+            },
+            {
+                path: "transferOrder",
+                name:"transferOrder",
+                meta: {title: "转储记录总则"},
+                component:()=>import("@/pages/home/transfer_order.vue")
+            },
+            {
+                path: "transferDetail",
+                name: "transferDetail",
+                meta: {title: "转储记录细则"},
+                component:()=>import("@/pages/home/transfer_detail.vue")
+
+            },
+            {
+                path: "saleOrder",
+                name: "saleOrder",
+                meta: {title: "销售记录"},
+                component:()=>import("@/pages/home/sale_order.vue")
+            },
+            {
+                path: "saleDetail",
+                name: "saleDetail",
+                meta: {title: "销售细则"},
+                component:()=>import("@/pages/home/sale_detail.vue")
+            },
+            {
+                path:"customerInfo",
+                name:"customerInfo",
+                meta:{title: "顾客信息管理"},
+                component: ()=>import("@/pages/home/customer-info.vue")
+            },
+            {
                 path: ":pathMatch(.*)*",
                 redirect:"/404"
             }
