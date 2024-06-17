@@ -7,7 +7,6 @@
                   style="width: 20%;" suffix-icon="search" @keyup.enter="loadData"/>
         <el-select v-model="gtypeSearch" placeholder="请选择商品类型"
                    @keyup.enter="loadData" style="width: 20%;">
-<!--          <el-option :key="-1" :label="'请选择用户类型'" :value="-1"></el-option>-->
           <el-option v-for="item in gtypeDisplay" :key="item.value" :label="item.text" :value="item.value">
           </el-option>
         </el-select>
@@ -22,7 +21,7 @@
           <el-form :model="addForm" :rules="formRules" ref="addFormRef">
 <!--            -->
             <el-form-item prop="gname" :label-width="addFormLabelWidth" label="商品名">
-              <el-input v-model="addForm.userName"></el-input>
+              <el-input v-model="addForm.gname"></el-input>
             </el-form-item>
 
 <!--            <el-form-item prop="gid" :label-width="addFormLabelWidth" label="商品id">-->
@@ -63,7 +62,7 @@
         <el-dialog title="修改商品信息" v-model="updateFormVisible">
           <el-form :model="updateForm" :rules="formRules" ref="updateFormRef">
             <el-form-item prop="gname" :label-width="updateFormLabelWidth" label="商品名">
-              <el-input v-model="updateForm.gname" :disabled="updateExtraCfg.gname.lock"></el-input>
+              <el-input v-model="updateForm.gname" ></el-input>
             </el-form-item>
 
             <el-form-item prop="gunitPrice" :label-width="updateFormLabelWidth" label="商品价格">
@@ -140,10 +139,9 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetGood} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
-  import {ApiDeleteUser, ApiUpdateUser} from "@/api/user";
-
+  import {ApiDeleteUser} from "@/api/user";
+  import {ApiGetGood, ApiAddGood, ApiDeleteGood, ApiUpdateGood} from "@/api/good";
   // 表格信息
   const tableData = ref([])
   const totalSize = ref(1)
@@ -251,14 +249,11 @@
         return
       }
       // api处理
-      let res = await ApiAddUser(
+      let res = await ApiAddGood(
           addForm.value.gname,
+          addForm.value.gtype,
           addForm.value.gunitPrice,
-          addForm.value.gid,
-          // addForm.value.sex,
-          addForm.value.gunit,
-          // addForm.value.phone,
-          addForm.value.userType
+          addForm.value.gunit
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -279,22 +274,13 @@
         // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
         return
       }
-      console.log(
-          updateForm.value.gid,
-          updateForm.value.gunitPrice,
-          updateForm.value.gtype,
-          updateForm.value.gunit,
-          // updateForm.value.phone,
-          // updateForm.value.userType
-      )
 
-      let res = await ApiUpdateUser(
+      let res = await ApiUpdateGood(
           updateForm.value.gid,
-          updateForm.value.gunitPrice,
+          updateForm.value.gname,
           updateForm.value.gtype,
-          updateForm.value.gunit,
-          // updateForm.value.phone,
-          // updateForm.value.userType
+          updateForm.value.gunitPrice,
+          updateForm.value.gunit
       )
 
       if(res.data.status!==200)
@@ -314,11 +300,11 @@
 
   const tryDelete = async (old_data) => {
     try {
-      let res = await ApiDeleteUser(old_data.id)
+      let res = await ApiDeleteGood(old_data.gid)
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
-        ElMessage({message: `成功删除用户${old_data.gname}}`, type: "success"})
+        ElMessage({message: res.data.msg, type: "success"})
         await loadData()
       }
     } catch (e) {
@@ -345,11 +331,8 @@
 
     try{
       let res;
-      console.log(gtypeSearch.value, typeof(gtypeSearch.value))
+      console.log(nameSearch.value, gtypeSearch.value)
       res = await ApiGetGood(index, size, nameSearch.value, gtypeSearch.value)
-      // console.log(res)
-      // console.log(res.data)
-      // console.log(res.data.data)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total
@@ -359,7 +342,7 @@
   }
 
   const resetTableData = async ()=>{
-    nameSearch.value = ""
+    nameSearch.value=null
     gtypeSearch.value=null
     await loadData()
   }

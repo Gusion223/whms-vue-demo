@@ -6,6 +6,12 @@
         <el-input v-model="nameSearch" placeholder="请输入要查询的供货商名称"
                   style="width: 20%;" suffix-icon="search" @keyup.enter="loadData"/>
 
+        <el-select v-model="gtypeSearch" placeholder="请选择商品类型"
+                   @keyup.enter="loadData" style="width: 20%;">
+          <el-option v-for="item in gtypeDisplay" :key="item.value" :label="item.text" :value="item.value">
+          </el-option>
+        </el-select>
+
         <el-button type="primary" style="margin-left: 5px" @click="loadData">查询</el-button>
         <el-button type="warning" style="margin-left: 5px" @click="resetTableData">重置</el-button>
         <el-button type="success" style="margin-left: 5px" @click="openAddForm">添加供货条目</el-button>
@@ -18,32 +24,27 @@
             <el-form-item prop="sid" :label-width="addFormLabelWidth" label="供货商id">
               <el-input v-model="addForm.sid"></el-input>
             </el-form-item>
-
-<!--            <el-form-item prop="cid" :label-width="addFormLabelWidth" label="顾客id">-->
-<!--              <el-input v-model="addForm.cid"></el-input>-->
-<!--            </el-form-item>-->
-
-
-            <el-form-item prop="gid" :label-width="addFormLabelWidth" label="货物id">
+            <el-form-item prop="sname" :label-width="addFormLabelWidth" label="供货商名称">
+              <el-input v-model="addForm.sname"></el-input>
+            </el-form-item>
+            <el-form-item prop="gid" :label-width="addFormLabelWidth" label="商品id">
               <el-input v-model="addForm.gid"></el-input>
             </el-form-item>
+            <el-form-item prop="gname" :label-width="addFormLabelWidth" label="商品名称">
+              <el-input v-model="addForm.gname"></el-input>
+            </el-form-item>
 
-<!--            <el-form-item prop="password" :label-width="addFormLabelWidth" label="密码">-->
-<!--              <el-input v-model="addForm.password" ></el-input>-->
-<!--            </el-form-item>-->
+            <el-form-item prop="gtype" :label-width="addFormLabelWidth" label="商品类型">
+              <el-select v-model="addForm.gtype">
+                <el-option :key="-1" label="请选择种类" value=""></el-option>
+                <el-option v-for="item in typeDisplay" :key="item.value" :label="item.text" :value="item.value" />
+              </el-select>
 
-<!--            <el-form-item prop="csex" :label-width="addFormLabelWidth" label="性别">-->
-<!--              <el-select v-model="addForm.csex">-->
-<!--                <el-option :key="-1" label="请选择性别" :value="-1"></el-option>-->
-<!--                <el-option v-for="item in csexDisplay" :key="item.value" :label="item.text" :value="item.value" />-->
-<!--              </el-select>-->
-<!--            </el-form-item>-->
+            </el-form-item>
             <el-form-item prop="gunitPrice" :label-width="addFormLabelWidth" label="价格">
               <el-input v-model="addForm.gunitPrice" controls-position="right" style="width: 100%"></el-input>
             </el-form-item>
-<!--            <el-form-item prop="sphone" :label-width="addFormLabelWidth" label="电话号码">-->
-<!--              <el-input v-model="addForm.sphone" placeholder="电话号码"></el-input>-->
-<!--            </el-form-item>-->
+
 
             <el-button type="info" @click="addFormVisible=false">取消</el-button>
             <el-button type="primary" @click="tryAdd">添加新的供货条目</el-button>
@@ -58,21 +59,18 @@
             <el-form-item prop="sid" :label-width="updateFormLabelWidth" label="供货商id">
               <el-input v-model="updateForm.sid" :disabled="updateExtraCfg.sid.lock"></el-input>
             </el-form-item>
+            <el-form-item prop="sname" :label-width="updateFormLabelWidth" label="供货商名字">
+              <el-input v-model="updateForm.sname"></el-input>
+            </el-form-item>
             <el-form-item prop="gid" :label-width="updateFormLabelWidth" label="商品id">
               <el-input v-model="updateForm.gid"></el-input>
             </el-form-item>
-<!--            <el-form-item prop="csex" :label-width="updateFormLabelWidth" label="性别">-->
-<!--              <el-select v-model="updateForm.csex">-->
-<!--                <el-option :key="-1" label="请选择性别" :value="-1"></el-option>-->
-<!--                <el-option v-for="item in csexDisplay" :key="item.value" :label="item.text" :value="item.value" />-->
-<!--              </el-select>-->
-<!--            </el-form-item>-->
+            <el-form-item prop="gname" :label-width="updateFormLabelWidth" label="商品名称">
+              <el-input v-model="updateForm.gname"></el-input>
+            </el-form-item>
             <el-form-item prop="gunitPrice" :label-width="updateFormLabelWidth" label="价格">
               <el-input v-model="updateForm.gunitPrice" controls-position="right" style="width: 100%"></el-input>
             </el-form-item>
-<!--            <el-form-item prop="sphone" :label-width="updateFormLabelWidth" label="电话号码">-->
-<!--              <el-input v-model="updateForm.sphone" placeholder="电话号码"></el-input>-->
-<!--            </el-form-item>-->
 
             <el-button type="info" @click="updateFormVisible=false">取消</el-button>
             <el-button type="primary" @click="tryUpdate">修改当前供货条目信息</el-button>
@@ -84,27 +82,15 @@
 <!--      // 表格数据-->
       <el-table  :data="tableData" border style="width:100%">
         <el-table-column prop="sid" label="供货商ID" />
+        <el-table-column prop="sname" label="供货商名称" />
         <el-table-column prop="gid" label="商品id" />
+        <el-table-column prop="gname" label="商品名称" />
+        <el-table-column prop="gtype" label="类别" >
+          <template #default="scope">
+            {{scope.row.gtype}}
+          </template>
+        </el-table-column>
         <el-table-column prop="gunitPrice" label="价格"/>
-<!--        <el-table-column prop="saddr" label="供货商地址" />-->
-<!--&lt;!&ndash;        <el-table-column prop="password" label="密码" />&ndash;&gt;-->
-
-<!--        <el-table-column prop="sdesc" label="供货商信息描述" />-->
-<!--        <el-table-column prop="csex" label="性别">-->
-<!--&lt;!&ndash;          <template #default="scope">&ndash;&gt;-->
-<!--&lt;!&ndash;              <el-tag :type="csexDisplay[scope.row.csex].type" :disable-transitions="true">&ndash;&gt;-->
-<!--&lt;!&ndash;                {{csexDisplay[scope.row.csex].text}}&ndash;&gt;-->
-<!--&lt;!&ndash;              </el-tag>&ndash;&gt;-->
-<!--&lt;!&ndash;          </template>&ndash;&gt;-->
-<!--        </el-table-column>-->
-
-<!--        <el-table-column prop="userType" label="角色">-->
-<!--          <template #default="scope">-->
-<!--              <el-tag :type="userTypeDisplay[scope.row.userType].type" :disable-transitions="true">-->
-<!--                {{userTypeDisplay[scope.row.userType].text}}-->
-<!--              </el-tag>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
         <el-table-column prop="operate" label="操作">
           <template #default="scope">
             <div style="display: flex;">
@@ -147,47 +133,49 @@
   const currentPage = ref(1)
   const pageSize = ref(5)
   const pageSizes = ref([5, 10, 20])
-  // const userTypeDisplay=[
-  //   {
-  //     text:"系统管理员",
-  //     type:"warning",
-  //     value:0
-  //   },
-  //   {
-  //     text:"仓管员",
-  //     type:"primary",
-  //     value:1
-  //   },
-  //   {
-  //     text:"销售员",
-  //     type:"success",
-  //     value:2
-  //   }
-  // ]
-  // const csexDisplay=[
-  //   {
-  //     text:"女",
-  //     type:'danger',
-  //     value:0
-  //   },
-  //   {
-  //     text:"男",
-  //     type:"primary",
-  //     value:1
-  //   }
-  //
-  // ]
+  const gtypeDisplay=[
+    {
+      text:"日用品",
+      value:"日用品"
+    },
+    {
+      text:"电子产品",
+      value:"电子产品"
+    },
+    {
+      text:"食品饮料",
+      value:"食品饮料"
+    }
+  ]
+  const typeDisplay=[
+    {
+      text:"日用品",
+      value:"日用品"
+    },
+    {
+      text:"电子产品",
+      value:"电子产品"
+    },
+    {
+      text:"食品饮料",
+      value:"食品饮料"
+    }
+
+  ]
 
   // 搜索框相关
   const nameSearch = ref("")
-  // const userTypeSearch = ref(-1)
+  const gtypeSearch = ref(null)
 
   // 添加表单
   const formDefaultValue = {
 
     sid:"",
     gid:"",
-    gunitPrice:""
+    gunitPrice:"",
+    gname:"",
+    sname:"",
+    gtype:""
     // password:"",
     // csex:-1,
     // cage:20,
@@ -196,10 +184,12 @@
   }
   const formRules = ref({
     sid:[{required: true,  message:"请输入供货商id", trigger:"blur"}],
+    sname:[{required: true,  message:"请输入供货商名称", trigger:"blur"}],
     gid:[{required: true,  message:"请输入商品id", trigger:"blur"}],
-    // password:[{required: true,  message:"请输入用户密码", trigger:"blur"}],
-    // csex:[{type:"number" ,min: 0, max: 1, required: true,  message:"请选择用户性别", trigger:"change"}],
+    gname:[{required: true,  message:"请输入商品名称", trigger:"blur"}],
+    gtype:[{min:1, required: true,  message:"请选择商品种类", trigger:"change"}],
     gunitPrice:[{required: true,  message:"请输入价格", trigger:"blur"}],
+
 
     // userType:[{type:"number", min:0, max:2, required: true,  message:"请选择用户类型", trigger:"change"}]
   })
@@ -208,7 +198,7 @@
   // emm 深拷贝比较逆天就是了
   const addForm = ref(JSON.parse(JSON.stringify(formDefaultValue)))
   const addFormRef = ref(null)
-  const addFormLabelWidth=ref("6em")
+  const addFormLabelWidth=ref("8em")
 
   // 修改表单
   const updateFormVisible = ref(false)
@@ -220,6 +210,11 @@
     // csex:{lock:false},
     gid:{lock:false},
     gunitPrice:{lock:false},
+    gname:{lock:false},
+    sname:{lock:false},
+    gttpe:{lock:false},
+
+
 
 
     // userType:{lock:false}
@@ -227,7 +222,7 @@
   // const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
 
 
-  const updateFormLabelWidth=ref("6em")
+  const updateFormLabelWidth=ref("8em")
 
   const openAddForm = ()=>{
     console.log("打开添加表单")
@@ -239,13 +234,7 @@
     updateFormVisible.value = true
 
   }
-  // const disableDelBtn = (cid, userType)=>{
-  //   if(currentUser && currentUser.id===id)
-  //     return true
-  //   if(userType===0)
-  //     return true
-  //   return false
-  // }
+
   const tryAdd = async ()=>{
     console.log("尝试提交添加表单")
     try{
@@ -258,7 +247,9 @@
           addForm.value.sid,
           addForm.value.gid,
           addForm.value.gunitPrice,
-
+          addForm.value.gname,
+          addForm.value.sname,
+          addForm.value.gtype
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -266,7 +257,7 @@
       }
       // 关闭窗口
       addFormVisible.value=false
-      ElMessage({message:`供货条目${addForm.value.cname}添加成功`, type:"success"})
+      ElMessage({message:`供货条目${addForm.value.sid}添加成功`, type:"success"})
       await loadData()
     }catch(e){
       console.log(e)
@@ -284,6 +275,9 @@
           updateForm.value.gid,
           // updateForm.value.csex,
           updateForm.value.gunitPrice,
+          updateForm.value.gname,
+          updateForm.value.sname,
+          updateForm.value.gtype
 
       )
 
@@ -292,6 +286,9 @@
           updateForm.value.gid,
           // updateForm.value.csex,
           updateForm.value.gunitPrice,
+          updateForm.value.gname,
+          updateForm.value.sname,
+          updateForm.value.gtype
       )
 
       if(res.data.status!==200)
@@ -301,7 +298,7 @@
       }
       console.log("修改成功")
       updateFormVisible.value=false
-      ElMessage({message:`供货条目${updateForm.value.cname}添加成功`, type:"success"})
+      ElMessage({message:`供货条目${updateForm.value.sid}添加成功`, type:"success"})
       await loadData()
     }catch(e){
       // ElMessage({message:"用户表单未通过校验要求", type:'warning'})

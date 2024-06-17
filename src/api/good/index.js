@@ -20,5 +20,5 @@ export const ApiUpdateGood =(gid, gname, gtype, gunitPrice, gunit)=>{
     return http.post("/good/update", {gid:gid, gname:gname, gtype:gtype, gunitPrice:gunitPrice, gunit:gunit})
 }
 export const ApiDeleteGood =(gid)=>{
-    return http.post("/good/gid", {gid:gid})
+    return http.post("/good/delete", {gid:gid})
 }
