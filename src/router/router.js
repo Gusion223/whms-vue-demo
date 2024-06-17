@@ -43,6 +43,18 @@ const routes = [
                 component: ()=>import("@/pages/home/add-purchase-order.vue")
             },
             {
+                path:"addTransferOrder",
+                name:"addTransferOrder",
+                meta:{title:"填写转仓信息"},
+                component: ()=>import("@/pages/home/add-transfer-order.vue")
+            },
+            {
+                path:"addSaleOrder",
+                name:"addSaleOrder",
+                meta:{title:"填写销售信息"},
+                component: ()=>import("@/pages/home/add-sale-order.vue")
+            },
+            {
                 path:"goodInfo",
                 name:"goodInfo",
                 meta:{title: "商品信息界面"},

@@ -43,7 +43,7 @@
           <el-icon><Van /></el-icon>
           <span>转储管理</span>
         </template>
-        <el-menu-item>填写转储表单</el-menu-item>
+        <el-menu-item index="/home/addTransferOrder">填写转储表单</el-menu-item>
         <el-menu-item index="/home/transferOrder">查看转储记录</el-menu-item>
         <el-menu-item index="/home/transferDetail">查看转储细则</el-menu-item>
       </el-sub-menu>
@@ -52,7 +52,7 @@
           <el-icon><Sell /></el-icon>
           <span>销售管理</span>
         </template>
-        <el-menu-item>填写销售表单</el-menu-item>
+        <el-menu-item index="/home/addSaleOrder">填写销售表单</el-menu-item>
         <el-menu-item index="/home/saleOrder">查看销售记录</el-menu-item>
         <el-menu-item index="/home/saleDetail">查看销售细则</el-menu-item>
       </el-sub-menu>

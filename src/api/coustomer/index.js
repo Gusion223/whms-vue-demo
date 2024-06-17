@@ -16,3 +16,7 @@ export const ApiUpdateCustomer =(cid, cname, csex, cage, caddr, cphone)=>{
 export const ApiDeleteCustomer=(cid)=>{
     return http.post("/customer/delete", {cid:cid});
 }
+
+export const ApiListCustomer=()=>{
+    return http.get("/customer/list")
+}

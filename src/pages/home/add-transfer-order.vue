@@ -1,20 +1,20 @@
 <template>
   <el-form :model="dynamicForm" :rules="dynamicFormRules" ref="dynamicFormRef" class="dynamic-from-base">
     <div class="top-line">
-      <el-form-item prop="sid" label="供货商:" :label-width="dynamicFromLabelWidth" :show-message="false">
-        <el-select v-model="dynamicForm.sid" @change="()=>{loadGoods()}">
-          <el-option :key="-1" :label="'请选择一个供货商'" :value="-1" />
-          <el-option v-for="item in suppliers" :key="item.sid" :label="item.sname" :value="item.sid"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item prop="wid" label="入货仓库:" :label-width="dynamicFromLabelWidth" :show-message="false">
-        <el-select v-model="dynamicForm.wid">
+      <el-form-item prop="wid_prev" label="出货仓库:" :label-width="dynamicFromLabelWidth" :show-message="false">
+        <el-select v-model="dynamicForm.wid_prev" @change="()=>{loadGoods()}">
           <el-option :key="-1" :label="'请选择一个仓库'" :value="-1" />
           <el-option v-for="item in warehouses" :key="item.wid" :label="item.wname" :value="item.wid"/>
         </el-select>
       </el-form-item>
-      <el-form-item prop="potime" label="入库时间" :label-width="dynamicFromLabelWidth" :show-message="false">
-        <el-date-picker type="datetime" v-model="dynamicForm.potime" placeholder="默认为当前时间" value-format="YYYY-MM-DD HH:mm:ss"></el-date-picker>
+      <el-form-item prop="wid_cur" label="入货仓库:" :label-width="dynamicFromLabelWidth" :show-message="false">
+        <el-select v-model="dynamicForm.wid_cur">
+          <el-option :key="-1" :label="'请选择一个仓库'" :value="-1" />
+          <el-option v-for="item in warehouses" :key="item.wid" :label="item.wname" :value="item.wid"/>
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="totime" label="转仓时间" :label-width="dynamicFromLabelWidth" :show-message="false">
+        <el-date-picker type="datetime" v-model="dynamicForm.totime" placeholder="请选择发生时间" value-format="YYYY-MM-DD HH:mm:ss"></el-date-picker>
       </el-form-item>
 
       <el-button type="primary" style="margin-left: 5px" @click="addNewRecord">添加一条记录</el-button>
@@ -47,27 +47,22 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="订购数量" >
+      <el-table-column label="转储数量" >
         <template #default="{row, $index}">
           <el-form-item :prop="`records[${$index}].pdamount`" :rules="dynamicFormRules.amount" class="table-form-item">
-            <el-input-number v-model="row.pdamount" placeholder="请输入商品数量" :controls="false" style="width: 100%;"
-                             @change="(cur)=>{updateTotalCost(row.gunitCost, cur, $index)}"></el-input-number>
+            <el-input-number v-model="row.tdamount" placeholder="请输入转储数量" :controls="false"
+                             style="width: 100%;"  :min="1" :max="row.sramount"></el-input-number>
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="单价">
+      <el-table-column label="现有数量">
         <template #default="{row}">
-          <el-input-number :model-value="row.gunitCost" :controls="false" style="width: 100%;" disabled ></el-input-number>
+          <el-input-number :model-value="row.sramount" :controls="false" style="width: 100%;" disabled ></el-input-number>
         </template>
       </el-table-column>
       <el-table-column label="单位">
         <template #default="{row}">
           <el-input :model-value="row.gunit" disabled class="center-input"></el-input>
-        </template>
-      </el-table-column>
-      <el-table-column label="总价">
-        <template #default="{row}">
-          <el-input-number :model-value="row.pdtotalCost" :controls="false" style="width: 100%;" disabled></el-input-number>
         </template>
       </el-table-column>
       <el-table-column width="85px">
@@ -79,7 +74,6 @@
   </el-form>
   <div v-if="enableDebug">
     <p>debug</p>
-    <p>supplier:{{suppliers}}</p>
     <p>warehouse:{{warehouses}}</p>
     <p>goods:{{goods}}</p>
     <p>form:{{dynamicForm}}</p>
@@ -87,7 +81,6 @@
 </template>
 
 <script setup>
-import {ApiListSupplier} from "@/api/supplier";
 
 const enableDebug=ref(false)
 
@@ -95,8 +88,8 @@ const enableDebug=ref(false)
 import {onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {ApiListWarehouse} from "@/api/warehouse";
-import {ApiListSGGood} from "@/api/sg";
-import {ApiAddPurchaseOrderWithDetail} from "@/api/purchaseOrder";
+import {ApiListStoreRecord} from "@/api/storeRecord";
+import {ApiAddTransferOrderWithDetail} from "@/api/transferOrder";
 
 // 获取当前时间的字符串格式
 const getCurrentTime =()=>{
@@ -109,51 +102,46 @@ const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
 
 
 const gidExist = (rule, value, callback)=>{
+
+  if(value==null)  callback(new Error("不存在对应的商品"))
   let res = goods.value.find((item)=>item.gid===value)
   if(res)
     callback()
   else
     callback(new Error("不存在对应的商品"))
 }
+
+const widSame = (rule, value, callback)=>{
+  if(dynamicForm.value.wid_cur==dynamicForm.value.wid_prev)
+    callback(new Error("相同的仓库"))
+  else
+    callback()
+}
+
 const dynamicForm = ref({
-  sid:-1, // 供应商id
-  wid:-1, // 仓库id
-  potime:"",
-  records:[
-  ],
+  wid_prev:null,
+  wid_cur:null,
+  totime:null,
+  records:[],
 })
 
 const dynamicFormRules = ref({
-  sid:[{type:"number", min:0, required:true, message:"请选择一个供货商", trigger:"change" }],
-  wid:[{type:"number", min:0, required:true, message:"请选择一个入库仓库", trigger:"change"}],
-  gid:[{type:"number",validator:gidExist, required:true, message:"请选择一个商品", trigger:"change"}],
-  potime:[{required:true, message:"请选择订货时间", trigger:"blur"}],
-  amount:[{type:"number", min:0, required:true, message:"请输入购入商品的数量"}]
+  wid_prev:[{type:"number", min:0, required:true, message:"请选择一个入库仓库", trigger:"change"}, {type:"number",validator:widSame, message:"不能选择两个一样的仓库",trigger:"change"}],
+  wid_cur:[{type:"number", min:0, required:true, message:"请选择一个入库仓库", trigger:"change"}, {type:"number",validator:widSame, message:"不能选择两个一样的仓库",trigger:"change"}],
+  gid:[{type:"number",validator:gidExist, min:0, message:"请选择一个商品", trigger:"change"}],
+  totime:[{required:true, message:"请选择转仓时间", trigger:"blur"}],
+  tdamount:[{type:"number", min:0, required:true, message:"请输入转仓的商品数量"}]
 })
 const dynamicFormRef = ref(null)
 const dynamicFormTableRef = ref(null)
 const dynamicFromLabelWidth = ref('6em')
-const emptyRecord = {gid:null, pdamount:null, gunitCost:null, pdtotalCost:null, gunit:null}
-const suppliers = ref([
-  {sid:0, sname:"李浩田有限公司"},
-  {sid:1, sname:"一斤鸭梨有限公司"}
-])
+const emptyRecord = {gid:null, tdamount:null, gunit:null}
 const warehouses = ref([
   {wid:1, wname:"一号仓库"},
   {wid:2, wname:"二号仓库"}
 ])
-// const goods = ref([{gid:25, gname:"事薯片", cost:10}])
-const goods = ref([])
+const goods = ref([{gid:25, gname:"事薯片", gunitCost:10, sramount:0}])
 
-
-const loadSupplier = async ()=>{
-  try{
-    let res = await ApiListSupplier()
-    suppliers.value = res.data.data
-  }catch (e){
-    console.log(e)
-  }
-}
 const loadWareHouse = async ()=>{
   try{
     let res = await ApiListWarehouse()
@@ -162,10 +150,9 @@ const loadWareHouse = async ()=>{
     console.log(e)
   }
 }
-
 const loadGoods = async ()=>{
   try{
-    let res = await ApiListSGGood(dynamicForm.value.sid)
+    let res = await ApiListStoreRecord(dynamicForm.value.wid_prev)
     console.log(res)
     goods.value = res.data.data
   }catch (e){
@@ -174,21 +161,15 @@ const loadGoods = async ()=>{
 }
 
 
-const updateTotalCost = (cost, amount, index)=>{
-  console.log(cost, amount, index)
-  if (cost!=null && amount!=null)
-    dynamicForm.value.records[index].pdtotalCost = cost * amount;
-  else
-    dynamicForm.value.records[index].pdtotalCost = null;
-}
+
 const updateOtherAttrs = (gid, index)=>{
   console.log(gid, index)
   let good = goods.value.find((item)=>item.gid===gid)
   if(good){
-    dynamicForm.value.records[index].gunitCost=good.gunitCost
+    dynamicForm.value.records[index].sramount=good.sramount
     dynamicForm.value.records[index].gunit=good.gunit
   }else{
-    dynamicForm.value.records[index].cost=null
+    dynamicForm.value.records[index].sramount=null
     dynamicForm.value.records[index].gunit=null
   }
 }
@@ -199,11 +180,11 @@ const submitForm = async ()=>{
   try {
     let pass = await dynamicFormRef.value.validate()
     if(!pass) return
-    let res = await ApiAddPurchaseOrderWithDetail(
+    let res = await ApiAddTransferOrderWithDetail(
         currentUser.id,
-        dynamicForm.value.wid,
-        dynamicForm.value.sid,
-        dynamicForm.value.potime,
+        dynamicForm.value.wid_prev,
+        dynamicForm.value.wid_cur,
+        dynamicForm.value.totime,
         dynamicForm.value.records
     )
     if(res.data.status==200){
@@ -219,8 +200,7 @@ const submitForm = async ()=>{
 }
 
 onMounted(()=>{
-  dynamicForm.value.potime = getCurrentTime()
-  loadSupplier()
+  dynamicForm.value.totime = getCurrentTime()
   loadWareHouse()
 })
 

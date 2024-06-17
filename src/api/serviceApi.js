@@ -7,7 +7,7 @@ export const ApiCommonQuery=(url, index, size, params)=>{
         {
             pageIndex:index,
             pageSize:size,
-            parms:params
+            params:params
         }
     )
 }

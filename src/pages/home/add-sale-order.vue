@@ -1,10 +1,10 @@
 <template>
   <el-form :model="dynamicForm" :rules="dynamicFormRules" ref="dynamicFormRef" class="dynamic-from-base">
     <div class="top-line">
-      <el-form-item prop="sid" label="供货商:" :label-width="dynamicFromLabelWidth" :show-message="false">
+      <el-form-item prop="sid" label="客户:" :label-width="dynamicFromLabelWidth" :show-message="false">
         <el-select v-model="dynamicForm.sid" @change="()=>{loadGoods()}">
           <el-option :key="-1" :label="'请选择一个供货商'" :value="-1" />
-          <el-option v-for="item in suppliers" :key="item.sid" :label="item.sname" :value="item.sid"/>
+          <el-option v-for="item in customers" :key="item.sid" :label="item.sname" :value="item.sid"/>
         </el-select>
       </el-form-item>
       <el-form-item prop="wid" label="入货仓库:" :label-width="dynamicFromLabelWidth" :show-message="false">
@@ -79,7 +79,7 @@
   </el-form>
   <div v-if="enableDebug">
     <p>debug</p>
-    <p>supplier:{{suppliers}}</p>
+    <p>supplier:{{ customers }}</p>
     <p>warehouse:{{warehouses}}</p>
     <p>goods:{{goods}}</p>
     <p>form:{{dynamicForm}}</p>
@@ -89,7 +89,7 @@
 <script setup>
 import {ApiListSupplier} from "@/api/supplier";
 
-const enableDebug=ref(false)
+const enableDebug=ref(true)
 
 
 import {onMounted, ref} from "vue";
@@ -134,7 +134,7 @@ const dynamicFormRef = ref(null)
 const dynamicFormTableRef = ref(null)
 const dynamicFromLabelWidth = ref('6em')
 const emptyRecord = {gid:null, pdamount:null, gunitCost:null, pdtotalCost:null, gunit:null}
-const suppliers = ref([
+const customers = ref([
   {sid:0, sname:"李浩田有限公司"},
   {sid:1, sname:"一斤鸭梨有限公司"}
 ])
@@ -149,7 +149,7 @@ const goods = ref([])
 const loadSupplier = async ()=>{
   try{
     let res = await ApiListSupplier()
-    suppliers.value = res.data.data
+    customers.value = res.data.data
   }catch (e){
     console.log(e)
   }
