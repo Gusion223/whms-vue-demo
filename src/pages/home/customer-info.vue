@@ -54,21 +54,26 @@
       <div>
         <el-dialog title="修改用户信息" v-model="updateFormVisible">
           <el-form :model="updateForm" :rules="formRules" ref="updateFormRef">
+
             <el-form-item prop="cname" :label-width="updateFormLabelWidth" label="顾客名">
               <el-input v-model="updateForm.cname" :disabled="updateExtraCfg.cname.lock"></el-input>
             </el-form-item>
+
             <el-form-item prop="caddr" :label-width="updateFormLabelWidth" label="顾客收货地址">
               <el-input v-model="updateForm.caddr"></el-input>
             </el-form-item>
+
             <el-form-item prop="csex" :label-width="updateFormLabelWidth" label="性别">
               <el-select v-model="updateForm.csex">
                 <el-option :key="-1" label="请选择性别" :value="-1"></el-option>
                 <el-option v-for="item in csexDisplay" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
             </el-form-item>
+
             <el-form-item prop="cage" :label-width="updateFormLabelWidth" label="年龄">
               <el-input-number v-model="updateForm.cage" controls-position="right" style="width: 100%"></el-input-number>
             </el-form-item>
+
             <el-form-item prop="cphone" :label-width="updateFormLabelWidth" label="电话号码">
               <el-input v-model="updateForm.cphone" placeholder="电话号码"></el-input>
             </el-form-item>
@@ -193,7 +198,6 @@
   const formRules = ref({
     cname:[{required: true,  message:"请输入顾客名", trigger:"blur"},{min:1, max:20,  trigger:'blur'}],
     caddr:[{required: true,  message:"请输入顾客收获地址", trigger:"blur"}],
-    password:[{required: true,  message:"请输入用户密码", trigger:"blur"}],
     csex:[{type:"number" ,min: 0, max: 1, required: true,  message:"请选择用户性别", trigger:"change"}],
     cage:[{required: true,  message:"请输入顾客年龄", trigger:"blur"}],
     cphone:[{required: true,  message:"请输入顾客电话号码", trigger:"blur"}],
@@ -204,7 +208,7 @@
   // emm 深拷贝比较逆天就是了
   const addForm = ref(JSON.parse(JSON.stringify(formDefaultValue)))
   const addFormRef = ref(null)
-  const addFormLabelWidth=ref("6em")
+  const addFormLabelWidth=ref("10em")
 
   // 修改表单
   const updateFormVisible = ref(false)
@@ -224,7 +228,7 @@
   // const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
 
 
-  const updateFormLabelWidth=ref("6em")
+  const updateFormLabelWidth=ref("10em")
 
   const openAddForm = ()=>{
     console.log("打开添加表单")
