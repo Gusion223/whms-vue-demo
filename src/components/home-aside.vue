@@ -29,7 +29,7 @@
         <el-menu-item index="/home/warehouse">
           <template #title>仓库信息</template>
         </el-menu-item>
-        <el-menu-item>
+        <el-menu-item index="/home/storeRecord">
           <template #title>存储记录</template>
         </el-menu-item>
       </el-sub-menu>

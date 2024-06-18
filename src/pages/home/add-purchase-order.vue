@@ -96,6 +96,7 @@ import {onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {ApiListWarehouse} from "@/api/warehouse";
 import {ApiListSGGood} from "@/api/sg";
+import {ApiAddPurchaseOrderWithDetail} from "@/api/purchaseOrder";
 
 // 获取当前时间的字符串格式
 const getCurrentTime =()=>{
@@ -199,9 +200,16 @@ const submitForm = async ()=>{
   try {
     let pass = await dynamicFormRef.value.validate()
     if(!pass) return
-    let res = await ApiAdd
+    let res = await ApiAddPurchaseOrderWithDetail(
+        currentUser.id,
+        dynamicForm.value.wid,
+        dynamicForm.value.sid,
+        dynamicForm.value.potime,
+        dynamicForm.value.records
+    )
     if(res.data.status==200){
       ElMessage({message:"提交表单提交成功", type:"success"})
+      setTimeout(()=>{}, 1000);
       location.reload()
     }
     else

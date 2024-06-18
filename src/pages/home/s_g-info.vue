@@ -21,25 +21,22 @@
       <div>
         <el-dialog title="添加新供货条目" v-model="addFormVisible">
           <el-form :model="addForm" :rules="formRules" ref="addFormRef">
-            <el-form-item prop="sid" :label-width="addFormLabelWidth" label="供货商id">
-              <el-input v-model="addForm.sid"></el-input>
-            </el-form-item>
-            <el-form-item prop="sname" :label-width="addFormLabelWidth" label="供货商名称">
-              <el-input v-model="addForm.sname"></el-input>
-            </el-form-item>
-            <el-form-item prop="gid" :label-width="addFormLabelWidth" label="商品id">
-              <el-input v-model="addForm.gid"></el-input>
+]
+            <el-form-item prop="sid" label="供货商" :label-width="addFormLabelWidth">
+              <el-select v-model="addForm.sid" filterable>
+                <el-option v-for="item in suppliers" :key="item.sid" :label="item.sname" :value="item.sid" />
+              </el-select>
             </el-form-item>
             <el-form-item prop="gname" :label-width="addFormLabelWidth" label="商品名称">
-              <el-input v-model="addForm.gname"></el-input>
+              <el-select v-model="addForm.gid" filterable>
+                <el-option v-for="item in goods" :key="item.gid" :label="item.gname" :value="item.gid" />
+              </el-select>
             </el-form-item>
-
             <el-form-item prop="gtype" :label-width="addFormLabelWidth" label="商品类型">
               <el-select v-model="addForm.gtype">
                 <el-option :key="-1" label="请选择种类" value=""></el-option>
                 <el-option v-for="item in typeDisplay" :key="item.value" :label="item.text" :value="item.value" />
               </el-select>
-
             </el-form-item>
             <el-form-item prop="gunitCost" :label-width="addFormLabelWidth" label="价格">
               <el-input v-model="addForm.gunitCost" controls-position="right" style="width: 100%"></el-input>
@@ -56,18 +53,14 @@
       <div>
         <el-dialog title="修改供货条目信息" v-model="updateFormVisible">
           <el-form :model="updateForm" :rules="formRules" ref="updateFormRef">
-            <el-form-item prop="sid" :label-width="updateFormLabelWidth" label="供货商id">
-              <el-input v-model="updateForm.sid" :disabled="updateExtraCfg.sid.lock"></el-input>
+            <el-form-item prop="sid" :label-width="updateFormLabelWidth" label="供货商">
+              <el-input :model-value="updateForm.sname" disabled />
             </el-form-item>
-            <el-form-item prop="sname" :label-width="updateFormLabelWidth" label="供货商名字">
-              <el-input v-model="updateForm.sname"></el-input>
-            </el-form-item>
+
             <el-form-item prop="gid" :label-width="updateFormLabelWidth" label="商品id">
-              <el-input v-model="updateForm.gid"></el-input>
+              <el-input :model-value="updateForm.gname" disabled />
             </el-form-item>
-            <el-form-item prop="gname" :label-width="updateFormLabelWidth" label="商品名称">
-              <el-input v-model="updateForm.gname"></el-input>
-            </el-form-item>
+
             <el-form-item prop="gunitCost" :label-width="updateFormLabelWidth" label="价格">
               <el-input v-model="updateForm.gunitCost" controls-position="right" style="width: 100%"></el-input>
             </el-form-item>
@@ -125,7 +118,9 @@
   import {onMounted, ref} from "vue";
   import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
-  import {ApiGetSG,ApiAddSG,ApiUpdateSG,ApiDeleteSG} from "@/api/sg";
+  import {ApiGetSG, ApiAddSG, ApiUpdateSG, ApiDeleteSG, ApiListSGGood} from "@/api/sg";
+  import {ApiListSupplier} from "@/api/supplier";
+  import {ApiListGood} from "@/api/good";
 
   // 表格信息
   const tableData = ref([])
@@ -184,9 +179,9 @@
   }
   const formRules = ref({
     sid:[{required: true,  message:"请输入供货商id", trigger:"blur"}],
-    sname:[{required: true,  message:"请输入供货商名称", trigger:"blur"}],
+    // sname:[{required: true,  message:"请输入供货商名称", trigger:"blur"}],
     gid:[{required: true,  message:"请输入商品id", trigger:"blur"}],
-    gname:[{required: true,  message:"请输入商品名称", trigger:"blur"}],
+    // gname:[{required: true,  message:"请输入商品名称", trigger:"blur"}],
     gtype:[{min:1, required: true,  message:"请选择商品种类", trigger:"change"}],
     gunitCost:[{required: true,  message:"请输入价格", trigger:"blur"}],
 
@@ -194,6 +189,8 @@
     // userType:[{type:"number", min:0, max:2, required: true,  message:"请选择用户类型", trigger:"change"}]
   })
 
+  const suppliers = ref([])
+  const goods = ref([])
   const addFormVisible = ref(false)
   // emm 深拷贝比较逆天就是了
   const addForm = ref(JSON.parse(JSON.stringify(formDefaultValue)))
@@ -212,7 +209,7 @@
     gunitCost:{lock:false},
     gname:{lock:false},
     sname:{lock:false},
-    gttpe:{lock:false},
+    gtype:{lock:false},
 
 
 
@@ -264,7 +261,7 @@
     try{
       let passValidate = await updateFormRef.value.validate()
       if(!passValidate){
-        // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
+        ElMessage({message:"用户表单未通过校验要求", type:'warning'})
         return
       }
       console.log(
@@ -281,7 +278,7 @@
       let res = await ApiUpdateSG(
           updateForm.value.sid,
           updateForm.value.gid,
-          updateForm.value.gunitCost,
+          updateForm.value.gunitCost
       )
 
       if(res.data.status!==200)
@@ -347,8 +344,29 @@
     await loadData()
   }
 
+  const loadSuppliers = async ()=>{
+    try{
+      let res = await ApiListSupplier()
+      suppliers.value = res.data.data
+    }catch (e){
+      console.log(e)
+    }
+  }
+
+  const loadGoods = async ()=>{
+    try{
+      let res = await ApiListGood()
+      console.log(res)
+      goods.value = res.data.data
+    }catch (e){
+      console.log(e)
+    }
+  }
+
 
   onMounted(()=>{
+    loadSuppliers()
+    loadGoods()
     loadData()
   })
 </script>

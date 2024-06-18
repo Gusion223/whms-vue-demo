@@ -116,6 +116,12 @@ const routes = [
                 component:()=>import("@/pages/home/sale_detail.vue")
             },
             {
+                path: "storeRecord",
+                name:"storeRecord",
+                meta: {title: "仓库存储清单"},
+                component:()=>import("@/pages/home/storeRecord.vue")
+            },
+            {
                 path:"customerInfo",
                 name:"customerInfo",
                 meta:{title: "顾客信息管理"},
