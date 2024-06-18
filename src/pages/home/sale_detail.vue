@@ -108,6 +108,7 @@
   import {onMounted, ref} from "vue";
   import {ElMessage} from "element-plus";
   import {ApiGetSaleDetail,ApiUpdateSaleDetail,ApiDeleteSaleDetail,ApiAddSaleDetail} from "@/api/saleDetail";
+  import router from "@/router/router";
 
   // 表格信息
   const tableData = ref([])
@@ -268,13 +269,15 @@
     }
   }
   const resetTableData = async ()=>{
-    nameSearch.value = ""
+    nameSearch.value = null
     // userTypeSearch.value=-1
     await loadData()
   }
 
 
   onMounted(()=>{
+    if(router.currentRoute.value.query.soid != null)
+      nameSearch.value = Number(router.currentRoute.value.query.soid)
     loadData()
   })
 </script>

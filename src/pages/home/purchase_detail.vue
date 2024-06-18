@@ -108,6 +108,7 @@
   import {onMounted, ref} from "vue";
   import {ElMessage} from "element-plus";
   import {ApiAddPurchaseDetail,ApiDeletePurchaseDetail,ApiGetPurchaseDetail,ApiUpdatePurchaseDetail} from "@/api/purchaseDetail";
+  import router from "@/router/router";
 
   // 表格信息
   const tableData = ref([])
@@ -268,6 +269,8 @@
 
 
   onMounted(()=>{
+    if(router.currentRoute.value.query.poid != null)
+      nameSearch.value = Number(router.currentRoute.value.query.poid)
     loadData()
   })
 </script>

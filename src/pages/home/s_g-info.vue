@@ -3,7 +3,7 @@
 
 <!--      // 顶部搜索栏-->
       <div class="top-search">
-        <el-input v-model="gnameSearch" placeholder="请输入要查询的供货商名称"
+        <el-input v-model="snameSearch" placeholder="请输入要查询的供货商名称"
                   style="width: 20%;" suffix-icon="search" @keyup.enter="loadData"/>
 
         <el-select v-model="gtypeSearch" placeholder="请选择商品类型"
@@ -121,6 +121,7 @@
   import {ApiGetSG, ApiAddSG, ApiUpdateSG, ApiDeleteSG, ApiListSGGood} from "@/api/sg";
   import {ApiListSupplier} from "@/api/supplier";
   import {ApiListGood} from "@/api/good";
+  import router from "@/router/router";
 
   // 表格信息
   const tableData = ref([])
@@ -159,7 +160,7 @@
   ]
 
   // 搜索框相关
-  const gnameSearch = ref("")
+  const snameSearch = ref("")
   const gtypeSearch = ref(null)
 
   // 添加表单
@@ -329,7 +330,7 @@
     try{
       let res;
 
-      res = await ApiGetSG(index,size,gnameSearch.value)
+      res = await ApiGetSG(index,size,snameSearch.value)
 
       console.log(tableData.value)
       tableData.value = res.data.data
@@ -339,7 +340,7 @@
     }
   }
   const resetTableData = async ()=>{
-    gnameSearch.value=null
+    snameSearch.value=null
     gtypeSearch.value=null
     await loadData()
   }
@@ -365,6 +366,8 @@
 
 
   onMounted(()=>{
+    if(router.currentRoute.value.query.sname != null)
+        snameSearch.value = router.currentRoute.value.query.sname
     loadSuppliers()
     loadGoods()
     loadData()

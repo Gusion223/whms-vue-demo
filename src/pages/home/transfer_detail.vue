@@ -105,6 +105,7 @@
   import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
   import {ApiAddTransferDetail,ApiDeleteTransferDetail,ApiGetTransferDetail,ApiUpdateTransferDetail} from "@/api/transferDetail";
+  import router from "@/router/router";
 
   // 表格信息
   const tableData = ref([])
@@ -271,6 +272,8 @@
 
 
   onMounted(()=>{
+    if(router.currentRoute.value.query.toid != null)
+      nameSearch.value = Number(router.currentRoute.value.query.toid)
     loadData()
   })
 </script>

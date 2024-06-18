@@ -90,13 +90,19 @@
         <el-table-column prop="wnameCur" label="转储后仓库名称" />
         <el-table-column prop="totime" label="转储时间" />
 
-        <el-table-column prop="operate" label="操作">
+        <el-table-column prop="operate" label="操作" min-width="120px">
           <template #default="scope">
             <div style="display: flex;">
               <el-button size='small' type="success" @click="openUpdateForm(scope.row)">修改</el-button>
               <el-button size='small' type="danger"
                          @click="tryDelete(scope.row)">删除</el-button>
             </div>
+            <el-button size="small" type="info" @click="router.push(
+                  {
+                    path:'/home/transferDetail',
+                    query:{toid:scope.row.toid}
+                  }
+              )" >查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -125,6 +131,7 @@
   import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
   import {ApiAddTransferOrder,ApiGetTransferOrder,ApiDeleteTransferOrder,ApiUpdateTransferOrder} from "@/api/transferOrder";
+  import router from "@/router/router";
 
   // 表格信息
   const tableData = ref([])
