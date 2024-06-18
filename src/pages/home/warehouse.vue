@@ -115,7 +115,7 @@
   }
   const formRules = ref({
     wid:[{required: true,  message:"请输入仓库id", trigger:"blur"}],
-    wname:[{required: true,  message:"请输入仓库名称", trigger:"blur"}],
+    wname:[{required: true,  message:"请输入仓库名称", trigger:"blur"},{max:12,message: "仓库名不能超过12个字符",trigger: "blur"}],
     waddr:[{required: true,  message:"请输入仓库地址", trigger:"blur"}],
 
 
