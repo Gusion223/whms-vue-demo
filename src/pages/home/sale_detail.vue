@@ -3,7 +3,7 @@
 
 <!--      // 顶部搜索栏-->
       <div class="top-search">
-        <el-input v-model="nameSearch" placeholder="请输入要查询的销售记录id"
+        <el-input-number v-model="nameSearch" placeholder="请输入要查询的销售记录id" :precision="0" :controls="false"
                   style="width: 20%;" suffix-icon="search" @keyup.enter="loadData"/>
 
         <el-button type="primary" style="margin-left: 5px" @click="loadData">查询</el-button>
@@ -116,7 +116,7 @@
   const pageSize = ref(5)
   const pageSizes = ref([5, 10, 20])
 
-  const nameSearch = ref("")
+  const nameSearch = ref(null)
   // const userTypeSearch = ref(-1)
 
   // 添加表单
@@ -259,7 +259,7 @@
     try{
       let res;
 
-      res = await ApiGetSaleDetail(index,size)
+      res = await ApiGetSaleDetail(index,size,nameSearch.value)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total
@@ -286,5 +286,8 @@
 }
 :deep(.el-dialog){
   width: 400px;
+}
+.top-search :deep(.el-input__inner){
+  text-align: left;
 }
 </style>

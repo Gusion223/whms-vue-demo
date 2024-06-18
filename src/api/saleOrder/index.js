@@ -11,7 +11,7 @@ export const ApiAddSaleOrderWithDetail = (id, wid, cid, sotime, details)=>{
 }
 
 export const ApiGetSaleOrder = (index, size, soid)=>{
-    return ApiCommonQuery("/sale-order/page", index, size, {soid:soid})
+    return ApiCommonQuery("/sale-order/page-fullInfo", index, size, {soid:soid})
 }
 
 export const ApiAddSaleOrder = (id, wid, cid, sotime)=>{

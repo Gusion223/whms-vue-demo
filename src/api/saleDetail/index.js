@@ -2,7 +2,7 @@ import {ApiCommonQuery} from "@/api/serviceApi";
 import http from "@/utils/http";
 
 export const ApiGetSaleDetail = (index, size, soid)=>{
-    return ApiCommonQuery("/sale-detail/page", index, size, {soid:soid})
+    return ApiCommonQuery("/sale-detail/page-fullInfo", index, size, {soid:soid})
 }
 
 export const  ApiAddSaleDetail = (soid, gid, sdamount, sdtotal)=>{

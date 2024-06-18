@@ -2,7 +2,7 @@ import http from "@/utils/http";
 import {ApiCommonQuery} from "@/api/serviceApi";
 
 export const ApiGetPurchaseDetail=(index, size, poid)=>{
-    return ApiCommonQuery("/purchase-detail/page", index, size, {poid:poid})
+    return ApiCommonQuery("/purchase-detail/page-fullInfo", index, size, {poid:poid})
 }
 
 export const ApiAddPurchaseDetail=(poid, gid, pdamount, pdtotalCost)=>{

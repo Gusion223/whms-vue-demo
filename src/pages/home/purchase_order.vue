@@ -94,7 +94,7 @@
         <el-table-column prop="sid" label="供货商id"/>
         <el-table-column prop="sname" label="供货商名称" />
         <el-table-column prop="wid" label="仓库id" />
-        <el-table-column prop="wname‘" label="仓库名称" />
+        <el-table-column prop="wname" label="仓库名称" />
         <el-table-column prop="potime" label="入库时间" />
         <el-table-column prop="pototalCost" label="总成本"/>
 
@@ -217,6 +217,7 @@
           addForm.value.wid,
           addForm.value.potime
       )
+      console.log(res.data.data())
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
         return
@@ -294,7 +295,7 @@
     try{
       let res;
 
-      res = await ApiGetPurchaseOrder(index,size,nameSearch.value)
+      res = await ApiGetPurchaseOrder(index,size,null, null, null, null, nameSearch.value)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total

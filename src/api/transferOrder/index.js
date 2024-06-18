@@ -9,7 +9,7 @@ export const ApiAddTransferOrderWithDetail=(id, widPrev, widCur, totime, details
 }
 
 export const ApiGetTransferOrder = (index, size, toid)=>{
-    return ApiCommonQuery("/transfer-order/page", {index:index, size:size, toid:toid} )
+    return ApiCommonQuery("/transfer-order/page-fullInfo", index, size, {toid:toid} )
 }
 
 export const ApiAddTransferOrder = (id, widPrev, widCur, totime)=>{
