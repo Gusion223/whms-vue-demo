@@ -11,13 +11,13 @@ export const ApiGetWarehouse = (index, size, wname)=>{
 }
 
 export const ApiAddWarehouse=(wname, waddr)=>{
-    http.post("/warehouse/add", {wname:wname, waddr:waddr})
+  return  http.post("/warehouse/add", {wname:wname, waddr:waddr})
 }
 
 export const ApiUpdateWarehouse = (wid, wname, waddr)=>{
-    http.post("/warehouse/update", {wid:wid, wname:wname, waddr:waddr})
+  return http.post("/warehouse/update", {wid:wid, wname:wname, waddr:waddr})
 }
 
 export const ApiDeleteWarehouse = (wid)=>{
-    http.post("/warehouse/delete", {wid:wid})
+   return http.post("/warehouse/delete", {wid:wid})
 }

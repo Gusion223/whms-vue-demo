@@ -90,21 +90,7 @@
 <!--        <el-table-column prop="password" label="密码" />-->
 
         <el-table-column prop="sdesc" label="供货商信息描述" />
-<!--        <el-table-column prop="csex" label="性别">-->
-<!--&lt;!&ndash;          <template #default="scope">&ndash;&gt;-->
-<!--&lt;!&ndash;              <el-tag :type="csexDisplay[scope.row.csex].type" :disable-transitions="true">&ndash;&gt;-->
-<!--&lt;!&ndash;                {{csexDisplay[scope.row.csex].text}}&ndash;&gt;-->
-<!--&lt;!&ndash;              </el-tag>&ndash;&gt;-->
-<!--&lt;!&ndash;          </template>&ndash;&gt;-->
-<!--        </el-table-column>-->
 
-<!--        <el-table-column prop="userType" label="角色">-->
-<!--          <template #default="scope">-->
-<!--              <el-tag :type="userTypeDisplay[scope.row.userType].type" :disable-transitions="true">-->
-<!--                {{userTypeDisplay[scope.row.userType].text}}-->
-<!--              </el-tag>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
         <el-table-column prop="operate" label="操作">
           <template #default="scope">
             <div style="display: flex;">
@@ -131,7 +117,9 @@
         @current-change="loadData"
         />
       </div>
+
   </el-scrollbar>
+
 
 </template>
 
@@ -139,7 +127,8 @@
   import {onMounted, ref} from "vue";
   import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
-  import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
+  import {ApiListSupplier, ApiGetSupplier, ApiUpdateSupplier, ApiDeleteSupplier} from "@/api/supplier";
+  import {ApiAddSupplier} from "@/api/supplier";
 
   // 表格信息
   const tableData = ref([])
@@ -218,15 +207,11 @@
         return
       }
       // api处理
-      let res = await ApiAddUser(
-          addForm.value.sid,
+      let res = await ApiAddSupplier(
           addForm.value.sname,
           addForm.value.saddr,
-          // addForm.value.password,
-          // addForm.value.csex,
-          addForm.value.sdesc,
           addForm.value.sphone,
-          // addForm.value.userType
+          addForm.value.sdesc
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -234,7 +219,7 @@
       }
       // 关闭窗口
       addFormVisible.value=false
-      ElMessage({message:`供货商${addForm.value.cname}添加成功`, type:"success"})
+      ElMessage({message:`供货商${addForm.value.sname}添加成功`, type:"success"})
       await loadData()
     }catch(e){
       console.log(e)
@@ -247,24 +232,14 @@
         // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
         return
       }
-      console.log(
-          updateForm.value.sid,
-          updateForm.value.saddr,
-          // updateForm.value.csex,
-          updateForm.value.sdesc,
-          updateForm.value.sphone,
-          updateForm.value.sname,
-          // updateForm.value.userType
-      )
 
-      let res = await ApiUpdateUser(
+
+      let res = await ApiUpdateSupplier(
           updateForm.value.sid,
-          updateForm.value.saddr,
-          // updateForm.value.csex,
-          updateForm.value.sdesc,
-          updateForm.value.sphone,
           updateForm.value.sname,
-          // updateForm.value.userType
+          updateForm.value.saddr,
+          updateForm.value.sphone,
+          updateForm.value.sdesc,
       )
 
       if(res.data.status!==200)
@@ -274,7 +249,7 @@
       }
       console.log("修改成功")
       updateFormVisible.value=false
-      ElMessage({message:`供货商${updateForm.value.cname}添加成功`, type:"success"})
+      ElMessage({message:`供货商${updateForm.value.sname}添加成功`, type:"success"})
       await loadData()
     }catch(e){
       // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
@@ -284,7 +259,7 @@
 
   const tryDelete = async (old_data) => {
     try {
-      let res = await ApiDeleteUser(old_data.sid)
+      let res = await ApiDeleteSupplier(old_data.sid)
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
@@ -315,12 +290,8 @@
     try{
       let res;
 
-      if(nameSearch.value!=="" )
-      {
-        res = await ApiGetUserWith(index, size, nameSearch.value )
-      }else {
-        res = await ApiGetUsers(index, size)
-      }
+      res = await ApiGetSupplier(index, size, nameSearch.value)
+
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total

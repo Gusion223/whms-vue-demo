@@ -21,6 +21,9 @@
             <el-form-item prop="gid" :label-width="addFormLabelWidth" label="货物id">
               <el-input v-model="addForm.gid"></el-input>
             </el-form-item>
+            <el-form-item prop="gname" :label-width="addFormLabelWidth" label="货物名称">
+              <el-input v-model="addForm.gname"></el-input>
+            </el-form-item>
             <el-form-item prop="pdamount" :label-width="addFormLabelWidth" label="商品数量">
               <el-input v-model="addForm.pdamount"></el-input>
             </el-form-item>
@@ -45,6 +48,9 @@
             <el-form-item prop="gid" :label-width="updateFormLabelWidth" label="商品id">
               <el-input v-model="updateForm.gid"></el-input>
             </el-form-item>
+            <el-form-item prop="gname" :label-width="updateFormLabelWidth" label="商品名称">
+              <el-input v-model="updateForm.gname"></el-input>
+            </el-form-item>
             <el-form-item prop="pdamount" :label-width="updateFormLabelWidth" label="商品数量">
               <el-input v-model="updateForm.pdamount"></el-input>
             </el-form-item>
@@ -64,6 +70,7 @@
       <el-table  :data="tableData" border style="width:100%">
         <el-table-column prop="poid" label="订单id" />
         <el-table-column prop="gid" label="商品id" />
+        <el-table-column prop="gname" label="商品名称" />
         <el-table-column prop="pdamount" label="商品数量"/>
         <el-table-column prop="pdtotalCost" label="总成本"/>
 
@@ -99,7 +106,6 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
   import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
 
@@ -118,12 +124,15 @@
     poid:"",
     gid:"",
     pdamount:"",
-    pdtotalCost:""
+    pdtotalCost:"",
+    gname:""
+
 
   }
   const formRules = ref({
     poid:[{required: true,  message:"请输入订单id", trigger:"blur"},{ trigger:'blur'}],
     gid:[{required: true,  message:"请输入商品id", trigger:"blur"}],
+    gname:[{required: true,  message:"请输入商品名称", trigger:"blur"}],
     pdamount:[{required: true,  message:"请输入商品数量", trigger:"blur"}],
     pdtotalCost:[{required: true,  message:"请输入总成本", trigger:"blur"}],
 
@@ -139,13 +148,7 @@
   const updateFormVisible = ref(false)
   const updateForm = ref(JSON.parse(JSON.stringify(formDefaultValue)))
   const updateFormRef = ref(null)
-  // const updateExtraCfg = ref({
-  //   poid: {lock:false},
-  //   gid: {lock:false},
-  //   pdamount:{lock:false},
-  //   pdtotalCost:{lock:false}
-  // })
-  // const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
+
 
 
   const updateFormLabelWidth=ref("10em")
@@ -174,6 +177,7 @@
           addForm.value.gid,
           addForm.value.pdamount,
           addForm.value.pdtotalCost,
+          addForm.value.gname,
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -199,6 +203,7 @@
           updateForm.value.gid,
           updateForm.value.pdamount,
           updateForm.value.pdtotalCost,
+          updateForm.value.gname,
       )
 
       let res = await ApiUpdateUser(
@@ -206,6 +211,7 @@
           updateForm.value.gid,
           updateForm.value.pdamount,
           updateForm.value.pdtotalCost,
+          updateForm.value.gname,
       )
 
       if(res.data.status!==200)

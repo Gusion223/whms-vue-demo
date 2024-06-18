@@ -9,8 +9,8 @@ export const ApiGetSG = (index, size, sname) => {
     let params = {sname: sname}
     return ApiCommonQuery("/s-g/page-good-supplierInfo", index, size, params)
 }
-export const ApiAddSG = (sid, gid, gunitCost) => {
-    return http.post("/s-g/add", {sid: sid, gid: gid, gunitCost: gunitCost})
+export const ApiAddSG = (sid, gid, gunitCost,) => {
+    return http.post("/s-g/add", {sid: sid,gid: gid, gunitCost: gunitCost})
 }
 export const ApiUpdateSG = (sid, gid, gunitCost) => {
     return http.post("/s-g/updete", {sid: sid, gid: gid, gunitCost: gunitCost})

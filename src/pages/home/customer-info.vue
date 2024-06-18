@@ -28,9 +28,9 @@
               <el-input v-model="addForm.caddr"></el-input>
             </el-form-item>
 
-            <el-form-item prop="password" :label-width="addFormLabelWidth" label="密码">
-              <el-input v-model="addForm.password" ></el-input>
-            </el-form-item>
+<!--            <el-form-item prop="password" :label-width="addFormLabelWidth" label="密码">-->
+<!--              <el-input v-model="addForm.password" ></el-input>-->
+<!--            </el-form-item>-->
             <el-form-item prop="csex" :label-width="addFormLabelWidth" label="性别">
               <el-select v-model="addForm.csex">
                 <el-option :key="-1" label="请选择性别" :value="-1"></el-option>
@@ -56,7 +56,7 @@
           <el-form :model="updateForm" :rules="formRules" ref="updateFormRef">
 
             <el-form-item prop="cname" :label-width="updateFormLabelWidth" label="顾客名">
-              <el-input v-model="updateForm.cname" :disabled="updateExtraCfg.cname.lock"></el-input>
+              <el-input v-model="updateForm.cname" ></el-input>
             </el-form-item>
 
             <el-form-item prop="caddr" :label-width="updateFormLabelWidth" label="顾客收货地址">
@@ -93,20 +93,10 @@
 <!--        <el-table-column prop="password" label="密码" />-->
         <el-table-column prop="cage" label="年龄" />
         <el-table-column prop="csex" label="性别">
-<!--          <template #default="scope">-->
-<!--              <el-tag :type="csexDisplay[scope.row.csex].type" :disable-transitions="true">-->
-<!--                {{csexDisplay[scope.row.csex].text}}-->
-<!--              </el-tag>-->
-<!--          </template>-->
+
         </el-table-column>
         <el-table-column prop="cphone" label="电话"/>
-<!--        <el-table-column prop="userType" label="角色">-->
-<!--          <template #default="scope">-->
-<!--              <el-tag :type="userTypeDisplay[scope.row.userType].type" :disable-transitions="true">-->
-<!--                {{userTypeDisplay[scope.row.userType].text}}-->
-<!--              </el-tag>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+
         <el-table-column prop="operate" label="操作">
           <template #default="scope">
             <div style="display: flex;">
@@ -139,9 +129,9 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
-  import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
+  // import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
+  import {ApiAddCustomer, ApiDeleteCustomer, ApiGetCustomer, ApiUpdateCustomer} from "@/api/coustomer";
 
   // 表格信息
   const tableData = ref([])
@@ -149,23 +139,7 @@
   const currentPage = ref(1)
   const pageSize = ref(5)
   const pageSizes = ref([5, 10, 20])
-  // const userTypeDisplay=[
-  //   {
-  //     text:"系统管理员",
-  //     type:"warning",
-  //     value:0
-  //   },
-  //   {
-  //     text:"仓管员",
-  //     type:"primary",
-  //     value:1
-  //   },
-  //   {
-  //     text:"销售员",
-  //     type:"success",
-  //     value:2
-  //   }
-  // ]
+
   const csexDisplay=[
     {
       text:"女",
@@ -200,6 +174,7 @@
     caddr:[{required: true,  message:"请输入顾客收获地址", trigger:"blur"}],
     csex:[{type:"number" ,min: 0, max: 1, required: true,  message:"请选择用户性别", trigger:"change"}],
     cage:[{required: true,  message:"请输入顾客年龄", trigger:"blur"}],
+    password:[{required: true,  message:"请输入密码", trigger:"blur"}],
     cphone:[{required: true,  message:"请输入顾客电话号码", trigger:"blur"}],
     // userType:[{type:"number", min:0, max:2, required: true,  message:"请选择用户类型", trigger:"change"}]
   })
@@ -240,13 +215,7 @@
     updateFormVisible.value = true
 
   }
-  // const disableDelBtn = (cid, userType)=>{
-  //   if(currentUser && currentUser.id===id)
-  //     return true
-  //   if(userType===0)
-  //     return true
-  //   return false
-  // }
+
   const tryAdd = async ()=>{
     console.log("尝试提交添加表单")
     try{
@@ -255,15 +224,12 @@
         return
       }
       // api处理
-      let res = await ApiAddUser(
-          addForm.value.cid,
+      let res = await ApiAddCustomer(
           addForm.value.cname,
-          addForm.value.caddr,
-          addForm.value.password,
           addForm.value.csex,
           addForm.value.cage,
-          addForm.value.cphone,
-          // addForm.value.userType
+          addForm.value.caddr,
+          addForm.value.cphone
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -284,24 +250,15 @@
         // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
         return
       }
-      console.log(
-          updateForm.value.cid,
-          updateForm.value.caddr,
-          updateForm.value.csex,
-          updateForm.value.cage,
-          updateForm.value.cphone,
-          updateForm.value.cname,
-          // updateForm.value.userType
-      )
 
-      let res = await ApiUpdateUser(
-          updateForm.value.cid,
-          updateForm.value.caddr,
-          updateForm.value.csex,
-          updateForm.value.cage,
-          updateForm.value.cphone,
-          updateForm.value.cname,
-          // updateForm.value.userType
+      let res = await ApiUpdateCustomer(
+        updateForm.value.cid,
+        updateForm.value.cname,
+        updateForm.value.csex,
+        updateForm.value.cage,
+        updateForm.value.caddr,
+        updateForm.value.cphone
+
       )
 
       if(res.data.status!==200)
@@ -321,7 +278,7 @@
 
   const tryDelete = async (old_data) => {
     try {
-      let res = await ApiDeleteUser(old_data.cid)
+      let res = await ApiDeleteCustomer(old_data.cid)
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
@@ -350,14 +307,9 @@
     }
 
     try{
-      let res;
-
-      if(nameSearch.value!=="" )
-      {
-        res = await ApiGetUserWith(index, size, nameSearch.value )
-      }else {
-        res = await ApiGetUsers(index, size)
-      }
+      let res = await ApiGetCustomer(
+          index, size, nameSearch.value
+      )
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total

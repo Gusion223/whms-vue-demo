@@ -18,11 +18,20 @@
             <el-form-item prop="id" :label-width="addFormLabelWidth" label="操作员id">
               <el-input v-model="addForm.id"></el-input>
             </el-form-item>
+            <el-form-item prop="nickName" :label-width="addFormLabelWidth" label="操作员名称">
+              <el-input v-model="addForm.id"></el-input>
+            </el-form-item>
             <el-form-item prop="widPrev" :label-width="addFormLabelWidth" label="转储前仓库id">
               <el-input v-model="addForm.widPrev"></el-input>
             </el-form-item>
+            <el-form-item prop="wnamePrev" :label-width="addFormLabelWidth" label="转储前仓库名称">
+              <el-input v-model="addForm.wnamePrev"></el-input>
+            </el-form-item>
             <el-form-item prop="widCur" :label-width="addFormLabelWidth" label="转储后仓库id">
               <el-input v-model="addForm.widCur"></el-input>
+            </el-form-item>
+            <el-form-item prop="wnameCur" :label-width="addFormLabelWidth" label="转储后仓库名称">
+              <el-input v-model="addForm.wnameCur"></el-input>
             </el-form-item>
             <el-form-item prop="totime" :label-width="addFormLabelWidth" label="转储时间">
               <el-input v-model="addForm.totime"></el-input>
@@ -42,11 +51,20 @@
             <el-form-item prop="id" :label-width="updateFormLabelWidth" label="操作员id">
               <el-input v-model="updateForm.id" :disabled="updateExtraCfg.id.lock"></el-input>
             </el-form-item>
+            <el-form-item prop="nickName" :label-width="updateFormLabelWidth" label="操作员名字">
+              <el-input v-model="updateForm.nickName"></el-input>
+            </el-form-item>
             <el-form-item prop="widPrev" :label-width="updateFormLabelWidth" label="转储前仓库id">
               <el-input v-model="updateForm.widPrev"></el-input>
             </el-form-item>
+            <el-form-item prop="wnamePrev" :label-width="updateFormLabelWidth" label="转储前仓库名称">
+              <el-input v-model="updateForm.wnamePrev"></el-input>
+            </el-form-item>
             <el-form-item prop="widCur" :label-width="updateFormLabelWidth" label="转储后仓库id">
               <el-input v-model="updateForm.widCur"></el-input>
+            </el-form-item>
+            <el-form-item prop="wnameCur" :label-width="updateFormLabelWidth" label="转储后仓库名称">
+              <el-input v-model="updateForm.wnameCur"></el-input>
             </el-form-item>
             <el-form-item prop="totime" :label-width="updateFormLabelWidth" label="转储时间">
               <el-input v-model="updateForm.totime" :disabled="updateExtraCfg.totime.lock"></el-input>
@@ -65,8 +83,11 @@
       <el-table  :data="tableData" border style="width:100%">
         <el-table-column prop="toid" label="转储记录id" />
         <el-table-column prop="id" label="操作员id" />
+        <el-table-column prop="nickName" label="操作员名字" />
         <el-table-column prop="widPrev" label="转储前仓库id"/>
+        <el-table-column prop="wnamePrev" label="转储前仓库名称" />
         <el-table-column prop="widCur" label="转储后仓库id" />
+        <el-table-column prop="wnameCur" label="转储后仓库名称" />
         <el-table-column prop="totime" label="转储时间" />
 
         <el-table-column prop="operate" label="操作">
@@ -121,13 +142,19 @@
     widPrev:"",
     widCur:"",
     totime:"",
+    wnamePrev:"",
+    wnameCur:"",
+    nickName:""
 
 
   }
   const formRules = ref({
     id:[{required: true,  message:"请输入操作员id", trigger:"blur"},{ trigger:'blur'}],
+    nickName:[{required: true,  message:"请输入操作员名字", trigger:"blur"}],
     widPrev:[{required: true,  message:"请输入转储前仓库id", trigger:"blur"}],
+    wnamePrev:[{required: true,  message:"请输入转储前仓库名称", trigger:"blur"}],
     widCur:[{required: true,  message:"请输入转储后仓库id", trigger:"blur"}],
+    wnameCur:[{required: true,  message:"请输入转储后仓库名称", trigger:"blur"}],
     totime:[{required: true,  message:"请输入转储时间", trigger:"blur"}],
 
   })
@@ -147,6 +174,7 @@
     widPrev: {lock:false},
     widCur:{lock:false},
     totime:{lock:true},
+
   })
   // const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
 
@@ -177,6 +205,9 @@
           addForm.value.widPrev,
           addForm.value.widCur,
           addForm.value.totime,
+          addForm.value.nickName,
+          addForm.value.wnamePrev,
+          addForm.value.wnameCur,
 
       )
       if(res.data.status!==200){
@@ -203,6 +234,9 @@
           updateForm.value.widPrev,
           updateForm.value.widCur,
           updateForm.value.totime,
+          updateForm.value.nickPrev,
+          updateForm.value.wnamePrev,
+          updateForm.value.wnameCur,
       )
 
       let res = await ApiUpdateUser(
@@ -210,6 +244,9 @@
           updateForm.value.widPrev,
           updateForm.value.widCur,
           updateForm.value.totime,
+          updateForm.value.nickPrev,
+          updateForm.value.wnamePrev,
+          updateForm.value.wnameCur,
       )
 
       if(res.data.status!==200)
@@ -229,11 +266,11 @@
 
   const tryDelete = async (old_data) => {
     try {
-      let res = await ApiDeleteUser(old_data.poid)
+      let res = await ApiDeleteUser(old_data.toid)
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
-        ElMessage({message: `成功删除转储记录${old_data.poid}}`, type: "success"})
+        ElMessage({message: `成功删除转储记录${old_data.toid}}`, type: "success"})
         await loadData()
       }
     } catch (e) {

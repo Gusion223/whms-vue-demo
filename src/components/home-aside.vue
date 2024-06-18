@@ -21,7 +21,7 @@
           顾客信息管理
         </template>
       </el-menu-item>
-      <el-menu-item >
+      <el-menu-item index="/home/warehouse">
         <template #title>仓库信息</template>
         <el-icon><House /></el-icon>
       </el-menu-item>

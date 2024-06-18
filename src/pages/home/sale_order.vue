@@ -18,8 +18,14 @@
             <el-form-item prop="id" :label-width="addFormLabelWidth" label="业务员id">
               <el-input v-model="addForm.id"></el-input>
             </el-form-item>
+            <el-form-item prop="nickName" :label-width="addFormLabelWidth" label="业务员名字">
+              <el-input v-model="addForm.nickName"></el-input>
+            </el-form-item>
             <el-form-item prop="cid" :label-width="addFormLabelWidth" label="顾客id">
               <el-input v-model="addForm.cid"></el-input>
+            </el-form-item>
+            <el-form-item prop="cname" :label-width="addFormLabelWidth" label="顾客名称">
+              <el-input v-model="addForm.cname"></el-input>
             </el-form-item>
             <el-form-item prop="sodate" :label-width="addFormLabelWidth" label="销售时间">
               <el-input v-model="addForm.sodate"></el-input>
@@ -42,8 +48,14 @@
             <el-form-item prop="id" :label-width="updateFormLabelWidth" label="业务员id">
               <el-input v-model="updateForm.id" :disabled="updateExtraCfg.id.lock"></el-input>
             </el-form-item>
+            <el-form-item prop="nickName" :label-width="updateFormLabelWidth" label="业务员名字">
+              <el-input v-model="updateForm.nickName" ></el-input>
+            </el-form-item>
             <el-form-item prop="cid" :label-width="updateFormLabelWidth" label="顾客id">
               <el-input v-model="updateForm.cid"></el-input>
+            </el-form-item>
+            <el-form-item prop="cname" :label-width="updateFormLabelWidth" label="顾客名字">
+              <el-input v-model="updateForm.cname" ></el-input>
             </el-form-item>
             <el-form-item prop="sodate" :label-width="updateFormLabelWidth" label="销售时间">
               <el-input v-model="updateForm.sodate" :disabled="updateExtraCfg.sodate.lock"></el-input>
@@ -64,7 +76,9 @@
       <el-table  :data="tableData" border style="width:100%">
         <el-table-column prop="soid" label="销售记录id" />
         <el-table-column prop="id" label="业务员id" />
+        <el-table-column prop="nickName" label="业务员名字" />
         <el-table-column prop="cid" label="顾客id"/>
+        <el-table-column prop="cname" label="业务员名字" />
         <el-table-column prop="sodate" label="销售时间" />
         <el-table-column prop="sototal" label="销售金额"/>
 
@@ -119,12 +133,16 @@
     id:"",
     cid:"",
     sodate:"",
-    sototal:""
+    sototal:"",
+    nickName:"",
+    cname:"",
 
   }
   const formRules = ref({
     id:[{required: true,  message:"请输入业务员id", trigger:"blur"},{ trigger:'blur'}],
+    nickName:[{required: true,  message:"请输入业务员名字", trigger:"blur"}],
     cid:[{required: true,  message:"请输入顾客id", trigger:"blur"}],
+    cname:[{required: true,  message:"请输入顾客名字", trigger:"blur"}],
     sodate:[{required: true,  message:"请输入销售时间", trigger:"blur"}],
     sototal:[{required: true,  message:"请输入总销售金额", trigger:"blur"}],
 
@@ -175,6 +193,8 @@
           addForm.value.id,
           addForm.value.sodate,
           addForm.value.sototal,
+          addForm.value.nickName,
+          addForm.value.cname,
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -200,6 +220,8 @@
           updateForm.value.id,
           updateForm.value.sodate,
           updateForm.value.sototal,
+          updateForm.value.cname,
+          updateForm.value.nickName,
       )
 
       let res = await ApiUpdateUser(
@@ -207,6 +229,8 @@
           updateForm.value.id,
           updateForm.value.sodate,
           updateForm.value.sototal,
+          updateForm.value.cname,
+          updateForm.value.nickName,
       )
 
       if(res.data.status!==200)
