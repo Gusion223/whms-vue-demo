@@ -107,7 +107,7 @@
 <script setup>
   import {onMounted, ref} from "vue";
   import {ElMessage} from "element-plus";
-  import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
+  import {ApiAddPurchaseDetail,ApiDeletePurchaseDetail,ApiGetPurchaseDetail,ApiUpdatePurchaseDetail} from "@/api/purchaseDetail";
 
   // 表格信息
   const tableData = ref([])
@@ -172,12 +172,11 @@
         return
       }
       // api处理
-      let res = await ApiAddUser(
+      let res = await ApiAddPurchaseDetail(
           addForm.value.poid,
           addForm.value.gid,
           addForm.value.pdamount,
-          addForm.value.pdtotalCost,
-          addForm.value.gname,
+          addForm.value.pdtotalCost
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -198,20 +197,13 @@
         // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
         return
       }
-      console.log(
-          updateForm.value.poid,
-          updateForm.value.gid,
-          updateForm.value.pdamount,
-          updateForm.value.pdtotalCost,
-          updateForm.value.gname,
-      )
 
-      let res = await ApiUpdateUser(
+
+      let res = await ApiUpdatePurchaseDetail(
           updateForm.value.poid,
           updateForm.value.gid,
           updateForm.value.pdamount,
-          updateForm.value.pdtotalCost,
-          updateForm.value.gname,
+          updateForm.value.pdtotalCost
       )
 
       if(res.data.status!==200)
@@ -231,7 +223,7 @@
 
   const tryDelete = async (old_data) => {
     try {
-      let res = await ApiDeleteUser(old_data.poid)
+      let res = await ApiDeletePurchaseDetail(old_data.poid,old_data.gid)
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
@@ -262,12 +254,7 @@
     try{
       let res;
 
-      if(nameSearch.value!=="" )
-      {
-        res = await ApiGetUserWith(index, size, nameSearch.value )
-      }else {
-        res = await ApiGetUsers(index, size)
-      }
+      res = await ApiGetPurchaseDetail(index,size,poid)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total

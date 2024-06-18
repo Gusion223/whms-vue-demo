@@ -107,7 +107,7 @@
 <script setup>
   import {onMounted, ref} from "vue";
   import {ElMessage} from "element-plus";
-  import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
+  import {ApiGetSaleDetail,ApiUpdateSaleDetail,ApiDeleteSaleDetail,ApiAddSaleDetail} from "@/api/saleDetail";
 
   // 表格信息
   const tableData = ref([])
@@ -177,12 +177,11 @@
         return
       }
       // api处理
-      let res = await ApiAddUser(
+      let res = await ApiAddSaleDetail(
           addForm.value.soid,
           addForm.value.gid,
           addForm.value.sdamount,
-          addForm.value.sdtotal,
-          addForm.value.gname,
+          addForm.value.adtotal,
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -203,20 +202,13 @@
         // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
         return
       }
-      console.log(
-          updateForm.value.soid,
-          updateForm.value.gid,
-          updateForm.value.sdamount,
-          updateForm.value.sdtotal,
-          updateForm.value.gname,
-      )
 
-      let res = await ApiUpdateUser(
+
+      let res = await ApiUpdateSaleDetail(
           updateForm.value.soid,
           updateForm.value.gid,
           updateForm.value.sdamount,
-          updateForm.value.sdtotal,
-          updateForm.value.gname,
+          updateForm.value.sdtotal
       )
 
       if(res.data.status!==200)
@@ -236,7 +228,7 @@
 
   const tryDelete = async (old_data) => {
     try {
-      let res = await ApiDeleteUser(old_data.soid)
+      let res = await ApiDeleteSaleDetail(old_data.soid,old_data.gid)
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
@@ -267,12 +259,7 @@
     try{
       let res;
 
-      if(nameSearch.value!=="" )
-      {
-        res = await ApiGetUserWith(index, size, nameSearch.value )
-      }else {
-        res = await ApiGetUsers(index, size)
-      }
+      res = await ApiGetSaleDetail(index,size)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total

@@ -124,7 +124,7 @@
   import {onMounted, ref} from "vue";
   import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
-  import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
+  import {ApiAddTransferOrder,ApiGetTransferOrder,ApiDeleteTransferOrder,ApiUpdateTransferOrder} from "@/api/transferOrder";
 
   // 表格信息
   const tableData = ref([])
@@ -200,15 +200,11 @@
         return
       }
       // api处理
-      let res = await ApiAddUser(
+      let res = await ApiAddTransferOrder(
           addForm.value.id,
           addForm.value.widPrev,
           addForm.value.widCur,
-          addForm.value.totime,
-          addForm.value.nickName,
-          addForm.value.wnamePrev,
-          addForm.value.wnameCur,
-
+          addForm.value.totime
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -229,24 +225,13 @@
         // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
         return
       }
-      console.log(
-          updateForm.value.id,
-          updateForm.value.widPrev,
-          updateForm.value.widCur,
-          updateForm.value.totime,
-          updateForm.value.nickPrev,
-          updateForm.value.wnamePrev,
-          updateForm.value.wnameCur,
-      )
 
-      let res = await ApiUpdateUser(
+
+      let res = await ApiUpdateTransferOrder(
           updateForm.value.id,
           updateForm.value.widPrev,
           updateForm.value.widCur,
           updateForm.value.totime,
-          updateForm.value.nickPrev,
-          updateForm.value.wnamePrev,
-          updateForm.value.wnameCur,
       )
 
       if(res.data.status!==200)
@@ -266,7 +251,7 @@
 
   const tryDelete = async (old_data) => {
     try {
-      let res = await ApiDeleteUser(old_data.toid)
+      let res = await ApiDeleteTransferOrder(old_data.toid)
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
@@ -297,12 +282,7 @@
     try{
       let res;
 
-      if(nameSearch.value!=="" )
-      {
-        res = await ApiGetUserWith(index, size, nameSearch.value )
-      }else {
-        res = await ApiGetUsers(index, size)
-      }
+      res = await ApiGetTransferOrder(index,size)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total
