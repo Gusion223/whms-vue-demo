@@ -13,7 +13,7 @@ export const ApiAddSG = (sid, gid, gunitCost,) => {
     return http.post("/s-g/add", {sid: sid,gid: gid, gunitCost: gunitCost})
 }
 export const ApiUpdateSG = (sid, gid, gunitCost) => {
-    return http.post("/s-g/updete", {sid: sid, gid: gid, gunitCost: gunitCost})
+    return http.post("/s-g/update", {sid: sid, gid: gid, gunitCost: gunitCost})
 }
 export const ApiDeleteSG = (sid, gid) => {
     return http.post("/s-g/delete", {sid: sid, gid: gid})
