@@ -10,8 +10,8 @@ export const ApiAddSaleOrderWithDetail = (id, wid, cid, sotime, details)=>{
     return http.post("/sale-order/addOrderWithDetail",data)
 }
 
-export const ApiGetSaleOrder = (index, size)=>{
-    return ApiCommonQuery("/sale-order/page", index, size)
+export const ApiGetSaleOrder = (index, size, soid)=>{
+    return ApiCommonQuery("/sale-order/page", index, size, {soid:soid})
 }
 
 export const ApiAddSaleOrder = (id, wid, cid, sotime)=>{

@@ -1,8 +1,8 @@
 import {ApiCommonQuery} from "@/api/serviceApi";
 import http from "@/utils/http";
 
-export const ApiGetTransferDetail = (index, size)=>{
-    return ApiCommonQuery("/transfer-detail/page", index, size)
+export const ApiGetTransferDetail = (index, size, toid)=>{
+    return ApiCommonQuery("/transfer-detail/page", index, size, toid)
 }
 
 export const ApiAddTransferDetail = (toid, gid, tdamount)=>{
