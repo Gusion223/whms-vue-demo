@@ -140,13 +140,8 @@
   min-height: 300px;
   margin: auto;
 }
-
-.table-header-cell{
-  text-align: center;
-}
-
 .table-form-item{
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 </style>
