@@ -39,7 +39,7 @@
 <!--              </el-select>-->
 <!--            </el-form-item>-->
             <el-form-item prop="sdesc" :label-width="addFormLabelWidth" label="供货商信息描述">
-              <el-input v-model="addForm.sdesc" controls-position="right" style="width: 100%"></el-input>
+              <el-input type="textarea" v-model="addForm.sdesc" controls-position="right" style="width: 100%"></el-input>
             </el-form-item>
             <el-form-item prop="sphone" :label-width="addFormLabelWidth" label="电话号码">
               <el-input v-model="addForm.sphone" placeholder="电话号码"></el-input>

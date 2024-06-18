@@ -3,103 +3,24 @@
 
 <!--      // 顶部搜索栏-->
       <div class="top-search">
-        <el-input v-model="nameSearch" placeholder="请输入要查询的商品名称"
+        <el-input v-model="gnameSearch" placeholder="请输入要查询的商品名称"
                   style="width: 20%;" suffix-icon="search" @keyup.enter="loadData"/>
         <el-select v-model="gtypeSearch" placeholder="请选择商品类型"
                    @keyup.enter="loadData" style="width: 20%;">
+          <el-option :key="-1" label="请选择商品类型" :value="null"></el-option>
           <el-option v-for="item in gtypeDisplay" :key="item.value" :label="item.text" :value="item.value">
           </el-option>
         </el-select>
 
-        <el-select v-model="warehouseSearch" :key="-1" placeholder="请选择仓库名称"
+        <el-select v-model="widSearch" :key="-1" placeholder="请选择仓库名称"
                    @keyup.enter="loadData" style="width: 20%;">
-          <el-option v-for="item in warehousseDisplay" :key="item.wid" :label="item.wname" :value="item.value">
-          </el-option>
+          <el-option :key="-1" label="请选择仓库名称" :value="null" />
+          <el-option v-for="item in warehouses" :key="item.wid" :label="item.wname" :value="item.wid" />
         </el-select>
 
         <el-button type="primary" style="margin-left: 5px" @click="loadData">查询</el-button>
         <el-button type="warning" style="margin-left: 5px" @click="resetTableData">重置</el-button>
-<!--        <el-button v-if="currentUser.userType!==2" type="success" style="margin-left: 5px" @click="openAddForm">增加记录</el-button>-->
       </div>
-
-<!--      // 添加信息的表单-->
-<!--      <div>-->
-<!--        <el-dialog title="添加新商品" v-model="addFormVisible">-->
-<!--          <el-form :model="addForm" :rules="formRules" ref="addFormRef">-->
-<!--&lt;!&ndash;            &ndash;&gt;-->
-<!--            <el-form-item prop="gname" :label-width="addFormLabelWidth" label="商品名">-->
-<!--              <el-input v-model="addForm.gname"></el-input>-->
-<!--            </el-form-item>-->
-
-<!--&lt;!&ndash;            <el-form-item prop="gid" :label-width="addFormLabelWidth" label="商品id">&ndash;&gt;-->
-<!--&lt;!&ndash;              <el-input v-model="addForm.gid" ></el-input>&ndash;&gt;-->
-<!--&lt;!&ndash;            </el-form-item>&ndash;&gt;-->
-
-<!--            <el-form-item prop="gunitPrice" :label-width="addFormLabelWidth" label="商品价格">-->
-<!--              <el-input v-model="addForm.gunitPrice"></el-input>-->
-<!--            </el-form-item>-->
-
-<!--            <el-form-item prop="gtype" :label-width="addFormLabelWidth" label="商品类型">-->
-<!--              <el-select v-model="addForm.gtype">-->
-<!--                <el-option :key="-1" label="请选择种类" value=""></el-option>-->
-<!--                <el-option v-for="item in typeDisplay" :key="item.value" :label="item.text" :value="item.value" />-->
-<!--              </el-select>-->
-<!--            </el-form-item>-->
-
-<!--            <el-form-item prop="gunit" :label-width="addFormLabelWidth" label="商品单位">-->
-<!--              <el-input v-model="addForm.gunit" controls-position="right" style="width: 100%"></el-input>-->
-<!--            </el-form-item>-->
-<!--&lt;!&ndash;            <el-form-item prop="phone" :label-width="addFormLabelWidth" label="电话号码">&ndash;&gt;-->
-<!--&lt;!&ndash;              <el-input v-model="addForm.phone" placeholder="电话号码"></el-input>&ndash;&gt;-->
-<!--&lt;!&ndash;            </el-form-item>&ndash;&gt;-->
-<!--&lt;!&ndash;            <el-form-item prop="userType" :label-width="addFormLabelWidth" label="角色">&ndash;&gt;-->
-<!--&lt;!&ndash;              <el-select v-model="addForm.userType">&ndash;&gt;-->
-<!--&lt;!&ndash;                <el-option :key="-1" label="请选择用户类型" :value="-1"></el-option>&ndash;&gt;-->
-<!--&lt;!&ndash;                <el-option v-for="item in userTypeDisplay" :key="item.value" :label="item.text" :value="item.value" />&ndash;&gt;-->
-<!--&lt;!&ndash;              </el-select>&ndash;&gt;-->
-<!--&lt;!&ndash;            </el-form-item>&ndash;&gt;-->
-<!--            <el-button type="info" @click="addFormVisible=false">取消</el-button>-->
-<!--            <el-button  type="primary" @click="tryAdd">添加新的商品</el-button>-->
-<!--          </el-form>-->
-<!--        </el-dialog>-->
-<!--      </div>-->
-
-<!--      // 修改信息的表单-->
-<!--      <div>-->
-<!--        <el-dialog title="修改商品信息" v-model="updateFormVisible">-->
-<!--          <el-form :model="updateForm" :rules="formRules" ref="updateFormRef">-->
-<!--            <el-form-item prop="gname" :label-width="updateFormLabelWidth" label="商品名">-->
-<!--              <el-input v-model="updateForm.gname" ></el-input>-->
-<!--            </el-form-item>-->
-
-<!--            <el-form-item prop="gunitPrice" :label-width="updateFormLabelWidth" label="商品价格">-->
-<!--              <el-input v-model="updateForm.gunitPrice"></el-input>-->
-<!--            </el-form-item>-->
-
-<!--            <el-form-item prop="gtype" :label-width="updateFormLabelWidth" label="类别">-->
-<!--              <el-select v-model="updateForm.gtype">-->
-<!--                <el-option :key="-1" label="请选择类别" :value="-1"></el-option>-->
-<!--                <el-option v-for="item in typeDisplay" :key="item.value" :label="item.text" :value="item.value" />-->
-<!--              </el-select>-->
-<!--            </el-form-item>-->
-
-<!--            <el-form-item prop="gunit" :label-width="updateFormLabelWidth" label="单位">-->
-<!--              <el-input v-model="updateForm.gunit" controls-position="right" style="width: 100%"></el-input>-->
-<!--            </el-form-item>-->
-
-
-<!--&lt;!&ndash;            <el-form-item prop="userType" :label-width="updateFormLabelWidth" label="角色">&ndash;&gt;-->
-<!--&lt;!&ndash;              <el-select v-model="updateForm.userType">&ndash;&gt;-->
-<!--&lt;!&ndash;                <el-option :key="-1" label="请选择用户类型" :value="-1"></el-option>&ndash;&gt;-->
-<!--&lt;!&ndash;                <el-option v-for="item in userTypeDisplay" :key="item.value" :label="item.text" :value="item.value" />&ndash;&gt;-->
-<!--&lt;!&ndash;              </el-select>&ndash;&gt;-->
-<!--&lt;!&ndash;            </el-form-item>&ndash;&gt;-->
-<!--            <el-button type="info" @click="updateFormVisible=false">取消</el-button>-->
-<!--            <el-button type="primary" @click="tryUpdate">修改当前商品信息</el-button>-->
-<!--          </el-form>-->
-
-<!--        </el-dialog>-->
-<!--      </div>-->
 
 
 <!--      // 表格数据-->
@@ -112,16 +33,7 @@
         <el-table-column prop="gunit" label="商品单位" />
         <el-table-column prop="gtype" label="类别" />
         <el-table-column prop="sramount" label="商品数量" />
-<!--        <el-table-column prop="operate" label="操作">-->
-<!--          <template #default="scope">-->
-<!--            <div style="display: flex;">-->
-<!--              <el-button size='small' type="success" @click="openUpdateForm(scope.row)">修改</el-button>-->
-<!--              <el-button size='small' type="danger"-->
-<!--                         :disabled="disableDelBtn(scope.row.id, scope.row.userType)"-->
-<!--                         @click="tryDelete(scope.row)">删除</el-button>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+
       </el-table>
 
 <!--      // 分页-->
@@ -145,9 +57,8 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ElMessage} from "element-plus";
-  import {ApiDeleteUser} from "@/api/user";
   import {ApiGetStoreRecord} from "@/api/storeRecord";
+  import {ApiListWarehouse} from "@/api/warehouse";
   // 表格信息
   const tableData = ref([])
   const totalSize = ref(1)
@@ -168,162 +79,21 @@
       value:"食品饮料"
     }
   ]
-  const typeDisplay=[
-    {
-      text:"日用品",
-      value:"日用品"
-    },
-    {
-      text:"电子产品",
-      value:"电子产品"
-    },
-    {
-      text:"食品饮料",
-      value:"食品饮料"
-    }
-
-  ]
 
   // 搜索框相关
-  const nameSearch = ref("")
+  const gnameSearch = ref("")
   const gtypeSearch = ref(null)
-  const warehouseSearch=ref(null)
+  const widSearch=ref(null)
+  const warehouses = ref([])
 
-  // 添加表单
-  // const formDefaultValue = {
-  //   gid:"",
-  //   gunitPrice:"",
-  //   gname:"",
-  //   gtype:"",
-  //   gunit:"",
-  //   sramount:""
-  //
-  // }
-  // const formRules = ref({
-  //   gname:[{required: true,  message:"请输入商品名", trigger:"blur"},{min:1, max:20,  message: "请输入商品名", trigger:'blur'}],
-  //   gunitPrice:[{required: true,  message:"请输入商品类型", trigger:"blur"}],
-  //   gid:[{required: true,  message:"请输入商品id", trigger:"blur"}],
-  //   gtype:[{min:1, required: true,  message:"请选择商品种类", trigger:"change"}],
-  //   gunit:[{required: true,  message:"请输入商品单位", trigger:"blur"}],
-  //
-  // })
-
-  // const addFormVisible = ref(false)
-  // // emm 深拷贝比较逆天就是了
-  // const addForm = ref(JSON.parse(JSON.stringify(formDefaultValue)))
-  // const addFormRef = ref(null)
-  // const addFormLabelWidth=ref("6em")
-
-  // 修改表单
-  // const updateFormVisible = ref(false)
-  // const updateForm = ref(JSON.parse(JSON.stringify(formDefaultValue)))
-  // const updateFormRef = ref(null)
-  // const updateExtraCfg = ref({
-  //   gname: {lock:true},
-  //   gunitPrice: {lock:false},
-  //   gid: {lock:true},
-  //   sex:{lock:false},
-  //   gunit:{lock:false},
-  //   // phone:{lock:false},
-  //   userType:{lock:false}
-  // })
-  // const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
-  //
-  //
-  // const updateFormLabelWidth=ref("6em")
-  //
-  // const openAddForm = ()=>{
-  //   console.log("打开添加表单")
-  //   addForm.value = JSON.parse(JSON.stringify(formDefaultValue))
-  //   addFormVisible.value=true
-  // }
-  // const openUpdateForm = (rowData)=>{
-  //   updateForm.value = JSON.parse(JSON.stringify(rowData))
-  //   updateFormVisible.value = true
-  //
-  // }
-  // const disableDelBtn = (id, userType)=>{
-  //   if(currentUser && currentUser.id===id)
-  //     return true
-  //   if(userType===0)
-  //     return true
-  //   return false
-  // }
-  // const tryAdd = async ()=>{
-  //   console.log("尝试提交添加表单")
-  //   try{
-  //     let passValidate = await addFormRef.value.validate()
-  //     if(!passValidate){
-  //       return
-  //     }
-  //     // api处理
-  //     let res = await ApiAddGood(
-  //         addForm.value.gname,
-  //         addForm.value.gtype,
-  //         addForm.value.gunitPrice,
-  //         addForm.value.gunit
-  //     )
-  //     if(res.data.status!==200){
-  //       ElMessage({message:res.data.msg, type:"warning"})
-  //       return
-  //     }
-  //     // 关闭窗口
-  //     addFormVisible.value=false
-  //     ElMessage({message:`用户${addForm.value.gname}添加成功`, type:"success"})
-  //     await loadData()
-  //   }catch(e){
-  //     console.log(e)
-  //   }
-  // }
-  // const tryUpdate = async ()=>{
-  //   try{
-  //     let passValidate = await updateFormRef.value.validate()
-  //     if(!passValidate){
-  //       // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
-  //       return
-  //     }
-  //
-  //     let res = await ApiUpdateGood(
-  //         updateForm.value.gid,
-  //         updateForm.value.gname,
-  //         updateForm.value.gtype,
-  //         updateForm.value.gunitPrice,
-  //         updateForm.value.gunit
-  //     )
-  //
-  //     if(res.data.status!==200)
-  //     {
-  //       ElMessage({message:res.data.msg, type:"warning"})
-  //       return
-  //     }
-  //     console.log("修改成功")
-  //     updateFormVisible.value=false
-  //     ElMessage({message:`商品${updateForm.value.gname}添加成功`, type:"success"})
-  //     await loadData()
-  //   }catch(e){
-  //     // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
-  //     return
-  //   }
-  // }
-  //
-  // const tryDelete = async (old_data) => {
-  //   try {
-  //     let res = await ApiDeleteGood(old_data.gid)
-  //     if (res.data.status !== 200)
-  //       ElMessage({message: res.data.msg, type: "warning"})
-  //     else{
-  //       ElMessage({message: res.data.msg, type: "success"})
-  //       await loadData()
-  //     }
-  //   } catch (e) {
-  //     ElMessage({message: e.message, type: "warning"})
-  //
-  //   }
-  // }
-
-
-
-
+  const loadWareHouse = async ()=>{
+    try{
+      let res = await ApiListWarehouse()
+      warehouses.value = res.data.data
+    }catch (e){
+      console.log(e)
+    }
+  }
 
   const loadData = async ()=>{
     console.log("Start Loading UserData")
@@ -339,8 +109,7 @@
 
     try{
       let res;
-      console.log(nameSearch.value, gtypeSearch.value)
-      res = await ApiGetStoreRecord(index,size)
+      res = await ApiGetStoreRecord(index,size,widSearch.value, gnameSearch.value, gtypeSearch.value)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total
@@ -350,13 +119,15 @@
   }
 
   const resetTableData = async ()=>{
-    nameSearch.value=null
+    gnameSearch.value=null
     gtypeSearch.value=null
+    widSearch.value=null
     await loadData()
   }
 
 
   onMounted(()=>{
+    loadWareHouse()
     loadData()
   })
 </script>

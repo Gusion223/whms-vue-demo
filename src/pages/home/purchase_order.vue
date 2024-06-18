@@ -3,8 +3,8 @@
 
 <!--      // 顶部搜索栏-->
       <div class="top-search">
-        <el-input v-model="nameSearch" placeholder="请输入要查询的入库记录id"
-                  style="width: 20%;" suffix-icon="search" @keyup.enter="loadData"/>
+        <el-input-number v-model="nameSearch" placeholder="请输入要查询的入库记录id"
+                  style="width: 20%;" suffix-icon="search" @keyup.enter="loadData" :controls="false" :precision="0"/>
 
         <el-button type="primary" style="margin-left: 5px" @click="loadData">查询</el-button>
         <el-button type="warning" style="margin-left: 5px" @click="resetTableData">重置</el-button>
@@ -140,7 +140,7 @@
   const pageSize = ref(5)
   const pageSizes = ref([5, 10, 20])
 
-  const nameSearch = ref("")
+  const nameSearch = ref(null)
   // const userTypeSearch = ref(-1)
 
   // 添加表单
@@ -322,4 +322,8 @@
 :deep(.el-dialog){
   width: 400px;
 }
+.top-search :deep(.el-input__inner){
+  text-align: left;
+}
+
 </style>

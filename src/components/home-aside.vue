@@ -69,12 +69,12 @@
         <el-menu-item index="/home/saleOrder">查看销售记录</el-menu-item>
         <el-menu-item index="/home/saleDetail">查看销售细则</el-menu-item>
       </el-sub-menu>
-      <el-menu-item>
-        <el-icon><Document /></el-icon>
-        <template #title>
-          <span>进销记录总览</span>
-        </template>
-      </el-menu-item>
+<!--      <el-menu-item>-->
+<!--        <el-icon><Document /></el-icon>-->
+<!--        <template #title>-->
+<!--          <span>进销记录总览</span>-->
+<!--        </template>-->
+<!--      </el-menu-item>-->
       <el-menu-item index="/home/backupInfo">
         <el-icon><Monitor /></el-icon>
         <template #title>数据库备份管理</template>

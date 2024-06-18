@@ -3,7 +3,7 @@
 
 <!--      // 顶部搜索栏-->
       <div class="top-search">
-        <el-input v-model="nameSearch" placeholder="请输入要查询的供货商名称"
+        <el-input v-model="gnameSearch" placeholder="请输入要查询的供货商名称"
                   style="width: 20%;" suffix-icon="search" @keyup.enter="loadData"/>
 
         <el-select v-model="gtypeSearch" placeholder="请选择商品类型"
@@ -159,7 +159,7 @@
   ]
 
   // 搜索框相关
-  const nameSearch = ref("")
+  const gnameSearch = ref("")
   const gtypeSearch = ref(null)
 
   // 添加表单
@@ -329,7 +329,7 @@
     try{
       let res;
 
-      res = await ApiGetSG(index,size,nameSearch.value)
+      res = await ApiGetSG(index,size,gnameSearch.value)
 
       console.log(tableData.value)
       tableData.value = res.data.data
@@ -339,8 +339,8 @@
     }
   }
   const resetTableData = async ()=>{
-    nameSearch.value = ""
-    // userTypeSearch.value=-1
+    gnameSearch.value=null
+    gtypeSearch.value=null
     await loadData()
   }
 
