@@ -59,6 +59,7 @@
   import {onMounted, ref} from "vue";
   import {ApiGetStoreRecord} from "@/api/storeRecord";
   import {ApiListWarehouse} from "@/api/warehouse";
+  import router from "@/router/router";
   // 表格信息
   const tableData = ref([])
   const totalSize = ref(1)
@@ -81,7 +82,7 @@
   ]
 
   // 搜索框相关
-  const gnameSearch = ref("")
+  const gnameSearch = ref(null)
   const gtypeSearch = ref(null)
   const widSearch=ref(null)
   const warehouses = ref([])
@@ -109,7 +110,7 @@
 
     try{
       let res;
-      res = await ApiGetStoreRecord(index,size,widSearch.value, gnameSearch.value, gtypeSearch.value)
+      res = await ApiGetStoreRecord(index,size, widSearch.value, gnameSearch.value, gtypeSearch.value)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total
@@ -127,7 +128,11 @@
 
 
   onMounted(()=>{
+    if(router.currentRoute.value.query.wid != null )
+      widSearch.value = Number(router.currentRoute.value.query.wid)
+    if(isNaN(widSearch.value)) widSearch.value = null
     loadWareHouse()
+
     loadData()
   })
 </script>

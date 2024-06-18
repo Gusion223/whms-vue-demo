@@ -82,12 +82,18 @@
         <el-table-column prop="sotime" label="销售时间" />
         <el-table-column prop="sototal" label="销售金额"/>
 
-        <el-table-column prop="operate" label="操作">
+        <el-table-column prop="operate" label="操作" min-width="120px">
           <template #default="scope">
             <div style="display: flex;">
               <el-button size='small' type="success" @click="openUpdateForm(scope.row)">修改</el-button>
               <el-button size='small' type="danger"
                          @click="tryDelete(scope.row)">删除</el-button>
+              <el-button size="small" type="info" @click="router.push(
+                  {
+                    path:'/home/saleOrder',
+                    query:{soid:scope.row.soid}
+                  }
+              )" >查看详情</el-button>
             </div>
           </template>
         </el-table-column>
@@ -117,6 +123,7 @@
   import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
   import {ApiAddSaleOrder,ApiGetSaleOrder,ApiUpdateSaleOrder,ApiDeleteSaleOrder,ApiAddSaleOrderWithDetail} from "@/api/saleOrder";
+  import router from "@/router/router";
 
   // 表格信息
   const tableData = ref([])

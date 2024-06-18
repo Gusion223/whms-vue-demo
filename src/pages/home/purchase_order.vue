@@ -98,12 +98,18 @@
         <el-table-column prop="potime" label="入库时间" />
         <el-table-column prop="pototalCost" label="总成本"/>
 
-        <el-table-column prop="operate" label="操作">
+        <el-table-column prop="operate" label="操作" min-width="120px">
           <template #default="scope">
             <div style="display: flex;">
               <el-button size='small' type="success" @click="openUpdateForm(scope.row)">修改</el-button>
               <el-button size='small' type="danger"
                          @click="tryDelete(scope.row)">删除</el-button>
+              <el-button size="small" type="info" @click="router.push(
+                  {
+                    path:'/home/purchaseDetail',
+                    query:{poid:scope.row.poid}
+                  }
+              )" >查看详情</el-button>
             </div>
           </template>
         </el-table-column>
@@ -132,6 +138,7 @@
   import {onMounted, ref} from "vue";
   import {ElMessage} from "element-plus";
   import {ApiAddPurchaseOrder,ApiGetPurchaseOrder,ApiUpdatePurchaseOrder,ApiDeletePurchaseOrder} from "@/api/purchaseOrder";
+  import router from "@/router/router";
 
   // 表格信息
   const tableData = ref([])

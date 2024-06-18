@@ -65,6 +65,12 @@
               <el-button size='small' type="success" @click="openUpdateForm(scope.row)">修改</el-button>
               <el-button size='small' type="danger"
                          @click="tryDelete(scope.row)">删除</el-button>
+              <el-button size="small" type="info" @click="router.push(
+                    {
+                      path:'/home/storeRecord',
+                      query:{wid:scope.row.wid}
+                    }
+                  )" >查看详情</el-button>
             </div>
           </template>
         </el-table-column>
@@ -93,6 +99,7 @@
   import {onMounted, ref} from "vue";
   import {ElMessage} from "element-plus";
   import {ApiAddWarehouse,ApiDeleteWarehouse,ApiGetWarehouse,ApiUpdateWarehouse} from "@/api/warehouse";
+  import router from "@/router/router";
 
   // 表格信息
   const tableData = ref([])
