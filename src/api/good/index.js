@@ -1,5 +1,8 @@
 import http from "@/utils/http";
 
+export const ApiListGood=()=>{
+    return http.get("/good/list")
+}
 export const ApiGetGood = (index, size, gname, gtype)=>{
     return http.post(
         "/good/page",
