@@ -6,8 +6,8 @@ export const ApiListWarehouse = () => {
     return http.get("/warehouse/list")
 }
 
-export const ApiGetWarehouse = (index, size)=>{
-    return ApiCommonQuery("/warehouse/page", index, size)
+export const ApiGetWarehouse = (index, size, wname)=>{
+    return ApiCommonQuery("/warehouse/page", index, size, {wname:wname})
 }
 
 export const ApiAddWarehouse=(wname, waddr)=>{
