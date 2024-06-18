@@ -21,6 +21,9 @@
             <el-form-item prop="gid" :label-width="addFormLabelWidth" label="商品id">
               <el-input v-model="addForm.gid"></el-input>
             </el-form-item>
+            <el-form-item prop="gname" :label-width="addFormLabelWidth" label="商品名称">
+              <el-input v-model="addForm.gname"></el-input>
+            </el-form-item>
             <el-form-item prop="sdamount" :label-width="addFormLabelWidth" label="商品销售数量">
               <el-input v-model="addForm.sdamount"></el-input>
             </el-form-item>
@@ -45,6 +48,9 @@
             <el-form-item prop="gid" :label-width="updateFormLabelWidth" label="商品id">
               <el-input v-model="updateForm.gid"></el-input>
             </el-form-item>
+            <el-form-item prop="gname" :label-width="updateFormLabelWidth" label="商品名称">
+              <el-input v-model="updateForm.gname"></el-input>
+            </el-form-item>
             <el-form-item prop="sdamount" :label-width="updateFormLabelWidth" label="商品销售数量">
               <el-input v-model="updateForm.sdamount" ></el-input>
             </el-form-item>
@@ -64,6 +70,7 @@
       <el-table  :data="tableData" border style="width:100%">
         <el-table-column prop="soid" label="销售记录id" />
         <el-table-column prop="gid" label="商品id" />
+        <el-table-column prop="gname" label="商品名称" />
         <el-table-column prop="sdamount" label="商品销售数量" />
         <el-table-column prop="sdtotal" label="商品销售金额"/>
 
@@ -99,7 +106,6 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
   import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
 
@@ -118,12 +124,14 @@
     soid:"",
     gid:"",
     sdamount:"",
-    sdtotal:""
+    sdtotal:"",
+    gname:"",
 
   }
   const formRules = ref({
     soid:[{required: true,  message:"请输入销售记录id", trigger:"blur"},{ trigger:'blur'}],
     gid:[{required: true,  message:"请输入商品id", trigger:"blur"}],
+    gname:[{required: true,  message:"请输入商品名称", trigger:"blur"}],
     sdamount:[{required: true,  message:"请输入商品销售数量", trigger:"blur"}],
     sdtotal:[{required: true,  message:"请输入商品销售金额", trigger:"blur"}],
 
@@ -174,6 +182,7 @@
           addForm.value.gid,
           addForm.value.sdamount,
           addForm.value.sdtotal,
+          addForm.value.gname,
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -199,6 +208,7 @@
           updateForm.value.gid,
           updateForm.value.sdamount,
           updateForm.value.sdtotal,
+          updateForm.value.gname,
       )
 
       let res = await ApiUpdateUser(
@@ -206,6 +216,7 @@
           updateForm.value.gid,
           updateForm.value.sdamount,
           updateForm.value.sdtotal,
+          updateForm.value.gname,
       )
 
       if(res.data.status!==200)

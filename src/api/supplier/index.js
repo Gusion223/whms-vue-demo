@@ -26,3 +26,9 @@ export const ApiUpdateSupplier = (sid, sname, saddr, sphone, sdesc) => {
         {sid: sid, sname: sname, saddr: saddr, sphone: sphone, sdesc: sdesc}
     )
 }
+export const ApiDeleteSupplier= (sid)=>{
+    return http.post(
+        "/supplier/delete",
+        {sid:sid}
+    )
+}

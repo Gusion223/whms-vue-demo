@@ -98,6 +98,12 @@ const routes = [
 
             },
             {
+                path: "warehouse"  ,
+                name: "warehouse",
+                meta: {title: "仓库信息"},
+                component:()=>import("@/pages/home/warehouse.vue")
+            },
+            {
                 path: "saleOrder",
                 name: "saleOrder",
                 meta: {title: "销售记录"},

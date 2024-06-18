@@ -21,6 +21,9 @@
             <el-form-item prop="gid" :label-width="addFormLabelWidth" label="货物id">
               <el-input v-model="addForm.gid"></el-input>
             </el-form-item>
+            <el-form-item prop="gname" :label-width="addFormLabelWidth" label="货物名称">
+              <el-input v-model="addForm.gname"></el-input>
+            </el-form-item>
             <el-form-item prop="tdamount" :label-width="addFormLabelWidth" label="转储商品数量">
               <el-input v-model="addForm.tdamount"></el-input>
             </el-form-item>
@@ -43,6 +46,9 @@
             <el-form-item prop="gid" :label-width="updateFormLabelWidth" label="商品id">
               <el-input v-model="updateForm.gid"></el-input>
             </el-form-item>
+            <el-form-item prop="gname" :label-width="updateFormLabelWidth" label="商品名称">
+              <el-input v-model="updateForm.gname"></el-input>
+            </el-form-item>
             <el-form-item prop="tdamount" :label-width="updateFormLabelWidth" label="转储商品数量">
               <el-input v-model="updateForm.tdamount"></el-input>
             </el-form-item>
@@ -60,6 +66,7 @@
       <el-table  :data="tableData" border style="width:100%">
         <el-table-column prop="toid" label="转储id" />
         <el-table-column prop="gid" label="商品id" />
+        <el-table-column prop="gname" label="商品名称" />
         <el-table-column prop="tdamount" label="转储商品数量"/>
 
 
@@ -114,11 +121,13 @@
     toid:"",
     gid:"",
     tdamount:"",
+    gname:"",
 
   }
   const formRules = ref({
     toid:[{required: true,  message:"请输入转储id", trigger:"blur"},{ trigger:'blur'}],
     gid:[{required: true,  message:"请输入商品id", trigger:"blur"}],
+    gname:[{required: true,  message:"请输入商品名称", trigger:"blur"}],
     tdamount:[{required: true,  message:"请输入转储商品数量", trigger:"blur"}],
 
 
@@ -168,6 +177,7 @@
           addForm.value.toid,
           addForm.value.gid,
           addForm.value.tdamount,
+          addForm.value.gname,
 
       )
       if(res.data.status!==200){
@@ -193,6 +203,7 @@
           updateForm.value.toid,
           updateForm.value.gid,
           updateForm.value.tdamount,
+          updateForm.value.gname,
 
       )
 
@@ -200,6 +211,7 @@
           updateForm.value.toid,
           updateForm.value.gid,
           updateForm.value.tdamount,
+          updateForm.value.gname,
       )
 
       if(res.data.status!==200)

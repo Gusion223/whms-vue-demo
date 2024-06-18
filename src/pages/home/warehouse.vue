@@ -3,84 +3,51 @@
 
 <!--      // 顶部搜索栏-->
       <div class="top-search">
-        <el-input v-model="nameSearch" placeholder="请输入要查询的入库记录id"
+        <el-input v-model="nameSearch" placeholder="请输入要查询的仓库名称"
                   style="width: 20%;" suffix-icon="search" @keyup.enter="loadData"/>
 
         <el-button type="primary" style="margin-left: 5px" @click="loadData">查询</el-button>
         <el-button type="warning" style="margin-left: 5px" @click="resetTableData">重置</el-button>
-        <el-button type="success" style="margin-left: 5px" @click="openAddForm">入库信息登记</el-button>
+        <el-button type="success" style="margin-left: 5px" @click="openAddForm">添加仓库</el-button>
       </div>
 
 <!--      // 添加信息的表单-->
       <div>
-        <el-dialog title="添加新进货记录" v-model="addFormVisible">
+        <el-dialog title="添加仓库" v-model="addFormVisible">
           <el-form :model="addForm" :rules="formRules" ref="addFormRef">
-            <el-form-item prop="id" :label-width="addFormLabelWidth" label="操作员id">
-              <el-input v-model="addForm.id"></el-input>
-            </el-form-item>
-            <el-form-item prop="nickName" :label-width="addFormLabelWidth" label="操作员名称">
-              <el-input v-model="addForm.nickName"></el-input>
-            </el-form-item>
-
-            <el-form-item prop="sid" :label-width="addFormLabelWidth" label="供货商id">
-              <el-input v-model="addForm.sid"></el-input>
-            </el-form-item>
-            <el-form-item prop="sname" :label-width="addFormLabelWidth" label="供货商名称">
-              <el-input v-model="addForm.sname"></el-input>
-            </el-form-item>
-
-            <el-form-item prop="wid" :label-width="addFormLabelWidth" label="仓库id">
-              <el-input v-model="addForm.wid"></el-input>
-            </el-form-item>
+<!--            <el-form-item prop="wid" :label-width="addFormLabelWidth" label="仓库id">-->
+<!--              <el-input v-model="addForm.wid"></el-input>-->
+<!--            </el-form-item>-->
             <el-form-item prop="wname" :label-width="addFormLabelWidth" label="仓库名称">
               <el-input v-model="addForm.wname"></el-input>
             </el-form-item>
-            <el-form-item prop="potime" :label-width="addFormLabelWidth" label="入库时间">
-              <el-input v-model="addForm.potime"></el-input>
-            </el-form-item>
-            <el-form-item prop="pototalCost" :label-width="addFormLabelWidth" label="总成本">
-              <el-input v-model="addForm.pototalCost" controls-position="right" style="width: 100%"></el-input>
+            <el-form-item prop="waddr" :label-width="addFormLabelWidth" label="仓库地址">
+              <el-input v-model="addForm.waddr"></el-input>
             </el-form-item>
 
 
             <el-button type="info" @click="addFormVisible=false">取消</el-button>
-            <el-button type="primary" @click="tryAdd">添加新的入库总则</el-button>
+            <el-button type="primary" @click="tryAdd">添加新的供货条目</el-button>
           </el-form>
         </el-dialog>
       </div>
 
 <!--      // 修改信息的表单-->
       <div>
-        <el-dialog title="修改入库总则信息" v-model="updateFormVisible">
+        <el-dialog title="修改仓库信息" v-model="updateFormVisible">
           <el-form :model="updateForm" :rules="formRules" ref="updateFormRef">
-            <el-form-item prop="id" :label-width="updateFormLabelWidth" label="操作员id">
-              <el-input v-model="updateForm.id" ></el-input>
-            </el-form-item>
-            <el-form-item prop="nickName" :label-width="updateFormLabelWidth" label="操作员名称">
-            <el-input v-model="updateForm.nickName" ></el-input>
-          </el-form-item>
-            <el-form-item prop="sid" :label-width="updateFormLabelWidth" label="供货商id">
-              <el-input v-model="updateForm.sid"></el-input>
-            </el-form-item>
-            <el-form-item prop="sname" :label-width="updateFormLabelWidth" label="供货商名称">
-              <el-input v-model="updateForm.sname" ></el-input>
-            </el-form-item>
             <el-form-item prop="wid" :label-width="updateFormLabelWidth" label="仓库id">
-              <el-input v-model="updateForm.wid"></el-input>
+              <el-input v-model="updateForm.wid" disabled></el-input>
             </el-form-item>
-            <el-form-item prop="wname" :label-width="updateFormLabelWidth" label="仓库名称">
-              <el-input v-model="updateForm.wname" ></el-input>
+            <el-form-item prop="wname" :label-width="updateFormLabelWidth" label="仓库名字">
+              <el-input v-model="updateForm.wname"></el-input>
             </el-form-item>
-            <el-form-item prop="potime" :label-width="updateFormLabelWidth" label="入库时间">
-              <el-input v-model="updateForm.potime" :disabled="updateExtraCfg.potime.lock"></el-input>
+            <el-form-item prop="waddr" :label-width="updateFormLabelWidth" label="仓库地址">
+              <el-input v-model="updateForm.waddr"></el-input>
             </el-form-item>
-            <el-form-item prop="pototalCost" :label-width="updateFormLabelWidth" label="总成本">
-              <el-input v-model="updateForm.pototalCost" controls-position="right" style="width: 100%"></el-input>
-            </el-form-item>
-
 
             <el-button type="info" @click="updateFormVisible=false">取消</el-button>
-            <el-button type="primary" @click="tryUpdate">修改当前入库信息</el-button>
+            <el-button type="primary" @click="tryUpdate">修改当前供货条目信息</el-button>
           </el-form>
         </el-dialog>
       </div>
@@ -88,15 +55,9 @@
 
 <!--      // 表格数据-->
       <el-table  :data="tableData" border style="width:100%">
-        <el-table-column prop="poid" label="入库记录id" />
-        <el-table-column prop="id" label="操作员id" />
-        <el-table-column prop="nickName" label="操作员名称" />
-        <el-table-column prop="sid" label="供货商id"/>
-        <el-table-column prop="sname" label="供货商名称" />
-        <el-table-column prop="wid" label="仓库id" />
-        <el-table-column prop="wname‘" label="仓库名称" />
-        <el-table-column prop="potime" label="入库时间" />
-        <el-table-column prop="pototalCost" label="总成本"/>
+        <el-table-column prop="wid" label="仓库ID" />
+        <el-table-column prop="wname" label="仓库名称" />
+        <el-table-column prop="waddr" label="仓库地址" />
 
         <el-table-column prop="operate" label="操作">
           <template #default="scope">
@@ -131,7 +92,7 @@
 <script setup>
   import {onMounted, ref} from "vue";
   import {ElMessage} from "element-plus";
-  import {ApiAddPurchaseOrder,ApiGetPurchaseOrder,ApiUpdatePurchaseOrder,ApiDeletePurchaseOrder} from "@/api/purchaseOrder";
+  import {ApiAddWarehouse,ApiDeleteWarehouse,ApiGetWarehouse,ApiUpdateWarehouse} from "@/api/warehouse";
 
   // 表格信息
   const tableData = ref([])
@@ -140,57 +101,43 @@
   const pageSize = ref(5)
   const pageSizes = ref([5, 10, 20])
 
+
+  // 搜索框相关
   const nameSearch = ref("")
-  // const userTypeSearch = ref(-1)
 
   // 添加表单
   const formDefaultValue = {
-    id:"",
-    sid:"",
+
     wid:"",
-    potime:"",
-    pototalCost:"",
-    nickName:"",
-    sname:"",
-    wname:""
+    wname:"",
+    waddr:"",
 
   }
   const formRules = ref({
-    id:[{required: true,  message:"请输入操作员id", trigger:"blur"},{ trigger:'blur'}],
-    nickName:[{required: true,  message:"请输入操作眼名称", trigger:"blur"}],
-    sid:[{required: true,  message:"请输入供货商id", trigger:"blur"}],
-    sname:[{required: true,  message:"请输入供货商名称", trigger:"blur"}],
     wid:[{required: true,  message:"请输入仓库id", trigger:"blur"}],
     wname:[{required: true,  message:"请输入仓库名称", trigger:"blur"}],
-    potime:[{required: true,  message:"请输入入库时间", trigger:"blur"}],
-    pototalCost:[{required: true,  message:"请输入总成本", trigger:"blur"}],
+    waddr:[{required: true,  message:"请输入仓库地址", trigger:"blur"}],
 
+
+
+    // userType:[{type:"number", min:0, max:2, required: true,  message:"请选择用户类型", trigger:"change"}]
   })
 
   const addFormVisible = ref(false)
   // emm 深拷贝比较逆天就是了
   const addForm = ref(JSON.parse(JSON.stringify(formDefaultValue)))
   const addFormRef = ref(null)
-  const addFormLabelWidth=ref("10em")
+  const addFormLabelWidth=ref("8em")
 
   // 修改表单
   const updateFormVisible = ref(false)
   const updateForm = ref(JSON.parse(JSON.stringify(formDefaultValue)))
   const updateFormRef = ref(null)
-  const updateExtraCfg = ref({
-    id: {lock:true},
-    nickName: {lock:false},
-    wname: {lock:false},
-    sname: {lock:false},
-    sid: {lock:false},
-    wid:{lock:false},
-    potime:{lock:true},
-    pototalCost:{lock:false}
-  })
+
   // const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
 
 
-  const updateFormLabelWidth=ref("10em")
+  const updateFormLabelWidth=ref("8em")
 
   const openAddForm = ()=>{
     console.log("打开添加表单")
@@ -211,11 +158,10 @@
         return
       }
       // api处理
-      let res = await ApiAddPurchaseOrder(
-          addForm.value.id,
-          addForm.value.sid,
-          addForm.value.wid,
-          addForm.value.potime
+      let res = await ApiAddWarehouse(
+          addForm.value.wname,
+          addForm.value.waddr,
+
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -223,7 +169,7 @@
       }
       // 关闭窗口
       addFormVisible.value=false
-      ElMessage({message:`入库记录${addForm.value.poid}添加成功`, type:"success"})
+      ElMessage({message:`供货条目${addForm.value.sid}添加成功`, type:"success"})
       await loadData()
     }catch(e){
       console.log(e)
@@ -238,12 +184,10 @@
       }
 
 
-      let res = await ApiUpdatePurchaseOrder(
-          updateForm.value.poid,
-          updateForm.value.id,
-          updateForm.value.sid,
+      let res = await ApiUpdateWarehouse(
           updateForm.value.wid,
-          updateForm.value.potime
+          updateForm.value.wname,
+          updateForm.value.waddr
       )
 
       if(res.data.status!==200)
@@ -253,7 +197,7 @@
       }
       console.log("修改成功")
       updateFormVisible.value=false
-      ElMessage({message:`入库记录总则${updateForm.value.poid}添加成功`, type:"success"})
+      ElMessage({message:res.data.msg, type:"success"})
       await loadData()
     }catch(e){
       // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
@@ -263,11 +207,11 @@
 
   const tryDelete = async (old_data) => {
     try {
-      let res = await ApiDeletePurchaseOrder(old_data.poid)
+      let res = await ApiDeleteWarehouse(old_data.wid)
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
-        ElMessage({message: `成功删除入库记录${old_data.poid}}`, type: "success"})
+        ElMessage({message: `成功删除供货条目${old_data.wname}}`, type: "success"})
         await loadData()
       }
     } catch (e) {
@@ -294,7 +238,8 @@
     try{
       let res;
 
-      res = await ApiGetPurchaseOrder(index,size,nameSearch.value)
+      res = await ApiGetWarehouse(index,size,nameSearch.value)
+
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total

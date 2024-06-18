@@ -41,8 +41,8 @@
               </el-select>
 
             </el-form-item>
-            <el-form-item prop="gunitPrice" :label-width="addFormLabelWidth" label="价格">
-              <el-input v-model="addForm.gunitPrice" controls-position="right" style="width: 100%"></el-input>
+            <el-form-item prop="gunitCost" :label-width="addFormLabelWidth" label="价格">
+              <el-input v-model="addForm.gunitCost" controls-position="right" style="width: 100%"></el-input>
             </el-form-item>
 
 
@@ -68,8 +68,8 @@
             <el-form-item prop="gname" :label-width="updateFormLabelWidth" label="商品名称">
               <el-input v-model="updateForm.gname"></el-input>
             </el-form-item>
-            <el-form-item prop="gunitPrice" :label-width="updateFormLabelWidth" label="价格">
-              <el-input v-model="updateForm.gunitPrice" controls-position="right" style="width: 100%"></el-input>
+            <el-form-item prop="gunitCost" :label-width="updateFormLabelWidth" label="价格">
+              <el-input v-model="updateForm.gunitCost" controls-position="right" style="width: 100%"></el-input>
             </el-form-item>
 
             <el-button type="info" @click="updateFormVisible=false">取消</el-button>
@@ -90,7 +90,7 @@
             {{scope.row.gtype}}
           </template>
         </el-table-column>
-        <el-table-column prop="gunitPrice" label="价格"/>
+        <el-table-column prop="gunitCost" label="价格"/>
         <el-table-column prop="operate" label="操作">
           <template #default="scope">
             <div style="display: flex;">
@@ -125,7 +125,7 @@
   import {onMounted, ref} from "vue";
   import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
-  import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
+  import {ApiGetSG,ApiAddSG,ApiUpdateSG,ApiDeleteSG} from "@/api/sg";
 
   // 表格信息
   const tableData = ref([])
@@ -172,7 +172,7 @@
 
     sid:"",
     gid:"",
-    gunitPrice:"",
+    gunitCost:"",
     gname:"",
     sname:"",
     gtype:""
@@ -188,7 +188,7 @@
     gid:[{required: true,  message:"请输入商品id", trigger:"blur"}],
     gname:[{required: true,  message:"请输入商品名称", trigger:"blur"}],
     gtype:[{min:1, required: true,  message:"请选择商品种类", trigger:"change"}],
-    gunitPrice:[{required: true,  message:"请输入价格", trigger:"blur"}],
+    gunitCost:[{required: true,  message:"请输入价格", trigger:"blur"}],
 
 
     // userType:[{type:"number", min:0, max:2, required: true,  message:"请选择用户类型", trigger:"change"}]
@@ -209,7 +209,7 @@
     // password: {lock:true},
     // csex:{lock:false},
     gid:{lock:false},
-    gunitPrice:{lock:false},
+    gunitCost:{lock:false},
     gname:{lock:false},
     sname:{lock:false},
     gttpe:{lock:false},
@@ -243,13 +243,10 @@
         return
       }
       // api处理
-      let res = await ApiAddUser(
+      let res = await ApiAddSG(
           addForm.value.sid,
           addForm.value.gid,
-          addForm.value.gunitPrice,
-          addForm.value.gname,
-          addForm.value.sname,
-          addForm.value.gtype
+          addForm.value.gunitCost
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -274,21 +271,17 @@
           updateForm.value.sid,
           updateForm.value.gid,
           // updateForm.value.csex,
-          updateForm.value.gunitPrice,
+          updateForm.value.gunitCost,
           updateForm.value.gname,
           updateForm.value.sname,
           updateForm.value.gtype
 
       )
 
-      let res = await ApiUpdateUser(
+      let res = await ApiUpdateSG(
           updateForm.value.sid,
           updateForm.value.gid,
-          // updateForm.value.csex,
-          updateForm.value.gunitPrice,
-          updateForm.value.gname,
-          updateForm.value.sname,
-          updateForm.value.gtype
+          updateForm.value.gunitCost,
       )
 
       if(res.data.status!==200)
@@ -308,7 +301,7 @@
 
   const tryDelete = async (old_data) => {
     try {
-      let res = await ApiDeleteUser(old_data.sid)
+      let res = await ApiDeleteSG(old_data.sid,old_data.gid)
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
@@ -339,12 +332,8 @@
     try{
       let res;
 
-      if(nameSearch.value!=="" )
-      {
-        res = await ApiGetUserWith(index, size, nameSearch.value )
-      }else {
-        res = await ApiGetUsers(index, size)
-      }
+      res = await ApiGetSG(index,size,nameSearch.value)
+
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total
