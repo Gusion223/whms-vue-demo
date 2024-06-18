@@ -1,25 +1,23 @@
 <template>
   <el-form :model="dynamicForm" :rules="dynamicFormRules" ref="dynamicFormRef" class="dynamic-from-base">
     <div class="top-line">
-      <el-form-item prop="sid" label="客户:" :label-width="dynamicFromLabelWidth" :show-message="false">
-        <el-select v-model="dynamicForm.sid" @change="()=>{loadGoods()}">
-          <el-option :key="-1" :label="'请选择一个供货商'" :value="-1" />
-          <el-option v-for="item in customers" :key="item.sid" :label="item.sname" :value="item.sid"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item prop="wid" label="入货仓库:" :label-width="dynamicFromLabelWidth" :show-message="false">
-        <el-select v-model="dynamicForm.wid">
+      <el-form-item prop="wid" label="出货仓库:" :label-width="dynamicFromLabelWidth" :show-message="false">
+        <el-select v-model="dynamicForm.wid" @change="()=>{loadGoods()}">
           <el-option :key="-1" :label="'请选择一个仓库'" :value="-1" />
           <el-option v-for="item in warehouses" :key="item.wid" :label="item.wname" :value="item.wid"/>
         </el-select>
       </el-form-item>
-      <el-form-item prop="potime" label="入库时间" :label-width="dynamicFromLabelWidth" :show-message="false">
-        <el-date-picker type="datetime" v-model="dynamicForm.potime" placeholder="默认为当前时间" value-format="YYYY-MM-DD HH:mm:ss"></el-date-picker>
+      <el-form-item prop="cid" label="客户:" :label-width="dynamicFromLabelWidth" :show-message="false">
+        <el-select v-model="dynamicForm.cid">
+          <el-option :key="-1" :label="'请选择一个客户进行登记'" :value="-1" />
+          <el-option v-for="item in customers" :key="item.cid" :label="item.cname" :value="item.cid"/>
+        </el-select>
       </el-form-item>
-
+      <el-form-item prop="sotime" label="入库时间" :label-width="dynamicFromLabelWidth" :show-message="false">
+        <el-date-picker type="datetime" v-model="dynamicForm.sotime" placeholder="默认为当前时间" value-format="YYYY-MM-DD HH:mm:ss"></el-date-picker>
+      </el-form-item>
       <el-button type="primary" style="margin-left: 5px" @click="addNewRecord">添加一条记录</el-button>
       <el-button type="success" @click="submitForm">提交表单</el-button>
-
     </div>
 
     <!--       动态表单内容 用表格表示-->
@@ -31,7 +29,7 @@
       <el-table-column label="商品编号">
         <template #default="{row, $index}">
           <el-form-item :prop="`records[${$index}].gid`" :rules="dynamicFormRules.gid" class="table-form-item">
-            <el-input-number v-model="row.gid" placeholder="请输入商品编号"
+            <el-input-number v-model="row.gid" placeholder="请输入商品编号" :precision="0"
                              :controls="false" style="width: 100%;" @change="(cur)=>updateOtherAttrs(cur,$index)"></el-input-number>
           </el-form-item>
         </template>
@@ -47,17 +45,23 @@
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="订购数量" >
+      <el-table-column label="销售数量" >
         <template #default="{row, $index}">
-          <el-form-item :prop="`records[${$index}].pdamount`" :rules="dynamicFormRules.amount" class="table-form-item">
-            <el-input-number v-model="row.pdamount" placeholder="请输入商品数量" :controls="false" style="width: 100%;"
-                             @change="(cur)=>{updateTotalCost(row.gunitCost, cur, $index)}"></el-input-number>
+          <el-form-item :prop="`records[${$index}].sdamount`" :rules="dynamicFormRules.amount" class="table-form-item">
+            <el-input-number v-model="row.sdamount" placeholder="请输入商品数量" :controls="false" style="width: 100%;"
+                             @change="(cur)=>{updateTotalSale(row.gunitPrice, cur, $index)}" :precision="0"
+                             :min="0" :max="row.sramount" ></el-input-number>
           </el-form-item>
         </template>
       </el-table-column>
-      <el-table-column label="单价">
+      <el-table-column label="现有数量">
         <template #default="{row}">
-          <el-input-number :model-value="row.gunitCost" :controls="false" style="width: 100%;" disabled ></el-input-number>
+          <el-input-number :model-value="row.sramount" :controls="false" style="width: 100%;" disabled :precision="0"></el-input-number>
+        </template>
+      </el-table-column>
+      <el-table-column label="售价">
+        <template #default="{row}">
+          <el-input-number :model-value="row.gunitPrice" :controls="false" style="width: 100%;" disabled  :precision="2"></el-input-number>
         </template>
       </el-table-column>
       <el-table-column label="单位">
@@ -65,9 +69,9 @@
           <el-input :model-value="row.gunit" disabled class="center-input"></el-input>
         </template>
       </el-table-column>
-      <el-table-column label="总价">
+      <el-table-column label="总售价">
         <template #default="{row}">
-          <el-input-number :model-value="row.pdtotalCost" :controls="false" style="width: 100%;" disabled></el-input-number>
+          <el-input-number :model-value="row.sdtotal" :controls="false" style="width: 100%;" disabled :precision="2"></el-input-number>
         </template>
       </el-table-column>
       <el-table-column width="85px">
@@ -87,16 +91,17 @@
 </template>
 
 <script setup>
-import {ApiListSupplier} from "@/api/supplier";
 
-const enableDebug=ref(true)
+const enableDebug=ref(false)
 
 
 import {onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {ApiListWarehouse} from "@/api/warehouse";
-import {ApiListSGGood} from "@/api/sg";
-import {ApiAddPurchaseOrderWithDetail} from "@/api/purchaseOrder";
+
+import {ApiListCustomer} from "@/api/coustomer";
+import {ApiListStoreRecord} from "@/api/storeRecord";
+import {ApiAddSaleOrderWithDetail} from "@/api/saleOrder";
 
 // 获取当前时间的字符串格式
 const getCurrentTime =()=>{
@@ -109,6 +114,7 @@ const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
 
 
 const gidExist = (rule, value, callback)=>{
+  if(value==null)  callback(new Error("不存在对应的商品"))
   let res = goods.value.find((item)=>item.gid===value)
   if(res)
     callback()
@@ -116,15 +122,15 @@ const gidExist = (rule, value, callback)=>{
     callback(new Error("不存在对应的商品"))
 }
 const dynamicForm = ref({
-  sid:-1, // 供应商id
-  wid:-1, // 仓库id
-  potime:"",
+  cid:null,
+  wid:null,
+  sotime:null,
   records:[
   ],
 })
 
 const dynamicFormRules = ref({
-  sid:[{type:"number", min:0, required:true, message:"请选择一个供货商", trigger:"change" }],
+  cid:[{type:"number", min:0, required:true, message:"请选择一个顾客", trigger:"change" }],
   wid:[{type:"number", min:0, required:true, message:"请选择一个入库仓库", trigger:"change"}],
   gid:[{type:"number",validator:gidExist, required:true, message:"请选择一个商品", trigger:"change"}],
   potime:[{required:true, message:"请选择订货时间", trigger:"blur"}],
@@ -133,22 +139,15 @@ const dynamicFormRules = ref({
 const dynamicFormRef = ref(null)
 const dynamicFormTableRef = ref(null)
 const dynamicFromLabelWidth = ref('6em')
-const emptyRecord = {gid:null, pdamount:null, gunitCost:null, pdtotalCost:null, gunit:null}
-const customers = ref([
-  {sid:0, sname:"李浩田有限公司"},
-  {sid:1, sname:"一斤鸭梨有限公司"}
-])
-const warehouses = ref([
-  {wid:1, wname:"一号仓库"},
-  {wid:2, wname:"二号仓库"}
-])
-// const goods = ref([{gid:25, gname:"事薯片", cost:10}])
+const emptyRecord = {gid:null, sdamount:null, gunitPrice:null, sdtotal:null, gunit:null, sramount:null}
+const customers = ref([])
+const warehouses = ref([])
 const goods = ref([])
 
 
-const loadSupplier = async ()=>{
+const loadCustomers = async ()=>{
   try{
-    let res = await ApiListSupplier()
+    let res = await ApiListCustomer()
     customers.value = res.data.data
   }catch (e){
     console.log(e)
@@ -162,10 +161,9 @@ const loadWareHouse = async ()=>{
     console.log(e)
   }
 }
-
 const loadGoods = async ()=>{
   try{
-    let res = await ApiListSGGood(dynamicForm.value.sid)
+    let res = await ApiListStoreRecord(dynamicForm.value.wid)
     console.log(res)
     goods.value = res.data.data
   }catch (e){
@@ -173,22 +171,23 @@ const loadGoods = async ()=>{
   }
 }
 
-
-const updateTotalCost = (cost, amount, index)=>{
+const updateTotalSale = (cost, amount, index)=>{
   console.log(cost, amount, index)
   if (cost!=null && amount!=null)
-    dynamicForm.value.records[index].pdtotalCost = cost * amount;
+    dynamicForm.value.records[index].sdtotal = cost * amount;
   else
-    dynamicForm.value.records[index].pdtotalCost = null;
+    dynamicForm.value.records[index].sdtotal = null;
 }
 const updateOtherAttrs = (gid, index)=>{
   console.log(gid, index)
   let good = goods.value.find((item)=>item.gid===gid)
   if(good){
-    dynamicForm.value.records[index].gunitCost=good.gunitCost
+    dynamicForm.value.records[index].gunitPrice=good.gunitPrice
     dynamicForm.value.records[index].gunit=good.gunit
+    dynamicForm.value.records[index].sramount = good.sramount
   }else{
-    dynamicForm.value.records[index].cost=null
+    dynamicForm.value.records[index].sramount=null
+    dynamicForm.value.records[index].gunitPrice=null
     dynamicForm.value.records[index].gunit=null
   }
 }
@@ -199,16 +198,16 @@ const submitForm = async ()=>{
   try {
     let pass = await dynamicFormRef.value.validate()
     if(!pass) return
-    let res = await ApiAddPurchaseOrderWithDetail(
+    let res = await ApiAddSaleOrderWithDetail(
         currentUser.id,
         dynamicForm.value.wid,
-        dynamicForm.value.sid,
-        dynamicForm.value.potime,
+        dynamicForm.value.cid,
+        dynamicForm.value.sotime,
         dynamicForm.value.records
     )
     if(res.data.status==200){
       ElMessage({message:"提交表单提交成功", type:"success"})
-      location.reload()
+      // location.reload()
     }
     else
       ElMessage({message:res.data.msg, type:"warning"})
@@ -219,8 +218,8 @@ const submitForm = async ()=>{
 }
 
 onMounted(()=>{
-  dynamicForm.value.potime = getCurrentTime()
-  loadSupplier()
+  dynamicForm.value.sotime = getCurrentTime()
+  loadCustomers()
   loadWareHouse()
 })
 

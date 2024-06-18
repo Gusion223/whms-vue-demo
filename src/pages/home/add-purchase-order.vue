@@ -31,7 +31,7 @@
       <el-table-column label="商品编号">
         <template #default="{row, $index}">
           <el-form-item :prop="`records[${$index}].gid`" :rules="dynamicFormRules.gid" class="table-form-item">
-            <el-input-number v-model="row.gid" placeholder="请输入商品编号"
+            <el-input-number v-model="row.gid" placeholder="请输入商品编号" :precision="0"
                              :controls="false" style="width: 100%;" @change="(cur)=>updateOtherAttrs(cur,$index)"></el-input-number>
           </el-form-item>
         </template>
@@ -51,13 +51,13 @@
         <template #default="{row, $index}">
           <el-form-item :prop="`records[${$index}].pdamount`" :rules="dynamicFormRules.amount" class="table-form-item">
             <el-input-number v-model="row.pdamount" placeholder="请输入商品数量" :controls="false" style="width: 100%;"
-                             @change="(cur)=>{updateTotalCost(row.gunitCost, cur, $index)}"></el-input-number>
+                             :precision="0"  @change="(cur)=>{updateTotalCost(row.gunitCost, cur, $index)}"></el-input-number>
           </el-form-item>
         </template>
       </el-table-column>
       <el-table-column label="单价">
         <template #default="{row}">
-          <el-input-number :model-value="row.gunitCost" :controls="false" style="width: 100%;" disabled ></el-input-number>
+          <el-input-number :model-value="row.gunitCost" :controls="false" style="width: 100%;" disabled :precision="2"></el-input-number>
         </template>
       </el-table-column>
       <el-table-column label="单位">
@@ -67,7 +67,7 @@
       </el-table-column>
       <el-table-column label="总价">
         <template #default="{row}">
-          <el-input-number :model-value="row.pdtotalCost" :controls="false" style="width: 100%;" disabled></el-input-number>
+          <el-input-number :model-value="row.pdtotalCost" :controls="false" style="width: 100%;" disabled :precision="2"></el-input-number>
         </template>
       </el-table-column>
       <el-table-column width="85px">
@@ -96,7 +96,6 @@ import {onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {ApiListWarehouse} from "@/api/warehouse";
 import {ApiListSGGood} from "@/api/sg";
-import {ApiAddPurchaseOrderWithDetail} from "@/api/purchaseOrder";
 
 // 获取当前时间的字符串格式
 const getCurrentTime =()=>{
@@ -109,6 +108,7 @@ const currentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
 
 
 const gidExist = (rule, value, callback)=>{
+  if(value==null)  callback(new Error("不存在对应的商品"))
   let res = goods.value.find((item)=>item.gid===value)
   if(res)
     callback()
@@ -199,13 +199,7 @@ const submitForm = async ()=>{
   try {
     let pass = await dynamicFormRef.value.validate()
     if(!pass) return
-    let res = await ApiAddPurchaseOrderWithDetail(
-        currentUser.id,
-        dynamicForm.value.wid,
-        dynamicForm.value.sid,
-        dynamicForm.value.potime,
-        dynamicForm.value.records
-    )
+    let res = await ApiAdd
     if(res.data.status==200){
       ElMessage({message:"提交表单提交成功", type:"success"})
       location.reload()

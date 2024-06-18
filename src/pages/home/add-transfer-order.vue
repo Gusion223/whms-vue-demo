@@ -31,7 +31,7 @@
       <el-table-column label="商品编号">
         <template #default="{row, $index}">
           <el-form-item :prop="`records[${$index}].gid`" :rules="dynamicFormRules.gid" class="table-form-item">
-            <el-input-number v-model="row.gid" placeholder="请输入商品编号"
+            <el-input-number v-model="row.gid" placeholder="请输入商品编号" :precision="0"
                              :controls="false" style="width: 100%;" @change="(cur)=>updateOtherAttrs(cur,$index)"></el-input-number>
           </el-form-item>
         </template>
@@ -50,7 +50,7 @@
       <el-table-column label="转储数量" >
         <template #default="{row, $index}">
           <el-form-item :prop="`records[${$index}].pdamount`" :rules="dynamicFormRules.amount" class="table-form-item">
-            <el-input-number v-model="row.tdamount" placeholder="请输入转储数量" :controls="false"
+            <el-input-number v-model="row.tdamount" placeholder="请输入转储数量" :controls="false" :precision="0"
                              style="width: 100%;"  :min="1" :max="row.sramount"></el-input-number>
           </el-form-item>
         </template>
