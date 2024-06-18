@@ -11,14 +11,6 @@
         <template #title>用户管理</template>
       </el-menu-item>
       <div></div>
-      <el-sub-menu index=2>
-        <template #title >
-          <el-icon><Suitcase /></el-icon>
-          <span>供货商管理</span>
-        </template>
-        <el-menu-item index="/home/supplierInfo">基本信息管理</el-menu-item>
-        <el-menu-item index="/home/s_gInfo">供货信息管理</el-menu-item>
-      </el-sub-menu>
       <el-menu-item index="/home/goodInfo">
         <el-icon> <Box /></el-icon>
         <template #title>商品信息管理</template>
@@ -29,9 +21,22 @@
           顾客信息管理
         </template>
       </el-menu-item>
+      <el-menu-item >
+        <template #title>仓库信息</template>
+        <el-icon><House /></el-icon>
+      </el-menu-item>
+      <el-sub-menu index=2>
+        <template #title >
+          <el-icon><Suitcase /></el-icon>
+          <span>供货商管理</span>
+        </template>
+        <el-menu-item index="/home/supplierInfo">基本信息管理</el-menu-item>
+        <el-menu-item index="/home/s_gInfo">供货信息管理</el-menu-item>
+      </el-sub-menu>
+
       <el-sub-menu index=3>
         <template #title>
-          <el-icon><House /></el-icon>
+          <el-icon><SoldOut /></el-icon>
           <span>进货管理</span>
         </template>
         <el-menu-item index="/home/addPurchaseOrder">填写进货表单</el-menu-item>
