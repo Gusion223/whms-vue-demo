@@ -13,7 +13,7 @@ const routes = [
         meta:
             {
                 title:'主界面',
-                // requireAuth:true
+                requireAuth:true
             },
         component: ()=>import("@/pages/home.vue"),
         children:[
