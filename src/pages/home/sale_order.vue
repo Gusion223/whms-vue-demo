@@ -116,7 +116,7 @@
   import {onMounted, ref} from "vue";
   import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
-  import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
+  import {ApiAddSaleOrder,ApiGetSaleOrder,ApiUpdateSaleOrder,ApiDeleteSaleOrder,ApiAddSaleOrderWithDetail} from "@/api/saleOrder";
 
   // 表格信息
   const tableData = ref([])
@@ -188,13 +188,11 @@
         return
       }
       // api处理
-      let res = await ApiAddUser(
-          addForm.value.cid,
+      let res = await ApiAddSaleOrder(
           addForm.value.id,
-          addForm.value.sodate,
-          addForm.value.sototal,
-          addForm.value.nickName,
-          addForm.value.cname,
+          addForm.value.sid,
+          addForm.value.wid,
+          addForm.value.sotime
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -224,15 +222,14 @@
           updateForm.value.nickName,
       )
 
-      let res = await ApiUpdateUser(
-          updateForm.value.cid,
+      let res = await ApiUpdateSaleOrder(
+          updateForm.value.soid,
           updateForm.value.id,
-          updateForm.value.sodate,
+          updateForm.value.wid,
+          updateForm.value.cid,
+          updateForm.value.sotime,
           updateForm.value.sototal,
-          updateForm.value.cname,
-          updateForm.value.nickName,
       )
-
       if(res.data.status!==200)
       {
         ElMessage({message:res.data.msg, type:"warning"})
@@ -250,7 +247,7 @@
 
   const tryDelete = async (old_data) => {
     try {
-      let res = await ApiDeleteUser(old_data.poid)
+      let res = await ApiDeleteSaleOrder(old_data.soid)
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
@@ -281,12 +278,7 @@
     try{
       let res;
 
-      if(nameSearch.value!=="" )
-      {
-        res = await ApiGetUserWith(index, size, nameSearch.value )
-      }else {
-        res = await ApiGetUsers(index, size)
-      }
+     res = await ApiGetSaleOrder(index,size)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total

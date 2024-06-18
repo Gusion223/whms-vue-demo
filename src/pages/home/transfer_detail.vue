@@ -104,7 +104,7 @@
   import {onMounted, ref} from "vue";
   import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
-  import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
+  import {ApiAddTransferDetail,ApiDeleteTransferDetail,ApiGetTransferDetail,ApiUpdateTransferDetail} from "@/api/transferDetail";
 
   // 表格信息
   const tableData = ref([])
@@ -173,12 +173,10 @@
         return
       }
       // api处理
-      let res = await ApiAddUser(
+      let res = await ApiAddTransferDetail(
           addForm.value.toid,
           addForm.value.gid,
-          addForm.value.tdamount,
-          addForm.value.gname,
-
+          addForm.value.tdamount
       )
       if(res.data.status!==200){
         ElMessage({message:res.data.msg, type:"warning"})
@@ -199,19 +197,12 @@
         // ElMessage({message:"用户表单未通过校验要求", type:'warning'})
         return
       }
-      console.log(
+
+
+      let res = await ApiUpdateTransferDetail(
           updateForm.value.toid,
           updateForm.value.gid,
-          updateForm.value.tdamount,
-          updateForm.value.gname,
-
-      )
-
-      let res = await ApiUpdateUser(
-          updateForm.value.toid,
-          updateForm.value.gid,
-          updateForm.value.tdamount,
-          updateForm.value.gname,
+          updateForm.value.tdamount
       )
 
       if(res.data.status!==200)
@@ -231,7 +222,7 @@
 
   const tryDelete = async (old_data) => {
     try {
-      let res = await ApiDeleteUser(old_data.toid)
+      let res = await ApiDeleteTransferDetail(old_data.toid,old_data.gid)
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
@@ -262,12 +253,7 @@
     try{
       let res;
 
-      if(nameSearch.value!=="" )
-      {
-        res = await ApiGetUserWith(index, size, nameSearch.value )
-      }else {
-        res = await ApiGetUsers(index, size)
-      }
+      res = await ApiGetTransferDetail(index,size)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total
