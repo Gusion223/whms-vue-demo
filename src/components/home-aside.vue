@@ -21,10 +21,18 @@
           顾客信息管理
         </template>
       </el-menu-item>
-      <el-menu-item index="/home/warehouse">
-        <template #title>仓库信息</template>
-        <el-icon><House /></el-icon>
-      </el-menu-item>
+      <el-sub-menu index=1>
+        <template #title>
+          <el-icon><House /></el-icon>
+          <span>仓库管理</span>
+        </template>
+        <el-menu-item index="/home/warehouse">
+          <template #title>仓库信息</template>
+        </el-menu-item>
+        <el-menu-item>
+          <template #title>存储记录</template>
+        </el-menu-item>
+      </el-sub-menu>
       <el-sub-menu index=2>
         <template #title >
           <el-icon><Suitcase /></el-icon>
