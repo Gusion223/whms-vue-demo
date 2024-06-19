@@ -27,7 +27,7 @@
 
 
             <el-button type="info" @click="addFormVisible=false">取消</el-button>
-            <el-button type="primary" @click="tryAdd">添加新的供货条目</el-button>
+            <el-button type="primary" @click="tryAdd">添加新的仓库</el-button>
           </el-form>
         </el-dialog>
       </div>
@@ -176,7 +176,7 @@
       }
       // 关闭窗口
       addFormVisible.value=false
-      ElMessage({message:`供货条目${addForm.value.sid}添加成功`, type:"success"})
+      ElMessage({message:`供货条目${addForm.value.wname}添加成功`, type:"success"})
       await loadData()
     }catch(e){
       console.log(e)

@@ -189,7 +189,7 @@ const submitForm = async ()=>{
     )
     if(res.data.status==200){
       ElMessage({message:"提交表单提交成功", type:"success"})
-      setTimeout(()=>{location.reload()}, 10000);
+      setTimeout(()=>{location.reload()}, 1000);
 
     }
     else

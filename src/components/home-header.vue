@@ -13,7 +13,7 @@
         </el-icon>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="person">个人中心</el-dropdown-item>
+<!--            <el-dropdown-item command="person">个人中心</el-dropdown-item>-->
             <el-dropdown-item command="exit">退出系统</el-dropdown-item>
           </el-dropdown-menu>
         </template>

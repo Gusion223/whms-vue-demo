@@ -58,7 +58,7 @@
               <el-input v-model="updateForm.cname" ></el-input>
             </el-form-item>
             <el-form-item prop="sotime" :label-width="updateFormLabelWidth" label="销售时间">
-              <el-input v-model="updateForm.sotime" :disabled="updateExtraCfg.sotimex.lock"></el-input>
+              <el-input v-model="updateForm.sotime" :disabled="updateExtraCfg.sotime.lock"></el-input>
             </el-form-item>
             <el-form-item prop="sototal" :label-width="updateFormLabelWidth" label="销售金额">
               <el-input v-model="updateForm.sototal" controls-position="right" style="width: 100%"></el-input>
