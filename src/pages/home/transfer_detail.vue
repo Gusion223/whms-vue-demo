@@ -8,7 +8,7 @@
 
         <el-button type="primary" style="margin-left: 5px" @click="loadData">查询</el-button>
         <el-button type="warning" style="margin-left: 5px" @click="resetTableData">重置</el-button>
-        <el-button type="success" style="margin-left: 5px" @click="openAddForm">添加转储信息细则</el-button>
+<!--        <el-button type="success" style="margin-left: 5px" @click="openAddForm">添加转储信息细则</el-button>-->
       </div>
 
 <!--      // 添加信息的表单-->
@@ -265,7 +265,7 @@
     }
   }
   const resetTableData = async ()=>{
-    nameSearch.value = ""
+    nameSearch.value = null
     // userTypeSearch.value=-1
     await loadData()
   }

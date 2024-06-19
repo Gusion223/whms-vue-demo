@@ -96,13 +96,13 @@
               <el-button size='small' type="success" @click="openUpdateForm(scope.row)">修改</el-button>
               <el-button size='small' type="danger"
                          @click="tryDelete(scope.row)">删除</el-button>
-            </div>
-            <el-button size="small" type="info" @click="router.push(
+              <el-button size="small" type="info" @click="router.push(
                   {
                     path:'/home/transferDetail',
                     query:{toid:scope.row.toid}
                   }
               )" >查看详情</el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -299,7 +299,7 @@
     }
   }
   const resetTableData = async ()=>{
-    nameSearch.value = ""
+    nameSearch.value = null
     // userTypeSearch.value=-1
     await loadData()
   }

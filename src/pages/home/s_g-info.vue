@@ -330,7 +330,7 @@
     try{
       let res;
 
-      res = await ApiGetSG(index,size,snameSearch.value)
+      res = await ApiGetSG(index,size,snameSearch.value, gtypeSearch.value)
 
       console.log(tableData.value)
       tableData.value = res.data.data

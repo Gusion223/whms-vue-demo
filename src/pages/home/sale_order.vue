@@ -294,7 +294,7 @@
     }
   }
   const resetTableData = async ()=>{
-    nameSearch.value = ""
+    nameSearch.value = null
     // userTypeSearch.value=-1
     await loadData()
   }

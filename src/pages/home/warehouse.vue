@@ -176,7 +176,7 @@
       }
       // 关闭窗口
       addFormVisible.value=false
-      ElMessage({message:`供货条目${addForm.value.wname}添加成功`, type:"success"})
+      ElMessage({message:`${addForm.value.wname}添加成功`, type:"success"})
       await loadData()
     }catch(e){
       console.log(e)
