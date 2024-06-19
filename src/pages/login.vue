@@ -51,7 +51,7 @@
       if(res.data.status=="200"){
           console.log("CurrentUser:", res.data.data)
           sessionStorage.setItem("CurrentUser", JSON.stringify(res.data.data))
-          await router.push("/home/dashboard")
+          await router.push("/home")
       }else{
         ElMessage({
           message:"登录校验失败,请检查用户名、密码、用户类型是否正确",

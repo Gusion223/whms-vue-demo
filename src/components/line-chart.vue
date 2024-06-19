@@ -17,6 +17,9 @@ import {ref, onMounted, toRaw} from "vue";
       bottom: "10%",
       containLabel: true,
     },
+    legend:{
+      data:props.catalog
+    },
     tooltip: {
       trigger: "axis",
       axisPointer: {
@@ -44,58 +47,23 @@ import {ref, onMounted, toRaw} from "vue";
         axisLabel: {
           formatter: "{value} ",
         },
-      },
-      {
-        type: "value",
-        min: range[1][0],
-        max: range[1][1],
-        interval: Math.ceil((range[1][1]-range[1][0]))/5,
-        axisLabel: {
-          formatter: "{value}%",
-        },
-      },
+      }
     ],
     series: [
       {
         name: props.catalog[0],
-        type: "bar",
-        data: props.data[0],
-        barWidth: 20,
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: "#83bff6" },
-            { offset: 0.5, color: "#188df0" },
-            { offset: 1, color: "#188df0" },
-          ]),
-        },
-      },
-      {
-        name: props.catalog[1],
-        type: "bar",
-        data: props.data[1],
-        barWidth: 20,
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: "#25d73c" },
-            { offset: 0.5, color: "#1bc23d" },
-            { offset: 1, color: "#179e61" },
-          ]),
-        },
-      },
-      {
-        name: props.catalog[2],
         type: "line",
-        yAxisIndex: 1,
-        data: props.data[2],
+        yAxisIndex: 0,
+        data: props.data[0],
         itemStyle: {
           color: "#67C23A",
         },
       },
       {
-        name: props.catalog[3],
+        name: props.catalog[1],
         type: "line",
-        yAxisIndex: 1,
-        data: props.data[3],
+        yAxisIndex: 0,
+        data: props.data[1],
         itemStyle: {
           color: "#409EFF",
         },

@@ -69,3 +69,12 @@ export const ApiDeleteUser = (id) => {
         {id: id}
     )
 }
+
+export const ApiGetDayPurchaseSale=()=>{
+    return http.get("/user/get-dayPurchaseSale")
+}
+
+export const ApiGetTotalCostSale=()=>{
+    return http.get("/user/get-totalCostSale")
+}
+
