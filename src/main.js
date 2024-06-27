@@ -38,9 +38,9 @@ window.ResizeObserver = class ResizeObserver extends _ResizeObserver{
 router.beforeEach((to, from, next)=>{
   document.title = to.meta.title ? to.meta.title : '管理平台';  //是否设置了meta.title
   // to.meta 是一个数组（匹配到是路由记录）
-  if(to.meta.requireAuth && sessionStorage.getItem("CurrentUser")==null){  //是否需要认证,暂时还没弄到这一步
+  if(to.meta.requireAuth && sessionStorage.getItem("CurrentUser")==null){
       // 进入登录界面
-      ElMessage({message:"您当前尚未登录,请前往主界面进行登录", type:"info"})
+      ElMessage({message:"您当前尚未登录或已登录过期,请前往主界面进行登录", type:"info"})
       next("/")
   }else{
       next()
