@@ -31,9 +31,11 @@
           <el-table-column label="商品名称" >
             <template #default="{row, $index}">
               <el-form-item :prop="`records[${$index}].gid`" :rules="dynamicFormRules.gid" class="table-form-item">
-                <el-select v-model="row.gid" @change="(cur)=>updateOtherAttrs(cur,$index)" :filterable="true">
-                  <el-option :key="-1" :label="'请选择一个已有的商品'" :value="-1" />
+                <el-select v-model="row.gid" @change="(cur)=>updateOtherAttrs(cur,$index)" >
+<!--                  <el-option :key="-1" :label="'请选择一个已有的商品'" :value="-1" />-->
                   <el-option v-for="item in goods" :key="item.gid" :label="item.gname" :value="item.gid" />
+<!--                  虽然挺低效的-->
+                  <el-option v-if="goods.find((item)=>item.gid==row.gid) == null" :key="row.gid" label="未知商品" :value="row.gid" disabled/>
                 </el-select>
               </el-form-item>
             </template>
@@ -71,7 +73,13 @@
 
   import {ref} from "vue";
   import {ElMessage} from "element-plus";
-
+  const gidExist = (rule, value, callback)=>{
+    let res = goods.value.find((item)=>item.gid===value)
+    if(res)
+      callback()
+    else
+      callback(new Error("不存在对应的商品"))
+  }
   const dynamicForm = ref({
     sid:1, // 供应商id
     records:[
@@ -82,7 +90,7 @@
 
   const dynamicFormRules = ref({
     sid:[{type:"number", min:0, required:true, message:"请选择一个供货商", trigger:"change" }],
-    gid:[{type:"number", min:0, max:100, required:true, message:"请选择一个商品", trigger:"change"}],
+    gid:[{type:"number",validator:gidExist, required:true, message:"请选择一个商品", trigger:"change"}],
     amount:[{type:"number", min:0, required:true, message:"请输入购入商品的数量"}]
   })
   const dynamicFormRef = ref(null)
@@ -95,6 +103,7 @@
     {sid:1, sname:"一斤鸭梨有限公司"}
   ])
   const goods = ref([{gid:25, gname:"事薯片", cost:10}])
+
 
 
   const updateOtherAttrs = (gid, index)=>{
@@ -131,14 +140,8 @@
   min-height: 300px;
   margin: auto;
 }
-
-.table-header-cell{
-  text-align: center;
-}
-
 .table-form-item{
-  margin-bottom: 0px;
-
+  margin-bottom: 0;
 }
 
 </style>

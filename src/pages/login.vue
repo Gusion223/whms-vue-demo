@@ -11,8 +11,8 @@
         </el-form-item>
         <el-form-item prop="usertype">
           <el-radio-group v-model="param.usertype">
-            <el-radio value=1>销售员</el-radio>
-            <el-radio value=2>仓管员</el-radio>
+            <el-radio value=2>销售员</el-radio>
+            <el-radio value=1>仓管员</el-radio>
             <el-radio value=0>系统管理员</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -27,8 +27,8 @@
 <script setup>
   import {ref} from "vue";
   import {ElMessage} from "element-plus";
-  import {ApiLogin} from "@/api/serviceApi";
   import router from "@/router/router";
+  import {ApiLogin} from "@/api/user";
 
   const param = ref({
     username:'Admin',

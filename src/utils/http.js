@@ -2,13 +2,17 @@ import axios from 'axios'
 // import { ElMessageBox } from 'element-plus'
 
 const instance = axios.create({
-  baseURL:"http://192.168.1.107:8090",
+  // baseURL:"http://192.168.1.107:8090",
+  baseURL:"http://localhost:8090",
   timeout:5000
 })
 
 // 请求拦截
 instance.interceptors.request.use(
     (config)=>{
+      let CurrentUser = JSON.parse(sessionStorage.getItem("CurrentUser"))
+      if(CurrentUser!=null)
+        config.headers.set("token", CurrentUser.token)
       return config
   },
   (err)=>{
@@ -19,6 +23,10 @@ instance.interceptors.request.use(
 // 响应拦截
 instance.interceptors.response.use(
   (res)=>{
+    if(res.data.status==401){
+      sessionStorage.removeItem("CurrentUser");
+      location.reload()
+    }
     return res;
   },
   (err)=>{
@@ -29,7 +37,7 @@ instance.interceptors.response.use(
             err.message = "错误请求";
             break;
           case 401:
-            err.message = "未授权，请重新登录";
+            err.message = "用户活动时间超时，请重新登录";
             break;
           case 403:
             err.message = "拒绝访问";

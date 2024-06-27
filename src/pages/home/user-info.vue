@@ -20,10 +20,10 @@
       <div>
         <el-dialog title="添加新用户" v-model="addFormVisible">
           <el-form :model="addForm" :rules="formRules" ref="addFormRef">
-            <el-form-item prop="userName" :label-width="addFormLabelWidth" label="用户名">
+            <el-form-item prop="userName" :label-width="addFormLabelWidth" label="用户账号">
               <el-input v-model="addForm.userName"></el-input>
             </el-form-item>
-            <el-form-item prop="nickName" :label-width="addFormLabelWidth" label="用户昵称">
+            <el-form-item prop="nickName" :label-width="addFormLabelWidth" label="用户名称">
               <el-input v-model="addForm.nickName"></el-input>
             </el-form-item>
             <el-form-item prop="password" :label-width="addFormLabelWidth" label="密码">
@@ -57,10 +57,10 @@
       <div>
         <el-dialog title="修改用户信息" v-model="updateFormVisible">
           <el-form :model="updateForm" :rules="formRules" ref="updateFormRef">
-            <el-form-item prop="userName" :label-width="updateFormLabelWidth" label="用户名">
+            <el-form-item prop="userName" :label-width="updateFormLabelWidth" label="用户账号">
               <el-input v-model="updateForm.userName" :disabled="updateExtraCfg.userName.lock"></el-input>
             </el-form-item>
-            <el-form-item prop="nickName" :label-width="updateFormLabelWidth" label="用户昵称">
+            <el-form-item prop="nickName" :label-width="updateFormLabelWidth" label="用户名称">
               <el-input v-model="updateForm.nickName"></el-input>
             </el-form-item>
             <el-form-item prop="sex" :label-width="updateFormLabelWidth" label="性别">
@@ -84,7 +84,6 @@
             <el-button type="info" @click="updateFormVisible=false">取消</el-button>
             <el-button type="primary" @click="tryUpdate">修改当前用户信息</el-button>
           </el-form>
-
         </el-dialog>
       </div>
 
@@ -92,8 +91,8 @@
 <!--      // 表格数据-->
       <el-table  :data="tableData" border style="width:100%">
         <el-table-column prop="id" label="ID" />
-        <el-table-column prop="userName" label="用户名" />
-        <el-table-column prop="nickName" label="用户昵称" />
+        <el-table-column prop="userName" label="用户账号" />
+        <el-table-column prop="nickName" label="用户名称" />
 <!--        <el-table-column prop="password" label="密码" />-->
         <el-table-column prop="age" label="年龄" />
         <el-table-column prop="sex" label="性别">
@@ -144,8 +143,8 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers, ApiGetUserWith, ApiAddUser, ApiUpdateUser, ApiDeleteUser} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
+  import {ApiGetUsers ,ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
 
   // 表格信息
   const tableData = ref([])
@@ -199,8 +198,8 @@
     userType:-1
   }
   const formRules = ref({
-    userName:[{required: true,  message:"请输入用户名", trigger:"blur"},{min:1, max:20, pattern:/^[A-Za-z0-9]+$/, message: "情输入1-20英文数字字符作为用户名", trigger:'blur'}],
-    nickName:[{required: true,  message:"请输入用户昵称", trigger:"blur"}],
+    userName:[{required: true,  message:"请输入用户账号", trigger:"blur"},{min:1, max:20, pattern:/^[A-Za-z0-9]+$/, message: "情输入1-20英文数字字符作为用户名", trigger:'blur'}],
+    nickName:[{required: true,  message:"请输入用户名称", trigger:"blur"}],
     password:[{required: true,  message:"请输入用户密码", trigger:"blur"}],
     sex:[{type:"number" ,min: 0, max: 1, required: true,  message:"请选择用户性别", trigger:"change"}],
     age:[{required: true,  message:"请输入用户年龄", trigger:"blur"}],
@@ -237,9 +236,6 @@
     addForm.value = JSON.parse(JSON.stringify(formDefaultValue))
     addFormVisible.value=true
   }
-
-
-
   const openUpdateForm = (rowData)=>{
     updateForm.value = JSON.parse(JSON.stringify(rowData))
     updateFormVisible.value = true
@@ -327,12 +323,11 @@
       if (res.data.status !== 200)
         ElMessage({message: res.data.msg, type: "warning"})
       else{
-        ElMessage({message: `成功删除用户${old_data.userName}}`, type: "success"})
+        ElMessage({message: `成功删除用户${old_data.userName}`, type: "success"})
         await loadData()
       }
     } catch (e) {
       ElMessage({message: e.message, type: "warning"})
-
     }
   }
 
@@ -361,9 +356,6 @@
       }else {
         res = await ApiGetUsers(index, size)
       }
-      // console.log(res)
-      // console.log(res.data)
-      // console.log(res.data.data)
       console.log(tableData.value)
       tableData.value = res.data.data
       totalSize.value = res.data.total
@@ -392,4 +384,6 @@
 :deep(.el-dialog){
   width: 400px;
 }
+
+
 </style>
