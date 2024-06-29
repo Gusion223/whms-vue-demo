@@ -1,5 +1,5 @@
 import http from "@/utils/http";
-import {ApiCommonQuery} from "@/api/serviceApi";
+import {ApiCommonQuery} from "@/api/commonApi";
 
 
 export const ApiAddSaleOrderWithDetail = (id, wid, cid, sotime, details)=>{

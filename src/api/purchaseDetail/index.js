@@ -1,5 +1,5 @@
 import http from "@/utils/http";
-import {ApiCommonQuery} from "@/api/serviceApi";
+import {ApiCommonQuery} from "@/api/commonApi";
 
 export const ApiGetPurchaseDetail=(index, size, poid)=>{
     return ApiCommonQuery("/purchase-detail/page-fullInfo", index, size, {poid:poid})

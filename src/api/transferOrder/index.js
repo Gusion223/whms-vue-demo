@@ -1,5 +1,5 @@
 import http from "@/utils/http";
-import {ApiCommonQuery} from "@/api/serviceApi";
+import {ApiCommonQuery} from "@/api/commonApi";
 
 export const ApiAddTransferOrderWithDetail=(id, widPrev, widCur, totime, details)=>{
     return http.post(

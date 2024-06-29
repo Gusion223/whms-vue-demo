@@ -1,5 +1,5 @@
 import http from "@/utils/http";
-import {ApiCommonQuery} from "@/api/serviceApi";
+import {ApiCommonQuery} from "@/api/commonApi";
 
 export const ApiGetCustomer = (index, size, cname)=>{
     let params={cname:cname}

@@ -1,4 +1,4 @@
-import {ApiCommonQuery} from "@/api/serviceApi";
+import {ApiCommonQuery} from "@/api/commonApi";
 import http from "@/utils/http";
 
 export const ApiGetTransferDetail = (index, size, toid)=>{

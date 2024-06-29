@@ -1,6 +1,6 @@
     // PurchaseOrder相关的接口------------------------------------------
 import http from "@/utils/http";
-import {ApiCommonQuery} from "@/api/serviceApi";
+import {ApiCommonQuery} from "@/api/commonApi";
 
 export const ApiAddPurchaseOrderWithDetail = (id, wid, sid, potime, details) => {
     return http.post(

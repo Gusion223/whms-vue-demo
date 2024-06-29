@@ -1,4 +1,4 @@
-import {ApiCommonQuery} from "@/api/serviceApi";
+import {ApiCommonQuery} from "@/api/commonApi";
 
 export const ApiListStoreRecord = (wid, gname, gtype)=>{
     return ApiCommonQuery("/store-record/list-fullInfo", null, null, {wid:wid, gname:gname, gtype:gtype})

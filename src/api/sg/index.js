@@ -1,6 +1,6 @@
 // SG相关接口----------------------------------------------------
 import http from "@/utils/http";
-import {ApiCommonQuery} from "@/api/serviceApi";
+import {ApiCommonQuery} from "@/api/commonApi";
 
 export const ApiListSGGood = (sid) => {
     return http.post("/s-g/list-goodInfo", {params: {sid: sid}})
