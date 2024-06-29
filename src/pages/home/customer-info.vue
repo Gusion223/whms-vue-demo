@@ -130,7 +130,6 @@
 <script setup>
   import {onMounted, ref} from "vue";
   import {ElMessage} from "element-plus";
-  // import {ApiAddUser, ApiDeleteUser, ApiGetUserWith, ApiUpdateUser} from "@/api/user";
   import {ApiAddCustomer, ApiDeleteCustomer, ApiGetCustomer, ApiUpdateCustomer} from "@/api/coustomer";
 
   // 表格信息

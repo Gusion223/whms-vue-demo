@@ -120,9 +120,8 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
-  import {ApiAddSaleOrder,ApiGetSaleOrder,ApiUpdateSaleOrder,ApiDeleteSaleOrder,ApiAddSaleOrderWithDetail} from "@/api/saleOrder";
+  import {ApiAddSaleOrder,ApiGetSaleOrder,ApiUpdateSaleOrder,ApiDeleteSaleOrder} from "@/api/saleOrder";
   import router from "@/router/router";
 
   // 表格信息

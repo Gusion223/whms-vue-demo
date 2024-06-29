@@ -116,9 +116,8 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
-  import {ApiGetSG, ApiAddSG, ApiUpdateSG, ApiDeleteSG, ApiListSGGood} from "@/api/sg";
+  import {ApiGetSG, ApiAddSG, ApiUpdateSG, ApiDeleteSG} from "@/api/sg";
   import {ApiListSupplier} from "@/api/supplier";
   import {ApiListGood} from "@/api/good";
   import router from "@/router/router";

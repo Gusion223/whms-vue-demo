@@ -128,7 +128,6 @@
 
 <script setup>
   import {onMounted, ref} from "vue";
-  import {ApiGetUsers} from "@/api/serviceApi";
   import {ElMessage} from "element-plus";
   import {ApiAddTransferOrder,ApiGetTransferOrder,ApiDeleteTransferOrder,ApiUpdateTransferOrder} from "@/api/transferOrder";
   import router from "@/router/router";
